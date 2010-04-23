@@ -37,9 +37,9 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "parsing.h"
-#include "generator.h"
+#ifndef GENERATOR_H
+#define GENERATOR_H 1
 
-int main() {
-	return 0;
-}
+
+
+#endif /* GENERATOR_H */

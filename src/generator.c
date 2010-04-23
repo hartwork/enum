@@ -37,9 +37,4 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "parsing.h"
 #include "generator.h"
-
-int main() {
-	return 0;
-}
