@@ -38,3 +38,26 @@
  */
 
 #include "generator.h"
+#include <assert.h>
+
+#define CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
+
+int yield(arguments * args, float * dest) {
+	if (CHECK_FLAG(args->flags, FLAG_READY)) {
+		/* TODO make ready */
+	}
+
+	if (! CHECK_FLAG(args->flags, FLAG_STEP_SET)) {
+		if (CHECK_FLAG(args->flags, FLAG_MIN_SET)
+				&& CHECK_FLAG(args->flags, FLAG_MAX_SET)
+				&& CHECK_FLAG(args->flags, FLAG_COUNT_SET)) {
+			assert(args->count != 0);
+			args->step = (args->max - args->min) / (args->count - 1);
+		} else {
+			args->step = 1.0f;
+		}
+		args->flags |= FLAG_STEP_SET;
+	}
+	assert(CHECK_FLAG(args->flags, FLAG_STEP_SET));
+	return 0;
+}
