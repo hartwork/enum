@@ -53,7 +53,8 @@ typedef struct _arguments {
 	int flags;
 	float min;
 	float max;
-	float step;
+	float step_num;
+	float step_denom;
 	unsigned int count;
 } arguments;
 

@@ -52,9 +52,11 @@ int yield(arguments * args, float * dest) {
 				&& CHECK_FLAG(args->flags, FLAG_MAX_SET)
 				&& CHECK_FLAG(args->flags, FLAG_COUNT_SET)) {
 			assert(args->count != 0);
-			args->step = (args->max - args->min) / (args->count - 1);
+			args->step_num = (args->max - args->min);
+			args->step_denom = (args->count - 1);
 		} else {
-			args->step = 1.0f;
+			args->step_num = 1.0f;
+			args->step_denom = 1.0f;
 		}
 		args->flags |= FLAG_STEP_SET;
 	}
