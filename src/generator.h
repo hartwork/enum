@@ -56,6 +56,7 @@ typedef struct _arguments {
 	float step_num;
 	float step_denom;
 	unsigned int count;
+	unsigned int position;
 } arguments;
 
 int yield(arguments * args, float * dest);

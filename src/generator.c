@@ -73,5 +73,28 @@ int yield(arguments * args, float * dest) {
 		args->flags |= FLAG_STEP_SET;
 	}
 	assert(CHECK_FLAG(args->flags, FLAG_STEP_SET));
+
+	/* nothing can be done without a start */
+	assert(CHECK_FLAG(args->flags, FLAG_LEFT_SET));
+
+	*dest = args->left + (args->step_num / args->step_denom) * args->position;
+	/* TODO check for float overflow, float imprecision */
+
+	if (CHECK_FLAG(args->flags, FLAG_COUNT_SET)
+			&& (args->position >= (args->count - 1))) {
+		return 1;
+	}
+
+	if (CHECK_FLAG(args->flags, FLAG_RIGHT_SET)
+			&& (args->right == *dest)) {
+		return 1;
+	}
+
+	if (CHECK_FLAG(args->flags, FLAG_RIGHT_SET)
+			&& (args->right > *dest)) {
+		return 2;
+	}
+
+	args->position += 1;
 	return 0;
 }
