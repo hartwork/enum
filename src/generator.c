@@ -83,7 +83,7 @@ yield_status yield(arguments * args, float * dest) {
 		if (args->right == *dest)
 			return YIELD_LAST;
 
-		if (args->right > *dest)
+		if (args->right < *dest)
 			return YIELD_NONE;
 	}
 
