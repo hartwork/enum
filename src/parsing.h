@@ -40,6 +40,8 @@
 #ifndef PARSING_H
 #define PARSING_H 1
 
+#include "generator.h"
 
+int parse_args(int arg_count, char **args, arguments *dest);
 
 #endif /* PARSING_H */

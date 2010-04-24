@@ -38,3 +38,64 @@
  */
 
 #include "parsing.h"
+#include "generator.h"
+
+#include <stdlib.h>
+
+typedef enum _token_type {
+  TOKEN_FLOAT,
+  TOKEN_MULTIPLIER,
+  TOKEN_DOTDOT
+} token_type;
+
+typedef union _setter_value {
+	unsigned int uint_data;
+	float float_data;
+} setter_value;
+
+typedef void (*setter_function_pointer)(arguments *, setter_value);
+
+typedef struct _token_details {
+	token_type type;
+	setter_function_pointer setter;
+} token_details;
+
+void set_args_left(arguments * args, setter_value value) {
+	/* TODO*/
+}
+
+void set_args_step(arguments * args, setter_value value) {
+	/* TODO*/
+}
+
+void set_args_right(arguments * args, setter_value value) {
+	/* TODO*/
+}
+
+void set_args_count(arguments * args, setter_value value) {
+	/* TODO*/
+}
+
+int parse_args(int arg_count, char **args, arguments *dest) {
+	token_details const use_case_1[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_args_count}, {TOKEN_FLOAT, set_args_step}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_right}};
+	token_details const use_case_2[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_args_count}, {TOKEN_FLOAT, set_args_step}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_right}};
+	token_details const use_case_3[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_args_count}, {TOKEN_FLOAT, set_args_step}, {TOKEN_DOTDOT, NULL}};
+	token_details const use_case_4[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_args_count}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_right}};
+	token_details const use_case_5[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_step}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_right}};
+	token_details const use_case_6[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_args_count}, {TOKEN_FLOAT, set_args_step}, {TOKEN_DOTDOT, NULL}};
+	token_details const use_case_7[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_args_count}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_right}};
+	token_details const use_case_8[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_step}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_right}};
+	token_details const use_case_9[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_args_count}, {TOKEN_DOTDOT, NULL}};
+	token_details const use_case_10[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_step}, {TOKEN_DOTDOT, NULL}};
+	token_details const use_case_11[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_step}, {TOKEN_DOTDOT, NULL}};
+	token_details const use_case_12[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_args_count}, {TOKEN_DOTDOT, NULL}};
+	token_details const use_case_13[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_right}};
+	token_details const use_case_14[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_FLOAT, set_args_step}, {TOKEN_FLOAT, set_args_right}};
+	token_details const use_case_15[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_FLOAT, set_args_right}};
+	token_details const use_case_16[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_DOTDOT, NULL}};
+	token_details const use_case_17[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_right}};
+	token_details const use_case_18[] = {{TOKEN_FLOAT, set_args_right}};
+	token_details const * table[] = {use_case_1, use_case_2, use_case_3, use_case_4, use_case_5, use_case_6, use_case_7, use_case_8, use_case_9, use_case_10, use_case_11, use_case_12, use_case_13, use_case_14, use_case_15, use_case_16, use_case_17, use_case_18};
+
+	return 0;
+}
