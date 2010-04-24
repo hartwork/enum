@@ -49,6 +49,12 @@ enum argument_flags {
 	FLAG_READY = 1 << 4
 };
 
+enum yield_status {
+	YIELD_MORE, /* value calculated, more available */
+	YIELD_LAST, /* value calculated, no more available */
+	YIELD_NONE  /* nothing could be calculated */
+};
+
 typedef struct _arguments {
 	int flags;
 	float left;

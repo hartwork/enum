@@ -42,13 +42,7 @@
 
 #define CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
 
-/**
- * return values:
- * 0: value calculated, more available
- * 1: value calculated, no more available
- * 2: nothing could be calculated
- */
-int yield(arguments * args, float * dest) {
+yield_status yield(arguments * args, float * dest) {
 	if (CHECK_FLAG(args->flags, FLAG_READY)) {
 		/* TODO make ready */
 	}
@@ -56,7 +50,7 @@ int yield(arguments * args, float * dest) {
 	if (CHECK_FLAG(args->flags, FLAG_COUNT_SET)
 			&& (args->count == 1)) {
 		/* TODO return first and only value */
-		return 1;
+		return YIELD_LAST;
 	}
 
 	if (! CHECK_FLAG(args->flags, FLAG_STEP_SET)) {
@@ -82,19 +76,19 @@ int yield(arguments * args, float * dest) {
 
 	if (CHECK_FLAG(args->flags, FLAG_COUNT_SET)
 			&& (args->position >= (args->count - 1))) {
-		return 1;
+		return YIELD_LAST;
 	}
 
 	if (CHECK_FLAG(args->flags, FLAG_RIGHT_SET)
 			&& (args->right == *dest)) {
-		return 1;
+		return YIELD_LAST;
 	}
 
 	if (CHECK_FLAG(args->flags, FLAG_RIGHT_SET)
 			&& (args->right > *dest)) {
-		return 2;
+		return YIELD_NONE;
 	}
 
 	args->position += 1;
-	return 0;
+	return YIELD_MORE;
 }
