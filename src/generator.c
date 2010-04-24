@@ -79,14 +79,12 @@ yield_status yield(arguments * args, float * dest) {
 		return YIELD_LAST;
 	}
 
-	if (CHECK_FLAG(args->flags, FLAG_RIGHT_SET)
-			&& (args->right == *dest)) {
-		return YIELD_LAST;
-	}
+	if (CHECK_FLAG(args->flags, FLAG_RIGHT_SET)) {
+		if (args->right == *dest)
+			return YIELD_LAST;
 
-	if (CHECK_FLAG(args->flags, FLAG_RIGHT_SET)
-			&& (args->right > *dest)) {
-		return YIELD_NONE;
+		if (args->right > *dest)
+			return YIELD_NONE;
 	}
 
 	args->position += 1;
