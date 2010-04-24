@@ -60,11 +60,11 @@ int yield(arguments * args, float * dest) {
 	}
 
 	if (! CHECK_FLAG(args->flags, FLAG_STEP_SET)) {
-		if (CHECK_FLAG(args->flags, FLAG_MIN_SET)
-				&& CHECK_FLAG(args->flags, FLAG_MAX_SET)
+		if (CHECK_FLAG(args->flags, FLAG_LEFT_SET)
+				&& CHECK_FLAG(args->flags, FLAG_RIGHT_SET)
 				&& CHECK_FLAG(args->flags, FLAG_COUNT_SET)) {
 			assert(args->count != 0);
-			args->step_num = (args->max - args->min);
+			args->step_num = (args->right - args->left);
 			args->step_denom = (args->count - 1);
 		} else {
 			args->step_num = 1.0f;

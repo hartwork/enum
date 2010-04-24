@@ -41,8 +41,8 @@
 #define GENERATOR_H 1
 
 enum argument_flags {
-	FLAG_MIN_SET = 1 << 0,
-	FLAG_MAX_SET = 1 << 1,
+	FLAG_LEFT_SET = 1 << 0,
+	FLAG_RIGHT_SET = 1 << 1,
 	FLAG_STEP_SET = 1 << 2,
 	FLAG_COUNT_SET = 1 << 3,
 
@@ -51,8 +51,8 @@ enum argument_flags {
 
 typedef struct _arguments {
 	int flags;
-	float min;
-	float max;
+	float left;
+	float right;
 	float step_num;
 	float step_denom;
 	unsigned int count;
