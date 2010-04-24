@@ -42,6 +42,12 @@
 
 #define CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
 
+/**
+ * return values:
+ * 0: value calculated, more available
+ * 1: value calculated, no more available
+ * 2: nothing could be calculated
+ */
 int yield(arguments * args, float * dest) {
 	if (CHECK_FLAG(args->flags, FLAG_READY)) {
 		/* TODO make ready */
