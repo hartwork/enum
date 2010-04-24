@@ -47,6 +47,12 @@ int yield(arguments * args, float * dest) {
 		/* TODO make ready */
 	}
 
+	if (CHECK_FLAG(args->flags, FLAG_COUNT_SET)
+			&& (args->count == 1)) {
+		/* TODO return first and only value */
+		return 1;
+	}
+
 	if (! CHECK_FLAG(args->flags, FLAG_STEP_SET)) {
 		if (CHECK_FLAG(args->flags, FLAG_MIN_SET)
 				&& CHECK_FLAG(args->flags, FLAG_MAX_SET)
