@@ -49,11 +49,11 @@ enum argument_flags {
 	FLAG_READY = 1 << 4
 };
 
-enum yield_status {
+typedef enum _yield_status {
 	YIELD_MORE, /* value calculated, more available */
 	YIELD_LAST, /* value calculated, no more available */
 	YIELD_NONE  /* nothing could be calculated */
-};
+} yield_status;
 
 typedef struct _arguments {
 	int flags;
@@ -65,6 +65,6 @@ typedef struct _arguments {
 	unsigned int position;
 } arguments;
 
-int yield(arguments * args, float * dest);
+yield_status yield(arguments * args, float * dest);
 
 #endif /* GENERATOR_H */
