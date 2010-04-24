@@ -87,6 +87,6 @@ yield_status yield(arguments * args, float * dest) {
 			return YIELD_NONE;
 	}
 
-	args->position += 1;
+	args->position++;
 	return YIELD_MORE;
 }
