@@ -7,6 +7,12 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_CONFIG_SRCDIR([src/main.c])
 # AC_CONFIG_HEADERS([config.h])
 
+AC_ARG_ENABLE([pedantic],
+  AS_HELP_STRING([--enable-pedantic], [be pedantic about warnings]), [
+    CFLAGS="${CFLAGS} -Wall -Wextra -Wwrite-strings -std=c89 -pedantic"
+], [])
+
+
 # Checks for programs.
 AC_PROG_CC
 
