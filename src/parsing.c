@@ -61,19 +61,24 @@ typedef struct _token_details {
 } token_details;
 
 void set_args_left(arguments * args, setter_value value) {
-	/* TODO*/
+	args->flags |= FLAG_LEFT_SET;
+	args->left = value.float_data;
 }
 
 void set_args_step(arguments * args, setter_value value) {
-	/* TODO*/
+	args->flags |= FLAG_STEP_SET;
+	args->step_num = value.float_data;
+	args->step_denom = 1;
 }
 
 void set_args_right(arguments * args, setter_value value) {
-	/* TODO*/
+	args->flags |= FLAG_RIGHT_SET;
+	args->right = value.float_data;
 }
 
 void set_args_count(arguments * args, setter_value value) {
-	/* TODO*/
+	args->flags |= FLAG_COUNT_SET;
+	args->count = value.uint_data;
 }
 
 int parse_args(int arg_count, char **args, arguments *dest) {
