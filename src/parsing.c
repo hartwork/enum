@@ -66,6 +66,11 @@ typedef struct _token_details {
 	setter_function_pointer setter;
 } token_details;
 
+typedef struct _use_case {
+	token_details const *details;
+	unsigned int length;
+} use_case;
+
 void set_args_left(arguments * args, setter_value value) {
 	args->flags |= FLAG_LEFT_SET;
 	args->left = value.float_data;
@@ -152,25 +157,43 @@ int parse_args(int arg_count, char **args, arguments *dest) {
 	token_details const use_case_16[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_DOTDOT, NULL}};
 	token_details const use_case_17[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_right}};
 
-	token_details const * table[18];
-	table[0] = use_case_0;
-	table[1] = use_case_1;
-	table[2] = use_case_2;
-	table[3] = use_case_3;
-	table[4] = use_case_4;
-	table[5] = use_case_5;
-	table[6] = use_case_6;
-	table[7] = use_case_7;
-	table[8] = use_case_8;
-	table[9] = use_case_9;
-	table[10] = use_case_10;
-	table[11] = use_case_11;
-	table[12] = use_case_12;
-	table[13] = use_case_13;
-	table[14] = use_case_14;
-	table[15] = use_case_15;
-	table[16] = use_case_16;
-	table[17] = use_case_17;
+	use_case table[18];
+	table[0].details = use_case_0;
+	table[0].length = sizeof(use_case_0) / sizeof(token_details);
+	table[1].details = use_case_1;
+	table[1].length = sizeof(use_case_1) / sizeof(token_details);
+	table[2].details = use_case_2;
+	table[2].length = sizeof(use_case_2) / sizeof(token_details);
+	table[3].details = use_case_3;
+	table[3].length = sizeof(use_case_3) / sizeof(token_details);
+	table[4].details = use_case_4;
+	table[4].length = sizeof(use_case_4) / sizeof(token_details);
+	table[5].details = use_case_5;
+	table[5].length = sizeof(use_case_5) / sizeof(token_details);
+	table[6].details = use_case_6;
+	table[6].length = sizeof(use_case_6) / sizeof(token_details);
+	table[7].details = use_case_7;
+	table[7].length = sizeof(use_case_7) / sizeof(token_details);
+	table[8].details = use_case_8;
+	table[8].length = sizeof(use_case_8) / sizeof(token_details);
+	table[9].details = use_case_9;
+	table[9].length = sizeof(use_case_9) / sizeof(token_details);
+	table[10].details = use_case_10;
+	table[10].length = sizeof(use_case_10) / sizeof(token_details);
+	table[11].details = use_case_11;
+	table[11].length = sizeof(use_case_11) / sizeof(token_details);
+	table[12].details = use_case_12;
+	table[12].length = sizeof(use_case_12) / sizeof(token_details);
+	table[13].details = use_case_13;
+	table[13].length = sizeof(use_case_13) / sizeof(token_details);
+	table[14].details = use_case_14;
+	table[14].length = sizeof(use_case_14) / sizeof(token_details);
+	table[15].details = use_case_15;
+	table[15].length = sizeof(use_case_15) / sizeof(token_details);
+	table[16].details = use_case_16;
+	table[16].length = sizeof(use_case_16) / sizeof(token_details);
+	table[17].details = use_case_17;
+	table[17].length = sizeof(use_case_17) / sizeof(token_details);
 
 	return 0;
 }
