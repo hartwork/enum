@@ -41,11 +41,17 @@
 #include "generator.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 typedef enum _token_type {
   TOKEN_FLOAT,
   TOKEN_MULTIPLIER,
-  TOKEN_DOTDOT
+  TOKEN_DOTDOT,
+
+  TOKEN_ERROR_EMPTY,
+  TOKEN_ERROR_BAD_COUNT,
+  TOKEN_ERROR_BAD_FLOAT,
+  TOKEN_ERROR_PARSE
 } token_type;
 
 typedef union _setter_value {
@@ -79,6 +85,51 @@ void set_args_right(arguments * args, setter_value value) {
 void set_args_count(arguments * args, setter_value value) {
 	args->flags |= FLAG_COUNT_SET;
 	args->count = value.uint_data;
+}
+
+int ends_with_x(const char *str) {
+	const int len = strlen(str);
+	if (str[len - 1] == 'x')
+		return 1;
+	return 0;
+}
+
+int is_nan_or_inf(float f) {
+	const float NAN = strtod("NAN", NULL);
+	const float INF = strtod("INF", NULL);
+	return ((f == NAN) || (f == INF)) ? 1 : 0;
+}
+
+token_type identify_token(char *arg, setter_value *value) {
+	char *end;
+	if (*arg == '\0')
+		return TOKEN_ERROR_EMPTY;
+
+	if (strcmp(arg, "..") == 0) {
+		return TOKEN_DOTDOT;
+	}
+
+	if (ends_with_x(arg)) {
+		const long int i = strtol(arg, &end, 10);
+		if ((*end == 'x') && (end - arg == (int)strlen(arg) - 1)) {
+			if (i < 1) {
+				return TOKEN_ERROR_BAD_COUNT;
+			}
+			value->uint_data = i;
+			return TOKEN_MULTIPLIER;
+		}
+	} else {
+		const float f = strtod(arg, &end);
+		if (end - arg == (int)strlen(arg)) {
+			if (is_nan_or_inf(f)) {
+				return TOKEN_ERROR_BAD_FLOAT;
+			}
+			value->float_data =f;
+			return TOKEN_FLOAT;
+		}
+	}
+
+	return TOKEN_ERROR_PARSE;
 }
 
 int parse_args(int arg_count, char **args, arguments *dest) {
