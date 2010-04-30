@@ -82,6 +82,7 @@ void set_args_count(arguments * args, setter_value value) {
 }
 
 int parse_args(int arg_count, char **args, arguments *dest) {
+	token_details const use_case_0[] = {{TOKEN_FLOAT, set_args_right}};
 	token_details const use_case_1[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_args_count}, {TOKEN_FLOAT, set_args_step}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_right}};
 	token_details const use_case_2[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_args_count}, {TOKEN_FLOAT, set_args_step}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_right}};
 	token_details const use_case_3[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_args_count}, {TOKEN_FLOAT, set_args_step}, {TOKEN_DOTDOT, NULL}};
@@ -99,8 +100,26 @@ int parse_args(int arg_count, char **args, arguments *dest) {
 	token_details const use_case_15[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_FLOAT, set_args_right}};
 	token_details const use_case_16[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_DOTDOT, NULL}};
 	token_details const use_case_17[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_right}};
-	token_details const use_case_18[] = {{TOKEN_FLOAT, set_args_right}};
-	token_details const * table[] = {use_case_1, use_case_2, use_case_3, use_case_4, use_case_5, use_case_6, use_case_7, use_case_8, use_case_9, use_case_10, use_case_11, use_case_12, use_case_13, use_case_14, use_case_15, use_case_16, use_case_17, use_case_18};
+
+	token_details const * table[18];
+	table[0] = use_case_0;
+	table[1] = use_case_1;
+	table[2] = use_case_2;
+	table[3] = use_case_3;
+	table[4] = use_case_4;
+	table[5] = use_case_5;
+	table[6] = use_case_6;
+	table[7] = use_case_7;
+	table[8] = use_case_8;
+	table[9] = use_case_9;
+	table[10] = use_case_10;
+	table[11] = use_case_11;
+	table[12] = use_case_12;
+	table[13] = use_case_13;
+	table[14] = use_case_14;
+	table[15] = use_case_15;
+	table[16] = use_case_16;
+	table[17] = use_case_17;
 
 	return 0;
 }
