@@ -43,7 +43,7 @@
 #define CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
 
 yield_status yield(arguments * args, float * dest) {
-	if (CHECK_FLAG(args->flags, FLAG_READY)) {
+	if (! CHECK_FLAG(args->flags, FLAG_READY)) {
 		/* TODO make ready */
 	}
 
