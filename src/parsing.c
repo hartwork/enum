@@ -105,7 +105,7 @@ int is_nan_or_inf(float f) {
 	return ((f == NAN) || (f == INF)) ? 1 : 0;
 }
 
-token_type identify_token(char *arg, setter_value *value) {
+token_type identify_token(const char *arg, setter_value *value) {
 	char *end;
 	if (*arg == '\0')
 		return TOKEN_ERROR_EMPTY;
