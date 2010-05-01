@@ -42,6 +42,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 #define IS_TOKEN_ERROR(type)  ((type) >= TOKEN_ERROR)
 
@@ -145,6 +146,7 @@ int parse_args(unsigned int args_len, char **args, arguments *dest) {
 	unsigned int i;
 	unsigned int j;
 	unsigned int k;
+	unsigned int l;
 	use_case const *valid_case = NULL;
 
 	token_details const use_case_0[] = {{TOKEN_FLOAT, set_args_right}};
@@ -239,8 +241,15 @@ int parse_args(unsigned int args_len, char **args, arguments *dest) {
 	}
 
 	if (valid_case) {
-		/* TODO */
+		setter_value value;
+		for (l = 0; l < valid_case->length; l++) {
+			token_type type = identify_token(args[l], &value);
+			assert(type == valid_case->details[l].type);
+
+			valid_case->details[l].setter(dest, value);
+		}
 	}
+	/* TODO invalid case */
 
 	return 0;
 }
