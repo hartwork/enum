@@ -42,22 +42,8 @@
 
 #define CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
 
-int calculator(arguments * args) {
-	return 0;
-}
-
-yield_status yield(arguments * args, float * dest) {
-	if (! CHECK_FLAG(args->flags, FLAG_READY)) {
-		if (calculator(args) != 0)
-			return YIELD_NONE;
-	}
-
-	if (CHECK_FLAG(args->flags, FLAG_COUNT_SET)
-			&& (args->count == 1)) {
-		/* TODO return first and only value */
-		return YIELD_LAST;
-	}
-
+void calculator(arguments * args) {
+	/* we need a step, no matter what */
 	if (! CHECK_FLAG(args->flags, FLAG_STEP_SET)) {
 		if (CHECK_FLAG(args->flags, FLAG_LEFT_SET)
 				&& CHECK_FLAG(args->flags, FLAG_RIGHT_SET)
@@ -73,8 +59,52 @@ yield_status yield(arguments * args, float * dest) {
 	}
 	assert(CHECK_FLAG(args->flags, FLAG_STEP_SET));
 
-	/* nothing can be done without a start */
+	/* and we need left */
+	if (! CHECK_FLAG(args->flags, FLAG_LEFT_SET)) {
+		if (CHECK_FLAG(args->flags, FLAG_RIGHT_SET) &&
+				CHECK_FLAG(args->flags, FLAG_COUNT_SET)) {
+			/* count and right set */
+			args->left = args->right - (args->count * args->step_num / args->step_denom);
+		} else if (CHECK_FLAG(args->flags, FLAG_COUNT_SET)) {
+			/* count but no right */
+			args->left = 1.0f;
+		} else {
+			/* right but no count -> use right as left */
+			/* TODO this is reverted mode! */
+			args->left = args->right;
+			args->flags ^= FLAG_RIGHT_SET;
+		}
+		args->flags |= FLAG_LEFT_SET;
+	}
 	assert(CHECK_FLAG(args->flags, FLAG_LEFT_SET));
+
+	/* and a count */
+	if (! CHECK_FLAG(args->flags, FLAG_COUNT_SET)) {
+		if (CHECK_FLAG(args->flags, FLAG_RIGHT_SET)) {
+			/* right is set */
+			args->count = (args->right - args->left) * args->step_denom / args->step_num;
+			args->flags |= FLAG_COUNT_SET;
+		}
+		/* no right -> INFINITY */
+		/* TODO args->count = strtof(INF); ? */
+		/* TODO possibly negative INFINITY in reverted mode */
+	}
+	assert(CHECK_FLAG(args->flags, FLAG_COUNT_SET));
+
+	/* Only possibly unset value is right at this point */
+	args->flags |= FLAG_READY;
+}
+
+yield_status yield(arguments * args, float * dest) {
+	if (! CHECK_FLAG(args->flags, FLAG_READY)) {
+		calculator(args);
+	}
+
+	if (CHECK_FLAG(args->flags, FLAG_COUNT_SET)
+			&& (args->count == 1)) {
+		/* TODO return first and only value */
+		return YIELD_LAST;
+	}
 
 	*dest = args->left + (args->step_num / args->step_denom) * args->position;
 	/* TODO check for float overflow, float imprecision */
