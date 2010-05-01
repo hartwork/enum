@@ -228,11 +228,15 @@ int parse_args(unsigned int args_len, char **args, arguments *dest) {
 			}
 		} else {
 			/* TODO error handling */
+			return 1;
 		}
 	}
 
 	for (k = 0; k < (sizeof(table) / sizeof(use_case)); k++) {
 		if (table[k].length == 0)
+			continue;
+
+		if (table[k].length != args_len)
 			continue;
 
 		/* valid case left */
