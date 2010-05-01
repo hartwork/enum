@@ -83,15 +83,23 @@ void calculator(arguments * args) {
 		if (CHECK_FLAG(args->flags, FLAG_RIGHT_SET)) {
 			/* right is set */
 			args->count = (args->right - args->left) * args->step_denom / args->step_num;
-			args->flags |= FLAG_COUNT_SET;
+		} else {
+			/* no right -> INFINITY */
+			/* TODO INFINITY */
+			args->count = strtof("INF");
 		}
-		/* no right -> INFINITY */
-		/* TODO args->count = strtof(INF); ? */
-		/* TODO possibly negative INFINITY in reverted mode */
+		args->flags |= FLAG_COUNT_SET;
 	}
 	assert(CHECK_FLAG(args->flags, FLAG_COUNT_SET));
 
-	/* Only possibly unset value is right at this point */
+	if (! CHECK_FLAG(args->flags, FLAG_RIGHT_SET)) {
+		/* TODO INFINITY */
+		args->count = strtof("INF");
+		/* TODO possibly negative INFINITY in reverted mode */
+		args->flags |= FLAG_RIGHT_SET;
+	}
+	assert(CHECK_FLAG(args->flags, FLAG_RIGHT_SET));
+
 	args->flags |= FLAG_READY;
 }
 
