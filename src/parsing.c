@@ -43,11 +43,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define IS_TOKEN_ERROR(type)  ((type) >= TOKEN_ERROR)
+
 typedef enum _token_type {
   TOKEN_FLOAT,
   TOKEN_MULTIPLIER,
   TOKEN_DOTDOT,
 
+  /* Only errors from here */
+  TOKEN_ERROR,
   TOKEN_ERROR_EMPTY,
   TOKEN_ERROR_BAD_COUNT,
   TOKEN_ERROR_BAD_FLOAT,
@@ -137,7 +141,12 @@ token_type identify_token(const char *arg, setter_value *value) {
 	return TOKEN_ERROR_PARSE;
 }
 
-int parse_args(int arg_count, char **args, arguments *dest) {
+int parse_args(unsigned int args_len, char **args, arguments *dest) {
+	unsigned int i;
+	unsigned int j;
+	unsigned int k;
+	use_case const *valid_case = NULL;
+
 	token_details const use_case_0[] = {{TOKEN_FLOAT, set_args_right}};
 	token_details const use_case_1[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_args_count}, {TOKEN_FLOAT, set_args_step}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_right}};
 	token_details const use_case_2[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_args_count}, {TOKEN_FLOAT, set_args_step}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_right}};
@@ -194,6 +203,44 @@ int parse_args(int arg_count, char **args, arguments *dest) {
 	table[16].length = sizeof(use_case_16) / sizeof(token_details);
 	table[17].details = use_case_17;
 	table[17].length = sizeof(use_case_17) / sizeof(token_details);
+
+	for (i = 0; i < args_len; i++) {
+		setter_value value;
+		token_type type = identify_token(args[i], &value);
+
+		if (! IS_TOKEN_ERROR(type)) {
+			for (j = 0; j < (sizeof(table) / sizeof(use_case)); j++) {
+				if (table[j].length == 0) {
+					continue;
+				}
+
+				if (table[j].length <= i) {
+					table[j].length = 0;
+					continue;
+				}
+
+				if (table[j].details[i].type != type) {
+					table[j].length = 0;
+					continue;
+				}
+			}
+		} else {
+			/* TODO error handling */
+		}
+	}
+
+	for (k = 0; k < (sizeof(table) / sizeof(use_case)); k++) {
+		if (table[k].length == 0)
+			continue;
+
+		/* valid case left */
+		valid_case = table + k;
+		break;
+	}
+
+	if (valid_case) {
+		/* TODO */
+	}
 
 	return 0;
 }
