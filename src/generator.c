@@ -100,8 +100,7 @@ yield_status yield(arguments * args, float * dest) {
 		calculator(args);
 	}
 
-	if (CHECK_FLAG(args->flags, FLAG_COUNT_SET)
-			&& (args->count == 1)) {
+	if (args->count == 1) {
 		/* TODO return first and only value */
 		return YIELD_LAST;
 	}
@@ -109,8 +108,7 @@ yield_status yield(arguments * args, float * dest) {
 	*dest = args->left + (args->step_num / args->step_denom) * args->position;
 	/* TODO check for float overflow, float imprecision */
 
-	if (CHECK_FLAG(args->flags, FLAG_COUNT_SET)
-			&& (args->position >= (args->count - 1))) {
+	if (args->position >= (args->count - 1)) {
 		return YIELD_LAST;
 	}
 
