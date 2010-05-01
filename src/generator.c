@@ -42,9 +42,14 @@
 
 #define CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
 
+int calculator(arguments * args) {
+	return 0;
+}
+
 yield_status yield(arguments * args, float * dest) {
 	if (! CHECK_FLAG(args->flags, FLAG_READY)) {
-		/* TODO make ready */
+		if (calculator(args) != 0)
+			return YIELD_NONE;
 	}
 
 	if (CHECK_FLAG(args->flags, FLAG_COUNT_SET)
