@@ -250,7 +250,8 @@ int parse_args(unsigned int args_len, char **args, arguments *dest) {
 			token_type type = identify_token(args[l], &value);
 			assert(type == valid_case->details[l].type);
 
-			valid_case->details[l].setter(dest, value);
+			if (type != TOKEN_DOTDOT)
+				valid_case->details[l].setter(dest, value);
 		}
 	}
 	/* TODO invalid case */
