@@ -69,7 +69,7 @@ void calculator(arguments * args) {
 			/* right but no count -> use right as left */
 			/* TODO this is reverted mode! */
 			args->left = args->right;
-			args->flags ^= FLAG_RIGHT_SET;
+			args->flags &= ~FLAG_RIGHT_SET;
 		} else {
 			/* no right, count may be there */
 			args->left = 1.0f;
