@@ -82,7 +82,7 @@ void calculator(arguments * args) {
 	if (! CHECK_FLAG(args->flags, FLAG_COUNT_SET)) {
 		if (CHECK_FLAG(args->flags, FLAG_RIGHT_SET)) {
 			/* right is set */
-			args->count = (args->right - args->left + 1) * args->step_denom / args->step_num;
+			args->count = (args->right - args->left) * args->step_denom / args->step_num + 1;
 		} else {
 			/* no right -> INFINITY */
 			/* TODO INFINITY */
