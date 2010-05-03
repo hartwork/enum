@@ -64,7 +64,7 @@ void calculator(arguments * args) {
 		if (CHECK_FLAG(args->flags, FLAG_RIGHT_SET) &&
 				CHECK_FLAG(args->flags, FLAG_COUNT_SET)) {
 			/* count and right set */
-			args->left = args->right - (args->count * args->step_num / args->step_denom);
+			args->left = args->right - ((args->count - 1) * args->step_num / args->step_denom);
 		} else if (CHECK_FLAG(args->flags, FLAG_RIGHT_SET)) {
 			/* right but no count -> use right as left */
 			/* TODO this is reverted mode! */
