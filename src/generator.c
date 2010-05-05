@@ -174,7 +174,7 @@ void complete_args(arguments * args) {
 		} else if (! HAS_STEP(args)) {
 			SET_STEP(args, args->right - args->left, args->count - 1);
 		} else {
-			assert(! HAS_COUNT(args));
+			assert(! HAS_RIGHT(args));
 			SET_RIGHT(args, args->left + (args->step_num / args->step_denom)
 				* (args->count - 1));
 		}
