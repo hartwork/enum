@@ -136,6 +136,8 @@ void calculator(arguments * args) {
 
 
 void complete_args(arguments * args) {
+	assert(KNOWN(args) >= 0);
+
 	if (KNOWN(args) == 1) {
 		if (! HAS_LEFT(args)) {
 			SET_LEFT(args, 1.0f);
@@ -150,8 +152,8 @@ void complete_args(arguments * args) {
 		if (HAS_LEFT(args) && HAS_STEP(args)) {
 			/* running to infinity */
 			args->flags |= FLAG_READY;
-			assert(! HAS_COUNT(args));
-			assert(! HAS_RIGHT(args));
+			assert(! HAS_COUNT(args) && ! HAS_RIGHT(args));
+			assert(KNOWN(args) == 2);
 			return;
 		}
 
