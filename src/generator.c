@@ -88,7 +88,7 @@ void calculator(arguments * args) {
 		} else {
 			/* no right -> INFINITY */
 			/* TODO INFINITY */
-			args->count = strtof("INF", NULL);
+			args->count = strtod("INF", NULL);
 		}
 		args->flags |= FLAG_COUNT_SET;
 	}
@@ -96,7 +96,7 @@ void calculator(arguments * args) {
 
 	if (! CHECK_FLAG(args->flags, FLAG_RIGHT_SET)) {
 		/* TODO INFINITY */
-		args->count = strtof("INF", NULL);
+		args->count = strtod("INF", NULL);
 		/* TODO possibly negative INFINITY in reverted mode */
 		args->flags |= FLAG_RIGHT_SET;
 	}
