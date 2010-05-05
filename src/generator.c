@@ -39,6 +39,7 @@
 
 #include "generator.h"
 #include <assert.h>
+#include <stdlib.h>
 
 #define CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
 
