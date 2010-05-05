@@ -69,6 +69,7 @@ void calculator(arguments * args) {
 		} else if (CHECK_FLAG(args->flags, FLAG_RIGHT_SET)) {
 			/* right but no count -> use right as left */
 			/* TODO this is reverted mode! */
+			/* TODO this doesn't work for shortcut 'enum 10' */
 			args->left = args->right;
 			args->flags &= ~FLAG_RIGHT_SET;
 		} else {
