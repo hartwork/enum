@@ -137,10 +137,10 @@ void calculator(arguments * args) {
 
 void complete_args(arguments * args) {
 	if (KNOWN(args) == 1) {
-		if (HAS_LEFT(args)) {
-			SET_STEP(args, 1.0f, 1.0f);
-		} else {
+		if (! HAS_LEFT(args)) {
 			SET_LEFT(args, 1.0f);
+		} else {
+			SET_STEP(args, 1.0f, 1.0f);
 		}
 		assert(KNOWN(args) == 2);
 	}
@@ -155,10 +155,10 @@ void complete_args(arguments * args) {
 			return;
 		}
 
-		if (HAS_LEFT(args)) {
-			SET_STEP(args, 1.0f, 1.0f);
-		} else {
+		if (! HAS_LEFT(args)) {
 			SET_LEFT(args, 1.0f);
+		} else {
+			SET_STEP(args, 1.0f, 1.0f);
 		}
 		assert(KNOWN(args) == 3);
 	}
