@@ -149,6 +149,7 @@ void complete_args(arguments * args) {
 	if (KNOWN(args) == 2) {
 		if (HAS_LEFT(args) && HAS_STEP(args)) {
 			/* running to infinity */
+			args->flags |= FLAG_READY;
 			assert(! HAS_COUNT(args));
 			assert(! HAS_RIGHT(args));
 			return;
@@ -179,13 +180,12 @@ void complete_args(arguments * args) {
 		}
 	}
 
+	args->flags |= FLAG_READY;
 	assert(KNOWN(args) == 4);
 }
 
 yield_status yield(arguments * args, float * dest) {
-	if (! CHECK_FLAG(args->flags, FLAG_READY)) {
-		complete_args(args);
-	}
+	assert(CHECK_FLAG(args->flags, FLAG_READY));
 
 	if (args->count == 1) {
 		/* TODO return first and only value */

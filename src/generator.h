@@ -65,6 +65,7 @@ typedef struct _arguments {
 	unsigned int position;
 } arguments;
 
+void complete_args(arguments * args);
 yield_status yield(arguments * args, float * dest);
 
 #endif /* GENERATOR_H */
