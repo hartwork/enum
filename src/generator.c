@@ -113,28 +113,6 @@ void calculator(arguments * args) {
 #define HAS_COUNT(args)  CHECK_FLAG(args->flags, FLAG_COUNT_SET)
 
 
-#define KNOWN(args)  (HAS_LEFT(args) + HAS_RIGHT(args) \
-	+ HAS_STEP(args) + HAS_COUNT(args))
-
-
-#define SET_LEFT(args, _left)  \
-	args->left = _left; \
-	args->flags |= FLAG_LEFT_SET
-
-#define SET_RIGHT(args, _right)  \
-	args->right = _right; \
-	args->flags |= FLAG_RIGHT_SET
-
-#define SET_STEP(args, num, denom)  \
-	args->step_num = num; \
-	args->step_denom = denom; \
-	args->flags |= FLAG_STEP_SET
-
-#define SET_COUNT(args, _count)  \
-	args->count = _count; \
-	args->flags |= FLAG_COUNT_SET
-
-
 void complete_args(arguments * args) {
 	assert(KNOWN(args) >= 0);
 
