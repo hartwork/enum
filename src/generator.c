@@ -113,36 +113,14 @@ void calculator(arguments * args) {
 #define HAS_COUNT(args)  CHECK_FLAG(args->flags, FLAG_COUNT_SET)
 
 
-#define KNOWN(args)  (HAS_LEFT(args) + HAS_RIGHT(args) \
-	+ HAS_STEP(args) + HAS_COUNT(args))
-
-
-#define SET_LEFT(args, _left)  \
-	args->left = _left; \
-	args->flags |= FLAG_LEFT_SET
-
-#define SET_RIGHT(args, _right)  \
-	args->right = _right; \
-	args->flags |= FLAG_RIGHT_SET
-
-#define SET_STEP(args, num, denom)  \
-	args->step_num = num; \
-	args->step_denom = denom; \
-	args->flags |= FLAG_STEP_SET
-
-#define SET_COUNT(args, _count)  \
-	args->count = _count; \
-	args->flags |= FLAG_COUNT_SET
-
-
 void complete_args(arguments * args) {
 	assert(KNOWN(args) >= 0);
 
 	if (KNOWN(args) == 1) {
 		if (! HAS_LEFT(args)) {
-			SET_LEFT(args, 1.0f);
+			SET_LEFT(*args, 1.0f);
 		} else {
-			SET_STEP(args, 1.0f, 1.0f);
+			SET_STEP(*args, 1.0f, 1.0f);
 		}
 		assert(KNOWN(args) == 2);
 	}
@@ -158,9 +136,9 @@ void complete_args(arguments * args) {
 		}
 
 		if (! HAS_LEFT(args)) {
-			SET_LEFT(args, 1.0f);
+			SET_LEFT(*args, 1.0f);
 		} else {
-			SET_STEP(args, 1.0f, 1.0f);
+			SET_STEP(*args, 1.0f, 1.0f);
 		}
 		assert(KNOWN(args) == 3);
 	}
@@ -168,16 +146,16 @@ void complete_args(arguments * args) {
 	assert(KNOWN(args) >= 3);
 	if (KNOWN(args) == 3) {
 		if (! HAS_LEFT(args)) {
-			SET_LEFT(args, args->right - (args->count - 1)
+			SET_LEFT(*args, args->right - (args->count - 1)
 				* (args->step_num / args->step_denom));
 		} else if (! HAS_COUNT(args)) {
-			SET_COUNT(args, fabs(args->right - args->left)
+			SET_COUNT(*args, fabs(args->right - args->left)
 				/ (args->step_num / args->step_denom) + 1);
 		} else if (! HAS_STEP(args)) {
-			SET_STEP(args, args->right - args->left, args->count - 1);
+			SET_STEP(*args, args->right - args->left, args->count - 1);
 		} else {
 			assert(! HAS_RIGHT(args));
-			SET_RIGHT(args, args->left + (args->step_num / args->step_denom)
+			SET_RIGHT(*args, args->left + (args->step_num / args->step_denom)
 				* (args->count - 1));
 		}
 	}
@@ -188,25 +166,41 @@ void complete_args(arguments * args) {
 
 yield_status yield(arguments * args, float * dest) {
 	assert(CHECK_FLAG(args->flags, FLAG_READY));
+	assert(HAS_LEFT(args) && HAS_STEP(args));
 
-	if (args->count == 1) {
-		/* TODO return first and only value */
-		return YIELD_LAST;
-	}
-
-	*dest = args->left + (args->step_num / args->step_denom) * args->position;
-	/* TODO check for float overflow, float imprecision */
-
-	if (args->position >= (args->count - 1)) {
-		return YIELD_LAST;
-	}
-
-	if (args->right == *dest)
-		return YIELD_LAST;
-
-	if (args->right < *dest)
+	/* Gone too far already? */
+	if (HAS_COUNT(args) && (args->position >= args->count)) {
+		*dest = 0.123456f;  /* Arbitrary magic value */
 		return YIELD_NONE;
+	}
 
-	args->position++;
-	return YIELD_MORE;
+	/* One value only? */
+	if (HAS_COUNT(args) && (args->count == 1)) {
+		*dest = args->left;
+		return YIELD_LAST;
+	} else {
+		*dest = args->left + (args->step_num / args->step_denom) * args->position;
+		/* TODO check for float overflow, float imprecision */
+	}
+
+	/* Gone too far now? */
+	if (HAS_RIGHT(args) && (*dest > args->right)) {
+		*dest = 0.123456f;  /* Arbitrary magic value */
+		return YIELD_NONE;
+	}
+
+	/* Will there be more? */
+	if ((HAS_COUNT(args) && (args->position == args->count - 1))
+			|| (HAS_RIGHT(args) && (*dest == args->right))) {
+		args->position++;
+		return YIELD_LAST;
+	} else {
+		args->position++;
+		return YIELD_MORE;
+	}
+}
+
+void initialize_args(arguments * dest) {
+	dest->flags = 0;
+	dest->position = 0;
 }
