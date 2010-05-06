@@ -166,27 +166,38 @@ void complete_args(arguments * args) {
 
 yield_status yield(arguments * args, float * dest) {
 	assert(CHECK_FLAG(args->flags, FLAG_READY));
+	assert(HAS_LEFT(args) && HAS_STEP(args));
 
-	if (args->count == 1) {
-		/* TODO return first and only value */
-		return YIELD_LAST;
-	}
-
-	*dest = args->left + (args->step_num / args->step_denom) * args->position;
-	/* TODO check for float overflow, float imprecision */
-
-	if (args->position >= (args->count - 1)) {
-		return YIELD_LAST;
-	}
-
-	if (args->right == *dest)
-		return YIELD_LAST;
-
-	if (args->right < *dest)
+	/* Gone too far already? */
+	if (HAS_COUNT(args) && (args->position >= args->count)) {
+		*dest = 0.123456f;  /* Arbitrary magic value */
 		return YIELD_NONE;
+	}
 
-	args->position++;
-	return YIELD_MORE;
+	/* One value only? */
+	if (HAS_COUNT(args) && (args->count == 1)) {
+		*dest = args->left;
+		return YIELD_LAST;
+	} else {
+		*dest = args->left + (args->step_num / args->step_denom) * args->position;
+		/* TODO check for float overflow, float imprecision */
+	}
+
+	/* Gone too far now? */
+	if (HAS_RIGHT(args) && (*dest > args->right)) {
+		*dest = 0.123456f;  /* Arbitrary magic value */
+		return YIELD_NONE;
+	}
+
+	/* Will there be more? */
+	if ((HAS_COUNT(args) && (args->position == args->count - 1))
+			|| (HAS_RIGHT(args) && (*dest == args->right))) {
+		args->position++;
+		return YIELD_LAST;
+	} else {
+		args->position++;
+		return YIELD_MORE;
+	}
 }
 
 void initialize_args(arguments * dest) {
