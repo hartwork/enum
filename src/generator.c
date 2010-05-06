@@ -188,3 +188,8 @@ yield_status yield(arguments * args, float * dest) {
 	args->position++;
 	return YIELD_MORE;
 }
+
+void initialize_args(arguments * dest) {
+	dest->flags = 0;
+	dest->position = 0;
+}
