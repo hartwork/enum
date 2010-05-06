@@ -118,9 +118,9 @@ void complete_args(arguments * args) {
 
 	if (KNOWN(args) == 1) {
 		if (! HAS_LEFT(args)) {
-			SET_LEFT(args, 1.0f);
+			SET_LEFT(*args, 1.0f);
 		} else {
-			SET_STEP(args, 1.0f, 1.0f);
+			SET_STEP(*args, 1.0f, 1.0f);
 		}
 		assert(KNOWN(args) == 2);
 	}
@@ -136,9 +136,9 @@ void complete_args(arguments * args) {
 		}
 
 		if (! HAS_LEFT(args)) {
-			SET_LEFT(args, 1.0f);
+			SET_LEFT(*args, 1.0f);
 		} else {
-			SET_STEP(args, 1.0f, 1.0f);
+			SET_STEP(*args, 1.0f, 1.0f);
 		}
 		assert(KNOWN(args) == 3);
 	}
@@ -146,16 +146,16 @@ void complete_args(arguments * args) {
 	assert(KNOWN(args) >= 3);
 	if (KNOWN(args) == 3) {
 		if (! HAS_LEFT(args)) {
-			SET_LEFT(args, args->right - (args->count - 1)
+			SET_LEFT(*args, args->right - (args->count - 1)
 				* (args->step_num / args->step_denom));
 		} else if (! HAS_COUNT(args)) {
-			SET_COUNT(args, fabs(args->right - args->left)
+			SET_COUNT(*args, fabs(args->right - args->left)
 				/ (args->step_num / args->step_denom) + 1);
 		} else if (! HAS_STEP(args)) {
-			SET_STEP(args, args->right - args->left, args->count - 1);
+			SET_STEP(*args, args->right - args->left, args->count - 1);
 		} else {
 			assert(! HAS_RIGHT(args));
-			SET_RIGHT(args, args->left + (args->step_num / args->step_denom)
+			SET_RIGHT(*args, args->left + (args->step_num / args->step_denom)
 				* (args->count - 1));
 		}
 	}
