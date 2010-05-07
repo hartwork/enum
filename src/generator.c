@@ -43,64 +43,60 @@
 
 #define CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
 
+#define HAS_LEFT(args)  CHECK_FLAG(args->flags, FLAG_LEFT_SET)
+#define HAS_RIGHT(args)  CHECK_FLAG(args->flags, FLAG_RIGHT_SET)
+#define HAS_STEP(args)  CHECK_FLAG(args->flags, FLAG_STEP_SET)
+#define HAS_COUNT(args)  CHECK_FLAG(args->flags, FLAG_COUNT_SET)
+
 void calculator(arguments * args) {
 	/* we need a step, no matter what */
-	if (! CHECK_FLAG(args->flags, FLAG_STEP_SET)) {
-		if (CHECK_FLAG(args->flags, FLAG_LEFT_SET)
-				&& CHECK_FLAG(args->flags, FLAG_RIGHT_SET)
-				&& CHECK_FLAG(args->flags, FLAG_COUNT_SET)) {
+	if (! HAS_STEP(args)) {
+		if (HAS_LEFT(args) && HAS_RIGHT(args) && HAS_COUNT(args)) {
 			assert(args->count != 0);
-			args->step_num = (args->right - args->left);
-			args->step_denom = (args->count - 1);
+			SET_STEP(*args, (args->right - args->left), (args->count - 1));
 		} else {
-			args->step_num = 1.0f;
-			args->step_denom = 1.0f;
+			SET_STEP(*args, 1.0f, 1.0f);
 		}
-		args->flags |= FLAG_STEP_SET;
 	}
-	assert(CHECK_FLAG(args->flags, FLAG_STEP_SET));
+	assert(HAS_STEP(args));
 
 	/* and we need left */
-	if (! CHECK_FLAG(args->flags, FLAG_LEFT_SET)) {
-		if (CHECK_FLAG(args->flags, FLAG_RIGHT_SET) &&
-				CHECK_FLAG(args->flags, FLAG_COUNT_SET)) {
+	if (! HAS_LEFT(args)) {
+		if (HAS_RIGHT(args) && HAS_COUNT(args)) {
 			/* count and right set */
-			args->left = args->right - ((args->count - 1) * args->step_num / args->step_denom);
-		} else if (CHECK_FLAG(args->flags, FLAG_RIGHT_SET)) {
+			SET_LEFT(*args, (args->right - ((args->count - 1) * args->step_num / args->step_denom)));
+		} else if (HAS_RIGHT(args)) {
 			/* right but no count -> use right as left */
 			/* TODO this is reverted mode! */
 			/* TODO this doesn't work for shortcut 'enum 10' */
-			args->left = args->right;
+			SET_LEFT(*args, args->right);
 			args->flags &= ~FLAG_RIGHT_SET;
 		} else {
 			/* no right, count may be there */
-			args->left = 1.0f;
+			SET_LEFT(*args, 1.0f);
 		}
-		args->flags |= FLAG_LEFT_SET;
 	}
-	assert(CHECK_FLAG(args->flags, FLAG_LEFT_SET));
+	assert(HAS_LEFT(args));
 
 	/* and a count */
-	if (! CHECK_FLAG(args->flags, FLAG_COUNT_SET)) {
-		if (CHECK_FLAG(args->flags, FLAG_RIGHT_SET)) {
+	if (! HAS_COUNT(args)) {
+		if (HAS_RIGHT(args)) {
 			/* right is set */
-			args->count = (args->right - args->left) * args->step_denom / args->step_num + 1;
+			SET_COUNT(*args, (args->right - args->left) * args->step_denom / args->step_num + 1);
 		} else {
 			/* no right -> INFINITY */
 			/* TODO INFINITY */
-			args->count = strtof("INF", NULL);
+			SET_COUNT(*args, strtod("INF", NULL));
 		}
-		args->flags |= FLAG_COUNT_SET;
 	}
-	assert(CHECK_FLAG(args->flags, FLAG_COUNT_SET));
+	assert(HAS_COUNT(args));
 
-	if (! CHECK_FLAG(args->flags, FLAG_RIGHT_SET)) {
+	if (! HAS_RIGHT(args)) {
 		/* TODO INFINITY */
-		args->count = strtof("INF", NULL);
 		/* TODO possibly negative INFINITY in reverted mode */
-		args->flags |= FLAG_RIGHT_SET;
+		SET_RIGHT(*args, strtod("INF", NULL));
 	}
-	assert(CHECK_FLAG(args->flags, FLAG_RIGHT_SET));
+	assert(HAS_RIGHT(args));
 
 	args->flags |= FLAG_READY;
 }
