@@ -256,8 +256,9 @@ int parse_args(unsigned int args_len, char **args, arguments *dest) {
 			if (type != TOKEN_DOTDOT)
 				valid_case->details[l].setter(dest, value);
 		}
+		return 0;
+	} else {
+		/* TODO invalid case */
+		return 1;
 	}
-	/* TODO invalid case */
-
-	return 0;
 }
