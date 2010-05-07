@@ -59,39 +59,55 @@
 
 const int NO_VALUE = 999;
 
+void pseudo_call(float left, unsigned int count, float step, float right) {
+	printf("# enum  ");
+
+	if (left != NO_VALUE) {
+		printf("%.1f .. ", left);
+	} else {
+		printf(".. ");
+	}
+
+	if (count != NO_VALUE) {
+		if (step != NO_VALUE) {
+			printf("%dx %.1f .. ", count, step);
+		} else {
+			printf("%dx .. ", count);
+		}
+	} else if (step != NO_VALUE) {
+		printf("%.1f .. ", step);
+	}
+
+	if (right != NO_VALUE) {
+		printf("%.1f", right);
+	}
+
+	puts("");
+}
+
 int test_yield(float left, unsigned int count, float step, float right, const float * expected, unsigned int exp_len) {
 	arguments args;
 	float dest;
 	int i;
 
+	pseudo_call(left, count, step, right);
+
 	initialize_args(&args);
 
 	if (left != NO_VALUE) {
-		printf("left = %f  ", left);
 		SET_LEFT(args, left);
-	} else {
-		printf("left = NULL  ");
 	}
 
 	if (count != NO_VALUE) {
-		printf("count = %u  ", count);
 		SET_COUNT(args, count);
-	} else {
-		printf("count = NULL  ");
 	}
 
 	if (step != NO_VALUE) {
-		printf("step = %f  ", step);
 		SET_STEP(args, step, 1);
-	} else {
-		printf("step = NULL  ");
 	}
 
 	if (right != NO_VALUE) {
-		printf("right = %f\n", right);
 		SET_RIGHT(args, right);
-	} else {
-		printf("right = NULL\n");
 	}
 
 	complete_args(&args);
