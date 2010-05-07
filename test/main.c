@@ -91,6 +91,7 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 	arguments args;
 	float dest;
 	int i;
+	int ret = 1;
 
 	pseudo_call(left, count, step, right);
 
@@ -122,12 +123,16 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 		}
 		printf(TEST_CASE_INDENT "* %.1f, %.1f\n", dest, expected[i]);
 		if (expected[i] != dest) {
-			puts(TEST_CASE_INDENT "FAILURE (filling of args?)\n");
-			return 0;
+			ret = 0;
 		}
 	}
-	puts(TEST_CASE_INDENT "success\n");
-	return 1;
+
+	if (ret) {
+		puts(TEST_CASE_INDENT "success\n");
+	} else {
+		puts(TEST_CASE_INDENT "FAILURE (filling of args?)\n");
+	}
+	return ret;
 }
 
 int main() {
