@@ -167,8 +167,9 @@ int parse_args(unsigned int args_len, char **args, arguments *dest) {
 	token_details const use_case_15[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_FLOAT, set_args_right}};
 	token_details const use_case_16[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_DOTDOT, NULL}};
 	token_details const use_case_17[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_right}};
+	token_details const use_case_18[] = {{TOKEN_MULTIPLIER, set_args_count}};
 
-	use_case table[18];
+	use_case table[19];
 	table[0].details = use_case_0;
 	table[0].length = sizeof(use_case_0) / sizeof(token_details);
 	table[1].details = use_case_1;
@@ -205,6 +206,8 @@ int parse_args(unsigned int args_len, char **args, arguments *dest) {
 	table[16].length = sizeof(use_case_16) / sizeof(token_details);
 	table[17].details = use_case_17;
 	table[17].length = sizeof(use_case_17) / sizeof(token_details);
+	table[18].details = use_case_18;
+	table[18].length = sizeof(use_case_18) / sizeof(token_details);
 
 	for (i = 0; i < args_len; i++) {
 		setter_value value;
