@@ -114,15 +114,15 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 
 	complete_args(&args);
 
-	puts(TEST_CASE_INDENT "received, expected");
+	puts(TEST_CASE_INDENT "  received, expected");
 	for (i = 0; i < exp_len; i++) {
 		if (yield(&args, &dest) == YIELD_NONE) {
-			puts(TEST_CASE_INDENT "failure\n");
+			puts(TEST_CASE_INDENT "FAILURE (generator?)\n");
 			return 0;
 		}
-		printf(TEST_CASE_INDENT "%f, %f\n", dest, expected[i]);
+		printf(TEST_CASE_INDENT "* %.1f, %.1f\n", dest, expected[i]);
 		if (expected[i] != dest) {
-			puts(TEST_CASE_INDENT "failure\n");
+			puts(TEST_CASE_INDENT "FAILURE (filling of args?)\n");
 			return 0;
 		}
 	}
