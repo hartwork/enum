@@ -57,6 +57,8 @@
 		} \
 	}
 
+#define TEST_CASE_INDENT "  "
+
 const int NO_VALUE = 999;
 
 void pseudo_call(float left, unsigned int count, float step, float right) {
@@ -112,19 +114,19 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 
 	complete_args(&args);
 
-	puts("  received, expected");
+	puts(TEST_CASE_INDENT "received, expected");
 	for (i = 0; i < exp_len; i++) {
 		if (yield(&args, &dest) == YIELD_NONE) {
-			puts("  failure\n");
+			puts(TEST_CASE_INDENT "failure\n");
 			return 0;
 		}
-		printf("  %f, %f\n", dest, expected[i]);
+		printf(TEST_CASE_INDENT "%f, %f\n", dest, expected[i]);
 		if (expected[i] != dest) {
-			puts("  failure\n");
+			puts(TEST_CASE_INDENT "failure\n");
 			return 0;
 		}
 	}
-	puts("  success\n");
+	puts(TEST_CASE_INDENT "success\n");
 	return 1;
 }
 
