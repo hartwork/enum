@@ -59,28 +59,28 @@
 
 #define TEST_CASE_INDENT "  "
 
-const unsigned int NO_VALUE = 999;
+const unsigned int XX = 999;
 
 void pseudo_call(float left, unsigned int count, float step, float right) {
 	printf("# enum  ");
 
-	if (left != NO_VALUE) {
+	if (left != XX) {
 		printf("%.1f .. ", left);
 	} else {
 		printf(".. ");
 	}
 
-	if (count != NO_VALUE) {
-		if (step != NO_VALUE) {
+	if (count != XX) {
+		if (step != XX) {
 			printf("%dx %.1f .. ", count, step);
 		} else {
 			printf("%dx .. ", count);
 		}
-	} else if (step != NO_VALUE) {
+	} else if (step != XX) {
 		printf("%.1f .. ", step);
 	}
 
-	if (right != NO_VALUE) {
+	if (right != XX) {
 		printf("%.1f", right);
 	}
 
@@ -97,19 +97,19 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 
 	initialize_args(&args);
 
-	if (left != NO_VALUE) {
+	if (left != XX) {
 		SET_LEFT(args, left);
 	}
 
-	if (count != NO_VALUE) {
+	if (count != XX) {
 		SET_COUNT(args, count);
 	}
 
-	if (step != NO_VALUE) {
+	if (step != XX) {
 		SET_STEP(args, step, 1);
 	}
 
-	if (right != NO_VALUE) {
+	if (right != XX) {
 		SET_RIGHT(args, right);
 	}
 
@@ -140,23 +140,24 @@ int main() {
 	unsigned int successes = 0;
 	unsigned int failures = 0;
 
-	TEST_CASE(successes, failures, 2, 4, 3, 11, ARRAY(2, 5, 8, 11))
-	TEST_CASE(successes, failures, NO_VALUE, 4, 3, 11, ARRAY(2, 5, 8, 11))
-	TEST_CASE(successes, failures, 2, NO_VALUE, 3, 11, ARRAY(2, 5, 8, 11))
-	TEST_CASE(successes, failures, 2, 4, NO_VALUE, 11, ARRAY(2, 5, 8, 11))
-	TEST_CASE(successes, failures, 2, 4, 3, NO_VALUE, ARRAY(2, 5, 8, 11))
+	TEST_CASE(successes, failures,  2,  4,  3, 11, ARRAY(2, 5, 8, 11))
 
-	TEST_CASE(successes, failures, NO_VALUE, NO_VALUE, 3, 11, ARRAY(2, 5, 8, 11))
-	TEST_CASE(successes, failures, NO_VALUE, 4, NO_VALUE, 11, ARRAY(8, 9, 10, 11))
-	TEST_CASE(successes, failures, NO_VALUE, 4, 3, NO_VALUE, ARRAY(1, 4, 7, 10))
-	TEST_CASE(successes, failures, 2, NO_VALUE, NO_VALUE, 11, ARRAY(2, 3, 4, 5, 6, 7, 8, 9, 10, 11))
-	TEST_CASE(successes, failures, 2, NO_VALUE, 3, NO_VALUE, ARRAY(2, 5, 8, 11, 14, 17))
-	TEST_CASE(successes, failures, 2, 4, NO_VALUE, NO_VALUE, ARRAY(2, 3, 4, 5))
+	TEST_CASE(successes, failures, XX,  4,  3, 11, ARRAY(2, 5, 8, 11))
+	TEST_CASE(successes, failures,  2, XX,  3, 11, ARRAY(2, 5, 8, 11))
+	TEST_CASE(successes, failures,  2,  4, XX, 11, ARRAY(2, 5, 8, 11))
+	TEST_CASE(successes, failures,  2,  4,  3, XX, ARRAY(2, 5, 8, 11))
 
-	TEST_CASE(successes, failures, 2, NO_VALUE, NO_VALUE, NO_VALUE, ARRAY(2, 3, 4, 5, 6, 7, 8, 9, 10, 11))
-	TEST_CASE(successes, failures, NO_VALUE, 4, NO_VALUE, NO_VALUE, ARRAY(1, 2, 3, 4))
-	TEST_CASE(successes, failures, NO_VALUE, NO_VALUE, 3, NO_VALUE, ARRAY(1, 4, 7, 10, 13, 16))
-	TEST_CASE(successes, failures, NO_VALUE, NO_VALUE, NO_VALUE, 11, ARRAY(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11))
+	TEST_CASE(successes, failures, XX, XX,  3, 11, ARRAY(2, 5, 8, 11))
+	TEST_CASE(successes, failures, XX,  4, XX, 11, ARRAY(8, 9, 10, 11))
+	TEST_CASE(successes, failures, XX,  4,  3, XX, ARRAY(1, 4, 7, 10))
+	TEST_CASE(successes, failures,  2, XX, XX, 11, ARRAY(2, 3, 4, 5, 6, 7, 8, 9, 10, 11))
+	TEST_CASE(successes, failures,  2, XX,  3, XX, ARRAY(2, 5, 8, 11, 14, 17)) /* .. and more */
+	TEST_CASE(successes, failures,  2,  4, XX, XX, ARRAY(2, 3, 4, 5))
+
+	TEST_CASE(successes, failures,  2, XX, XX, XX, ARRAY(2, 3, 4, 5, 6, 7)) /* .. and more */
+	TEST_CASE(successes, failures, XX,  4, XX, XX, ARRAY(1, 2, 3, 4))
+	TEST_CASE(successes, failures, XX, XX,  3, XX, ARRAY(1, 4, 7, 10, 13, 16)) /* .. and more */
+	TEST_CASE(successes, failures, XX, XX, XX, 11, ARRAY(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11))
 
 	assert(successes + failures > 0);
 	printf(
