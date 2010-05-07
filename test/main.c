@@ -115,20 +115,21 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 
 	complete_args(&args);
 
-	puts(TEST_CASE_INDENT "  received, expected");
+	puts(TEST_CASE_INDENT "    Received  Expected");
+	puts(TEST_CASE_INDENT "----------------------");
 	for (i = 0; i < exp_len; i++) {
 		if (yield(&args, &dest) == YIELD_NONE) {
 			puts(TEST_CASE_INDENT "FAILURE (generator?)\n");
 			return 0;
 		}
-		printf(TEST_CASE_INDENT "* %.1f, %.1f\n", dest, expected[i]);
+		printf(TEST_CASE_INDENT "%2d) %8.1f  %8.1f\n", i + 1, dest, expected[i]);
 		if (expected[i] != dest) {
 			ret = 0;
 		}
 	}
 
 	if (ret) {
-		puts(TEST_CASE_INDENT "success\n");
+		puts(TEST_CASE_INDENT "Success\n");
 	} else {
 		puts(TEST_CASE_INDENT "FAILURE (filling of args?)\n");
 	}
@@ -159,10 +160,10 @@ int main() {
 
 	assert(successes + failures > 0);
 	printf(
-		"Successes:   %u (%.2f%%)\n"
-		"Failures:    %u (%.2f%%)\n"
-		"-------------------------\n"
-		"Test cases:  %u\n"
+		"Successes:   % 2u  (%6.2f%%)\n"
+		"Failures:    % 2u  (%6.2f%%)\n"
+		"--------------------------\n"
+		"Test cases:  % 2u\n"
 		"\n",
 		successes,
 		(float)successes * 100 / (successes + failures),
