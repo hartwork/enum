@@ -59,7 +59,7 @@
 
 #define TEST_CASE_INDENT "  "
 
-const int NO_VALUE = 999;
+const unsigned int NO_VALUE = 999;
 
 void pseudo_call(float left, unsigned int count, float step, float right) {
 	printf("# enum  ");
@@ -90,7 +90,7 @@ void pseudo_call(float left, unsigned int count, float step, float right) {
 int test_yield(float left, unsigned int count, float step, float right, const float * expected, unsigned int exp_len) {
 	arguments args;
 	float dest;
-	int i;
+	unsigned int i;
 	int ret = 1;
 
 	pseudo_call(left, count, step, right);
