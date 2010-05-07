@@ -124,10 +124,11 @@ void complete_args(arguments * args) {
 			return;
 		}
 
-		if (! HAS_LEFT(args)) {
-			SET_LEFT(*args, 1.0f);
-		} else {
+		/* NOTE: Step has higher precedence */
+		if (! HAS_STEP(args)) {
 			SET_STEP(*args, 1.0f, 1.0f);
+		} else {
+			SET_LEFT(*args, 1.0f);
 		}
 		assert(KNOWN(args) == 3);
 	}
