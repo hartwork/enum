@@ -243,8 +243,8 @@ int parse_args(unsigned int args_len, char **args, arguments *dest) {
 			continue;
 
 		/* valid case left */
+		assert(valid_case == NULL);
 		valid_case = table + k;
-		break;
 	}
 
 	if (valid_case) {
