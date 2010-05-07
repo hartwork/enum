@@ -66,11 +66,8 @@ void calculator(arguments * args) {
 			/* count and right set */
 			SET_LEFT(*args, (args->right - ((args->count - 1) * args->step_num / args->step_denom)));
 		} else if (HAS_RIGHT(args)) {
-			/* right but no count -> use right as left */
-			/* TODO this is reverted mode! */
-			/* TODO this doesn't work for shortcut 'enum 10' */
-			SET_LEFT(*args, args->right);
-			args->flags &= ~FLAG_RIGHT_SET;
+			/* right but no count */
+			SET_LEFT(*args, ((int)((args->right - args->left) / (args->step_num / args->step_denom)) + 1));
 		} else {
 			/* no right, count may be there */
 			SET_LEFT(*args, 1.0f);
