@@ -44,6 +44,8 @@
 
 #define CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
 
+#define ENUM_FLOOR(f)  ((float)(int)(f))
+
 void calculator(arguments * args) {
 	/* we need a step, no matter what */
 	if (! CHECK_FLAG(args->flags, FLAG_STEP_SET)) {
@@ -139,7 +141,14 @@ void complete_args(arguments * args) {
 		if (! HAS_STEP(args)) {
 			SET_STEP(*args, 1.0f, 1.0f);
 		} else {
-			SET_LEFT(*args, 1.0f);
+			if (HAS_RIGHT(args)) {
+				assert(HAS_STEP(args));
+				SET_LEFT(*args, args->right
+					- (args->step_num / args->step_denom) * ENUM_FLOOR(
+					args->right * args->step_denom / args->step_num));
+			} else {
+				SET_LEFT(*args, 1.0f);
+			}
 		}
 		assert(KNOWN(args) == 3);
 	}
