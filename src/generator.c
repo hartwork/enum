@@ -51,56 +51,6 @@
 
 #define ENUM_FLOOR(f)  ((float)(int)(f))
 
-void calculator(arguments * args) {
-	/* we need a step, no matter what */
-	if (! HAS_STEP(args)) {
-		if (HAS_LEFT(args) && HAS_RIGHT(args) && HAS_COUNT(args)) {
-			assert(args->count != 0);
-			SET_STEP(*args, (args->right - args->left), (args->count - 1));
-		} else {
-			SET_STEP(*args, 1.0f, 1.0f);
-		}
-	}
-	assert(HAS_STEP(args));
-
-	/* and we need left */
-	if (! HAS_LEFT(args)) {
-		if (HAS_RIGHT(args) && HAS_COUNT(args)) {
-			/* count and right set */
-			SET_LEFT(*args, (args->right - ((args->count - 1) * args->step_num / args->step_denom)));
-		} else if (HAS_RIGHT(args)) {
-			/* right but no count */
-			SET_LEFT(*args, ((int)((args->right - args->left) / (args->step_num / args->step_denom)) + 1));
-		} else {
-			/* no right, count may be there */
-			SET_LEFT(*args, 1.0f);
-		}
-	}
-	assert(HAS_LEFT(args));
-
-	/* and a count */
-	if (! HAS_COUNT(args)) {
-		if (HAS_RIGHT(args)) {
-			/* right is set */
-			SET_COUNT(*args, (args->right - args->left) * args->step_denom / args->step_num + 1);
-		} else {
-			/* no right -> INFINITY */
-			/* TODO INFINITY */
-			SET_COUNT(*args, strtod("INF", NULL));
-		}
-	}
-	assert(HAS_COUNT(args));
-
-	if (! HAS_RIGHT(args)) {
-		/* TODO INFINITY */
-		/* TODO possibly negative INFINITY in reverted mode */
-		SET_RIGHT(*args, strtod("INF", NULL));
-	}
-	assert(HAS_RIGHT(args));
-
-	args->flags |= FLAG_READY;
-}
-
 void complete_args(arguments * args) {
 	assert(KNOWN(args) >= 0);
 
