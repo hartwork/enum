@@ -11,4 +11,6 @@ Makefile
 /autom4te.cache
 *.o
 /src/enum
-
+.deps
+core
+/test/enum_test

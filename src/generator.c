@@ -44,12 +44,12 @@
 
 #define CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
 
-#define ENUM_FLOOR(f)  ((float)(int)(f))
-
 #define HAS_LEFT(args)  CHECK_FLAG(args->flags, FLAG_LEFT_SET)
 #define HAS_RIGHT(args)  CHECK_FLAG(args->flags, FLAG_RIGHT_SET)
 #define HAS_STEP(args)  CHECK_FLAG(args->flags, FLAG_STEP_SET)
 #define HAS_COUNT(args)  CHECK_FLAG(args->flags, FLAG_COUNT_SET)
+
+#define ENUM_FLOOR(f)  ((float)(int)(f))
 
 void complete_args(arguments * args) {
 	assert(KNOWN(args) >= 0);

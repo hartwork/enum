@@ -86,6 +86,7 @@ typedef struct _arguments {
 } arguments;
 
 void complete_args(arguments * args);
+void calculator(arguments * args);
 yield_status yield(arguments * args, float * dest);
 void initialize_args(arguments * dest);
 
