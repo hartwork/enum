@@ -39,54 +39,114 @@
 
 #include "generator.h"
 #include <assert.h>
+#include <stdlib.h>
+#include <math.h>  /* for fabs(double) */
 
 #define CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
 
-yield_status yield(arguments * args, float * dest) {
-	if (! CHECK_FLAG(args->flags, FLAG_READY)) {
-		/* TODO make ready */
-	}
+#define ENUM_FLOOR(f)  ((float)(int)(f))
 
-	if (CHECK_FLAG(args->flags, FLAG_COUNT_SET)
-			&& (args->count == 1)) {
-		/* TODO return first and only value */
-		return YIELD_LAST;
-	}
+#define HAS_LEFT(args)  CHECK_FLAG(args->flags, FLAG_LEFT_SET)
+#define HAS_RIGHT(args)  CHECK_FLAG(args->flags, FLAG_RIGHT_SET)
+#define HAS_STEP(args)  CHECK_FLAG(args->flags, FLAG_STEP_SET)
+#define HAS_COUNT(args)  CHECK_FLAG(args->flags, FLAG_COUNT_SET)
 
-	if (! CHECK_FLAG(args->flags, FLAG_STEP_SET)) {
-		if (CHECK_FLAG(args->flags, FLAG_LEFT_SET)
-				&& CHECK_FLAG(args->flags, FLAG_RIGHT_SET)
-				&& CHECK_FLAG(args->flags, FLAG_COUNT_SET)) {
-			assert(args->count != 0);
-			args->step_num = (args->right - args->left);
-			args->step_denom = (args->count - 1);
+void complete_args(arguments * args) {
+	assert(KNOWN(args) >= 0);
+
+	if (KNOWN(args) == 1) {
+		if (! HAS_LEFT(args)) {
+			SET_LEFT(*args, 1.0f);
 		} else {
-			args->step_num = 1.0f;
-			args->step_denom = 1.0f;
+			SET_STEP(*args, 1.0f, 1.0f);
 		}
-		args->flags |= FLAG_STEP_SET;
+		assert(KNOWN(args) == 2);
 	}
-	assert(CHECK_FLAG(args->flags, FLAG_STEP_SET));
 
-	/* nothing can be done without a start */
-	assert(CHECK_FLAG(args->flags, FLAG_LEFT_SET));
+	assert(KNOWN(args) >= 2);
+	if (KNOWN(args) == 2) {
+		if (HAS_LEFT(args) && HAS_STEP(args)) {
+			/* running to infinity */
+			args->flags |= FLAG_READY;
+			assert(! HAS_COUNT(args) && ! HAS_RIGHT(args));
+			assert(KNOWN(args) == 2);
+			return;
+		}
 
-	*dest = args->left + (args->step_num / args->step_denom) * args->position;
-	/* TODO check for float overflow, float imprecision */
+		/* NOTE: Step has higher precedence */
+		if (! HAS_STEP(args)) {
+			SET_STEP(*args, 1.0f, 1.0f);
+		} else {
+			if (HAS_RIGHT(args)) {
+				assert(HAS_STEP(args));
+				SET_LEFT(*args, args->right
+					- (args->step_num / args->step_denom) * ENUM_FLOOR(
+					args->right * args->step_denom / args->step_num));
+			} else {
+				SET_LEFT(*args, 1.0f);
+			}
+		}
+		assert(KNOWN(args) == 3);
+	}
 
-	if (CHECK_FLAG(args->flags, FLAG_COUNT_SET)
-			&& (args->position >= (args->count - 1))) {
+	assert(KNOWN(args) >= 3);
+	if (KNOWN(args) == 3) {
+		if (! HAS_LEFT(args)) {
+			SET_LEFT(*args, args->right - (args->count - 1)
+				* (args->step_num / args->step_denom));
+		} else if (! HAS_COUNT(args)) {
+			SET_COUNT(*args, fabs(args->right - args->left)
+				/ (args->step_num / args->step_denom) + 1);
+		} else if (! HAS_STEP(args)) {
+			SET_STEP(*args, args->right - args->left, args->count - 1);
+		} else {
+			assert(! HAS_RIGHT(args));
+			SET_RIGHT(*args, args->left + (args->step_num / args->step_denom)
+				* (args->count - 1));
+		}
+	}
+
+	args->flags |= FLAG_READY;
+	assert(KNOWN(args) == 4);
+}
+
+yield_status yield(arguments * args, float * dest) {
+	assert(CHECK_FLAG(args->flags, FLAG_READY));
+	assert(HAS_LEFT(args) && HAS_STEP(args));
+
+	/* Gone too far already? */
+	if (HAS_COUNT(args) && (args->position >= args->count)) {
+		*dest = 0.123456f;  /* Arbitrary magic value */
+		return YIELD_NONE;
+	}
+
+	/* One value only? */
+	if (HAS_COUNT(args) && (args->count == 1)) {
+		*dest = args->left;
 		return YIELD_LAST;
+	} else {
+		*dest = args->left + (args->step_num / args->step_denom) * args->position;
+		/* TODO check for float overflow, float imprecision */
 	}
 
-	if (CHECK_FLAG(args->flags, FLAG_RIGHT_SET)) {
-		if (args->right == *dest)
-			return YIELD_LAST;
-
-		if (args->right < *dest)
-			return YIELD_NONE;
+	/* Gone too far now? */
+	if (HAS_RIGHT(args) && (*dest > args->right)) {
+		*dest = 0.123456f;  /* Arbitrary magic value */
+		return YIELD_NONE;
 	}
 
-	args->position++;
-	return YIELD_MORE;
+	/* Will there be more? */
+	if ((HAS_COUNT(args) && (args->position == args->count - 1))
+			|| (HAS_RIGHT(args) && (*dest == args->right))) {
+		args->position++;
+		return YIELD_LAST;
+	} else {
+		args->position++;
+		return YIELD_MORE;
+	}
+}
+
+void initialize_args(arguments * dest) {
+	dest->flags = 0;
+	dest->position = 0;
 }
