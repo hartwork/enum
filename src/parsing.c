@@ -39,10 +39,10 @@
 
 #include "parsing.h"
 #include "generator.h"
+#include "assertion.h"
 
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
 
 #define IS_TOKEN_ERROR(type)  ((type) >= TOKEN_ERROR)
 

@@ -51,7 +51,8 @@
 # endif
 #endif
 
-#define ENUM_ASSERT(x) \
+#ifndef assert
+# define assert(x) \
 	if (! (x)) { \
 		fprintf(stderr, \
 			"%s: %s:%d: %s: Assertion `%s' failed.\n" \
@@ -62,5 +63,6 @@
 			PACKAGE_BUGREPORT); \
 		exit(1); \
 	}
+#endif
 
 #endif /* ASSERTION_H */

@@ -38,7 +38,7 @@
  */
 
 #include "generator.h"
-#include <assert.h>
+#include "assertion.h"
 #include <stdlib.h>
 #include <math.h>  /* for fabs(double) */
 

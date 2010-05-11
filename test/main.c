@@ -38,9 +38,9 @@
  */
 
 #include "../src/generator.h"
+#include "../src/assertion.h"
 
 #include <stdio.h>
-#include <assert.h>
 
 #define ARRAY(numbers...)  { numbers }
 
