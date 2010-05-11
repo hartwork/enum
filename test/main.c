@@ -200,10 +200,10 @@ int main() {
 
 	assert(successes + failures > 0);
 	printf(
-		"Successes:   % 2u  (%6.2f%%)\n"
-		"Failures:    % 2u  (%6.2f%%)\n"
+		"Successes:   %2u  (%6.2f%%)\n"
+		"Failures:    %2u  (%6.2f%%)\n"
 		"--------------------------\n"
-		"Test cases:  % 2u\n"
+		"Test cases:  %2u\n"
 		"\n",
 		successes,
 		(float)successes * 100 / (successes + failures),
