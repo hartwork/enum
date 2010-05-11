@@ -123,16 +123,16 @@ yield_status yield(arguments * args, float * dest) {
 	*dest = args->left + (args->step_num / args->step_denom) * args->position;
 	/* TODO check for float overflow, float imprecision */
 
-	/* One value only? */
-	if (HAS_COUNT(args) && (args->count == 1)) {
-		args->position++;
-		return YIELD_LAST;
-	}
-
 	/* Gone too far now? */
 	if (HAS_RIGHT(args) && (*dest > args->right)) {
 		*dest = 0.123456f;  /* Arbitrary magic value */
 		return YIELD_NONE;
+	}
+
+	/* One value only? */
+	if (HAS_COUNT(args) && (args->count == 1)) {
+		args->position++;
+		return YIELD_LAST;
 	}
 
 	/* Will there be more? */
