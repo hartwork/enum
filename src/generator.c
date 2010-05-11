@@ -137,7 +137,7 @@ yield_status yield(arguments * args, float * dest) {
 	}
 
 	/* Will there be more? */
-	if ((HAS_COUNT(args) && (args->position == args->count - 1))
+	if ((HAS_COUNT(args) && (args->position == args->count))
 			|| (HAS_RIGHT(args) && (*dest == args->right))) {
 		return YIELD_LAST;
 	} else {
