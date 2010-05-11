@@ -111,10 +111,10 @@ void complete_args(arguments * args) {
 }
 
 yield_status yield(arguments * args, float * dest) {
+	float candidate;
+
 	assert(CHECK_FLAG(args->flags, FLAG_READY));
 	assert(HAS_LEFT(args) && HAS_STEP(args));
-
-	float candidate;
 
 	/* Gone too far already? */
 	if (HAS_COUNT(args) && (args->position >= args->count)) {
