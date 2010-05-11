@@ -129,19 +129,18 @@ yield_status yield(arguments * args, float * dest) {
 		return YIELD_NONE;
 	}
 
+	args->position++;
+
 	/* One value only? */
 	if (HAS_COUNT(args) && (args->count == 1)) {
-		args->position++;
 		return YIELD_LAST;
 	}
 
 	/* Will there be more? */
 	if ((HAS_COUNT(args) && (args->position == args->count - 1))
 			|| (HAS_RIGHT(args) && (*dest == args->right))) {
-		args->position++;
 		return YIELD_LAST;
 	} else {
-		args->position++;
 		return YIELD_MORE;
 	}
 }
