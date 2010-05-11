@@ -123,6 +123,7 @@ yield_status yield(arguments * args, float * dest) {
 	/* One value only? */
 	if (HAS_COUNT(args) && (args->count == 1)) {
 		*dest = args->left;
+		args->position++;
 		return YIELD_LAST;
 	} else {
 		*dest = args->left + (args->step_num / args->step_denom) * args->position;
