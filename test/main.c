@@ -87,6 +87,10 @@ void pseudo_call(float left, unsigned int count, float step, float right) {
 	puts("");
 }
 
+int towards_infinity(arguments const * args) {
+	return ((args->flags & (FLAG_RIGHT_SET | FLAG_COUNT_SET)) != (FLAG_RIGHT_SET | FLAG_COUNT_SET));
+}
+
 int test_yield(float left, unsigned int count, float step, float right, const float * expected, unsigned int exp_len) {
 	arguments args;
 	float dest;
@@ -118,12 +122,47 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 	puts(TEST_CASE_INDENT "    Received  Expected");
 	puts(TEST_CASE_INDENT "----------------------");
 	for (i = 0; i < exp_len; i++) {
-		if (yield(&args, &dest) == YIELD_NONE) {
-			puts(TEST_CASE_INDENT "FAILURE (generator?)\n");
-			return 0;
-		}
+		yield_status status = yield(&args, &dest);
+
 		printf(TEST_CASE_INDENT "%2d) %8.1f  %8.1f\n", i + 1, dest, expected[i]);
+
+		if (status == YIELD_NONE) {
+			puts(TEST_CASE_INDENT "FAILURE (none too early, generator?)");
+			ret = 0;
+		}
+
+		if (status == YIELD_LAST) {
+			if (i < (exp_len - 1)) {
+				puts(TEST_CASE_INDENT "FAILURE (last too early, generator?)");
+				ret = 0;
+			}
+
+			if (i == (exp_len - 1)) {
+				if (towards_infinity(&args)) {
+					puts(TEST_CASE_INDENT "FAILURE (last despite infinity, generator?)");
+					ret = 0;
+				}
+			}
+		}
+
+		if (status == YIELD_MORE) {
+			if (i == (exp_len - 1)) {
+				if (! towards_infinity(&args)) {
+					puts(TEST_CASE_INDENT "FAILURE (more instead of last, generator?)");
+					ret = 0;
+				}
+			}
+		}
+
 		if (expected[i] != dest) {
+			puts(TEST_CASE_INDENT "FAILURE (filling of args?)");
+			ret = 0;
+		}
+	}
+
+	if (yield(&args, &dest) != YIELD_NONE) {
+		if (! towards_infinity(&args)) {
+			puts(TEST_CASE_INDENT "FAILURE (none expected, generator?)");
 			ret = 0;
 		}
 	}
@@ -131,7 +170,7 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 	if (ret) {
 		puts(TEST_CASE_INDENT "Success\n");
 	} else {
-		puts(TEST_CASE_INDENT "FAILURE (filling of args?)\n");
+		puts("");
 	}
 	return ret;
 }
