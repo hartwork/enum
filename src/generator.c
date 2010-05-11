@@ -114,21 +114,24 @@ yield_status yield(arguments * args, float * dest) {
 	assert(CHECK_FLAG(args->flags, FLAG_READY));
 	assert(HAS_LEFT(args) && HAS_STEP(args));
 
+	float candidate;
+
 	/* Gone too far already? */
 	if (HAS_COUNT(args) && (args->position >= args->count)) {
 		*dest = 0.123456f;  /* Arbitrary magic value */
 		return YIELD_NONE;
 	}
 
-	*dest = args->left + (args->step_num / args->step_denom) * args->position;
+	candidate = args->left + (args->step_num / args->step_denom) * args->position;
 	/* TODO check for float overflow, float imprecision */
 
 	/* Gone too far now? */
-	if (HAS_RIGHT(args) && (*dest > args->right)) {
+	if (HAS_RIGHT(args) && (candidate > args->right)) {
 		*dest = 0.123456f;  /* Arbitrary magic value */
 		return YIELD_NONE;
 	}
 
+	*dest = candidate;
 	args->position++;
 
 	/* One value only? */
