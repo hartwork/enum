@@ -108,6 +108,15 @@ void complete_args(arguments * args) {
 
 	args->flags |= FLAG_READY;
 	assert(KNOWN(args) == 4);
+
+	{
+		/* Ensure step direction aligns with relation between left and right */
+		const float expected_direction = (args->left <= args->right) ? +1 : -1;
+		const float step_direction = ((args->step_num / args->step_denom) >= 0) ? +1 : -1;
+		if (expected_direction != step_direction) {
+			args->step_num = -args->step_num;
+		}
+	}
 }
 
 yield_status yield(arguments * args, float * dest) {
@@ -126,7 +135,9 @@ yield_status yield(arguments * args, float * dest) {
 	/* TODO check for float overflow, float imprecision */
 
 	/* Gone too far now? */
-	if (HAS_RIGHT(args) && (candidate > args->right)) {
+	if (HAS_RIGHT(args)
+			&& (((args->left <= args->right) && (candidate > args->right))
+				|| ((args->left >= args->right) && (candidate < args->right)))) {
 		*dest = 0.123456f;  /* Arbitrary magic value */
 		return YIELD_NONE;
 	}

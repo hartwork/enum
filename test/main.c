@@ -198,6 +198,16 @@ int main() {
 	TEST_CASE(successes, failures, XX, XX,  3, XX, ARRAY(1, 4, 7, 10, 13, 16)) /* .. and more */
 	TEST_CASE(successes, failures, XX, XX, XX, 11, ARRAY(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11))
 
+
+	/* left > right */
+	TEST_CASE(successes, failures,  11,  4,  3, 2, ARRAY(11, 8, 5, 2))
+	TEST_CASE(successes, failures,  11,  4, -3, 2, ARRAY(11, 8, 5, 2))
+	TEST_CASE(successes, failures,  11, XX,  3, 2, ARRAY(11, 8, 5, 2))
+	TEST_CASE(successes, failures,  11, XX, -3, 2, ARRAY(11, 8, 5, 2))
+	TEST_CASE(successes, failures,  11,  4, XX, 2, ARRAY(11, 8, 5, 2))
+	TEST_CASE(successes, failures,  11, XX, XX, 2, ARRAY(11, 10, 9, 8, 7, 6, 5, 4, 3, 2))
+
+
 	assert(successes + failures > 0);
 	printf(
 		"Successes:   %2u  (%6.2f%%)\n"
