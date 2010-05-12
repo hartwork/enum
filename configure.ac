@@ -9,7 +9,7 @@ AC_CONFIG_SRCDIR([src/main.c])
 
 AC_ARG_ENABLE([pedantic],
   AS_HELP_STRING([--enable-pedantic], [be pedantic about warnings]), [
-    CFLAGS="${CFLAGS} -Wall -Wextra -Wwrite-strings -std=c89 -pedantic"
+    CFLAGS="${CFLAGS} -Wall -Wextra -Wwrite-strings -Wno-variadic-macros -std=c89 -pedantic"
 ], [])
 
 
