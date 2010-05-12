@@ -49,8 +49,6 @@
 #define HAS_STEP(args)  CHECK_FLAG(args->flags, FLAG_STEP_SET)
 #define HAS_COUNT(args)  CHECK_FLAG(args->flags, FLAG_COUNT_SET)
 
-#define ENUM_FLOOR(f)  ((float)(int)(f))
-
 void complete_args(arguments * args) {
 	assert(KNOWN(args) >= 0);
 
@@ -80,7 +78,7 @@ void complete_args(arguments * args) {
 			if (HAS_RIGHT(args)) {
 				assert(HAS_STEP(args));
 				SET_LEFT(*args, args->right
-					- (args->step_num / args->step_denom) * ENUM_FLOOR(
+					- (args->step_num / args->step_denom) * floor(
 					args->right * args->step_denom / args->step_num));
 			} else {
 				SET_LEFT(*args, 1.0f);
