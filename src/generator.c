@@ -113,6 +113,7 @@ yield_status yield(arguments * args, float * dest) {
 
 	assert(CHECK_FLAG(args->flags, FLAG_READY));
 	assert(HAS_LEFT(args) && HAS_STEP(args));
+	assert(! HAS_COUNT(args) || (HAS_COUNT(args) && (args->count > 0)));
 
 	/* Gone too far already? */
 	if (HAS_COUNT(args) && (args->position >= args->count)) {
