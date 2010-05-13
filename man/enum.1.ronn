@@ -1,0 +1,41 @@
+enum(1) -- seq- and jot-like enumerator
+=======================================
+
+## SYNOPSIS
+
+### GENERAL
+
+`enum` [ <OPTIONS> ]  <LEFT> ".." <COUNT>"x" <STEP> ".." <RIGHT>
+
+### SHORTCUTS
+
+`enum` [ <OPTIONS> ]  <LEFT>  <STEP>  <RIGHT>  
+`enum` [ <OPTIONS> ]  <LEFT>        <RIGHT>  
+`enum` [ <OPTIONS> ]              <RIGHT>  
+ ..
+
+
+## DESCRIPTION
+
+TODO
+
+
+## EXAMPLES
+
+TODO
+
+
+## OPTIONS
+
+TODO
+
+
+## AUTHORS
+
+Jan Hauke Rahm  (jhr@debian.org)  
+Sebastian Pipping  (sping@gentoo.org)
+
+
+## SEE ALSO
+
+jot(1), seq(1), printf(3)
