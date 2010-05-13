@@ -268,6 +268,15 @@ int parse_args(unsigned int args_len, char **args, arguments *dest) {
 				}
 			}
 		}
+
+		/* Reject left == right */
+		if (((dest->flags & (FLAG_LEFT_SET | FLAG_RIGHT_SET))
+					== (FLAG_LEFT_SET | FLAG_RIGHT_SET))
+				&& (dest->left == dest->right)) {
+			/* TODO named error code */
+			return 1;
+		}
+
 		return 0;
 	} else {
 		/* TODO invalid case */
