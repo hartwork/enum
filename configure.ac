@@ -23,6 +23,14 @@ AC_PROG_CC
 # Checks for typedefs, structures, and compiler characteristics.
 
 # Checks for library functions.
+AC_CHECK_FUNC([getopt_long], [
+	USE_SYSTEM_GETOPT=1
+], [
+	USE_SYSTEM_GETOPT=0
+])
+
+# Define automake conditionals
+AM_CONDITIONAL([USE_SYSTEM_GETOPT], [test "${USE_SYSTEM_GETOPT}" = "1"])
 
 AC_CONFIG_FILES([
 	Makefile
