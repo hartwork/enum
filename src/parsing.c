@@ -64,7 +64,7 @@ typedef union _setter_value {
 	float float_data;
 } setter_value;
 
-typedef void (*setter_function_pointer)(arguments *, setter_value);
+typedef int (*setter_function_pointer)(arguments *, setter_value);
 
 typedef struct _token_details {
 	token_type type;
@@ -76,25 +76,33 @@ typedef struct _use_case {
 	unsigned int length;
 } use_case;
 
-void set_args_left(arguments * args, setter_value value) {
+int set_args_left(arguments * args, setter_value value) {
 	args->flags |= FLAG_LEFT_SET;
 	args->left = value.float_data;
+	return 1;
 }
 
-void set_args_step(arguments * args, setter_value value) {
+int set_args_step(arguments * args, setter_value value) {
+	if (value.float_data == 0.0f) {
+		/* TODO Introduce named error code */
+		return 0;
+	}
 	args->flags |= FLAG_STEP_SET;
 	args->step_num = value.float_data;
 	args->step_denom = 1;
+	return 1;
 }
 
-void set_args_right(arguments * args, setter_value value) {
+int set_args_right(arguments * args, setter_value value) {
 	args->flags |= FLAG_RIGHT_SET;
 	args->right = value.float_data;
+	return 1;
 }
 
-void set_args_count(arguments * args, setter_value value) {
+int set_args_count(arguments * args, setter_value value) {
 	args->flags |= FLAG_COUNT_SET;
 	args->count = value.uint_data;
+	return 1;
 }
 
 int ends_with_x(const char *str) {
@@ -253,8 +261,12 @@ int parse_args(unsigned int args_len, char **args, arguments *dest) {
 			token_type type = identify_token(args[l], &value);
 			assert(type == valid_case->details[l].type);
 
-			if (type != TOKEN_DOTDOT)
-				valid_case->details[l].setter(dest, value);
+			if (type != TOKEN_DOTDOT) {
+				int success = valid_case->details[l].setter(dest, value);
+				if (! success) {
+					return 1;
+				}
+			}
 		}
 		return 0;
 	} else {
