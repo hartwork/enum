@@ -40,6 +40,8 @@
 #ifndef GENERATOR_H
 #define GENERATOR_H 1
 
+#define CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
+
 #define SET_LEFT(args, _left)  \
 	(args).left = _left; \
 	(args).flags |= FLAG_LEFT_SET
@@ -56,6 +58,11 @@
 	(args).count = _count; \
 	(args).flags |= FLAG_COUNT_SET
 
+#define INCREASE_PRECISION(args, _precision)  \
+	if (_precision > (args).precision) { \
+		(args).precision = _precision; \
+	}
+
 #define KNOWN(args)  (HAS_LEFT(args) + HAS_RIGHT(args) \
 	+ HAS_STEP(args) + HAS_COUNT(args))
 
@@ -67,7 +74,8 @@ enum argument_flags {
 
 	FLAG_READY = 1 << 4,
 
-	FLAG_RANDOM = 1 << 5
+	FLAG_RANDOM = 1 << 5,
+	FLAG_USER_PRECISION = 1 << 6
 };
 
 typedef enum _yield_status {
@@ -83,6 +91,7 @@ typedef struct _arguments {
 	float step;
 	unsigned int count;
 	unsigned int position;
+	unsigned int precision;
 } arguments;
 
 void complete_args(arguments * args);

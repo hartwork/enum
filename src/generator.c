@@ -46,8 +46,6 @@
 #define ENUM_MIN(a, b)  (((a) <= (b)) ? (a) : (b))
 #define ENUM_MAX(a, b)  (((a) >= (b)) ? (a) : (b))
 
-#define CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
-
 #define HAS_LEFT(args)  CHECK_FLAG(args->flags, FLAG_LEFT_SET)
 #define HAS_RIGHT(args)  CHECK_FLAG(args->flags, FLAG_RIGHT_SET)
 #define HAS_STEP(args)  CHECK_FLAG(args->flags, FLAG_STEP_SET)
@@ -227,4 +225,5 @@ yield_status yield(arguments * args, float * dest) {
 void initialize_args(arguments * dest) {
 	dest->flags = 0;
 	dest->position = 0;
+	dest->precision = 0;
 }

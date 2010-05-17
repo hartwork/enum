@@ -154,6 +154,7 @@ int parse_args(unsigned int args_len, char **args, arguments *dest) {
 	unsigned int j;
 	unsigned int k;
 	unsigned int l;
+	unsigned int m;
 	use_case const *valid_case = NULL;
 
 	token_details const use_case_0[] = {{TOKEN_FLOAT, set_args_right}};
@@ -264,6 +265,18 @@ int parse_args(unsigned int args_len, char **args, arguments *dest) {
 				int success = valid_case->details[l].setter(dest, value);
 				if (! success) {
 					return 1;
+				}
+				/* auto-detect precision */
+				if (type == TOKEN_FLOAT) {
+					if (! CHECK_FLAG(dest->flags, FLAG_USER_PRECISION)) {
+						unsigned int flen = strlen(args[l]);
+						for (m = 0; m < flen; m++) {
+							if (args[l][m] == '.') {
+								INCREASE_PRECISION(*dest, flen - m - 1);
+								break;
+							}
+						}
+					}
 				}
 			}
 		}
