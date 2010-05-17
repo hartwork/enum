@@ -159,4 +159,5 @@ yield_status yield(arguments * args, float * dest) {
 void initialize_args(arguments * dest) {
 	dest->flags = 0;
 	dest->position = 0;
+	dest->precision = 0;
 }
