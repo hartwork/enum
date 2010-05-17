@@ -111,8 +111,8 @@ void complete_args(arguments * args) {
 
 	{
 		/* Ensure step direction aligns with relation between left and right */
-		const float expected_direction = (args->left <= args->right) ? +1 : -1;
-		const float step_direction = (args->step >= 0) ? +1 : -1;
+		const int expected_direction = (args->left <= args->right) ? +1 : -1;
+		const int step_direction = (args->step >= 0) ? +1 : -1;
 		if (expected_direction != step_direction) {
 			args->step = -args->step;
 		}
