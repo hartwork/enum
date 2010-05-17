@@ -39,7 +39,35 @@
 
 #include "parsing.h"
 #include "generator.h"
+#include "assertion.h"
 
-int main() {
+#include <stdio.h>
+
+int main(int argc, char **argv) {
+	unsigned int alen = (unsigned int)(argc - 1);
+	arguments dest;
+	float out;
+	int ret;
+	int parsing_success;
+	char format[6];
+
+	initialize_args(&dest);
+	parsing_success = parse_args(alen, argv + 1, &dest);
+	if (parsing_success != 0) {
+		fprintf(stderr, "Command line parsing error\n");
+		return 1;
+	}
+
+	complete_args(&dest);
+
+	assert(dest.precision < 100);
+	sprintf(format, "%%.%uf\n", dest.precision);
+
+	do {
+		ret = yield(&dest, &out);
+		if (ret != YIELD_NONE)
+			printf(format, out);
+	} while (ret == YIELD_MORE);
+
 	return 0;
 }
