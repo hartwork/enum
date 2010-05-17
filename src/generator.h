@@ -48,9 +48,8 @@
 	(args).right = _right; \
 	(args).flags |= FLAG_RIGHT_SET
 
-#define SET_STEP(args, num, denom)  \
-	(args).step_num = num; \
-	(args).step_denom = denom; \
+#define SET_STEP(args, _step)  \
+	(args).step = _step; \
 	(args).flags |= FLAG_STEP_SET
 
 #define SET_COUNT(args, _count)  \
@@ -81,8 +80,7 @@ typedef struct _arguments {
 	int flags;
 	float left;
 	float right;
-	float step_num;
-	float step_denom;
+	float step;
 	unsigned int count;
 	unsigned int position;
 } arguments;

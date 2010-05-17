@@ -110,7 +110,7 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 	}
 
 	if (step != XX) {
-		SET_STEP(args, step, 1);
+		SET_STEP(args, step);
 	}
 
 	if (right != XX) {

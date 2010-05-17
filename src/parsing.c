@@ -88,8 +88,7 @@ int set_args_step(arguments * args, setter_value value) {
 		return 0;
 	}
 	args->flags |= FLAG_STEP_SET;
-	args->step_num = value.float_data;
-	args->step_denom = 1;
+	args->step = value.float_data;
 	return 1;
 }
 

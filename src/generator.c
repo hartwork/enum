@@ -60,7 +60,7 @@ void complete_args(arguments * args) {
 		if (! HAS_LEFT(args)) {
 			SET_LEFT(*args, 1.0f);
 		} else {
-			SET_STEP(*args, 1.0f, 1.0f);
+			SET_STEP(*args, 1.0f);
 		}
 		assert(KNOWN(args) == 2);
 	}
@@ -77,13 +77,13 @@ void complete_args(arguments * args) {
 
 		/* NOTE: Step has higher precedence */
 		if (! HAS_STEP(args)) {
-			SET_STEP(*args, 1.0f, 1.0f);
+			SET_STEP(*args, 1.0f);
 		} else {
 			if (HAS_RIGHT(args)) {
 				assert(HAS_STEP(args));
 				SET_LEFT(*args, args->right
-					- (args->step_num / args->step_denom) * floor(
-					args->right * args->step_denom / args->step_num));
+					- args->step * floor(
+					args->right / args->step));
 			} else {
 				SET_LEFT(*args, 1.0f);
 			}
@@ -95,15 +95,15 @@ void complete_args(arguments * args) {
 	if (KNOWN(args) == 3) {
 		if (! HAS_LEFT(args)) {
 			SET_LEFT(*args, args->right - (args->count - 1)
-				* (args->step_num / args->step_denom));
+				* args->step);
 		} else if (! HAS_COUNT(args)) {
 			SET_COUNT(*args, fabs(args->right - args->left)
-				/ (args->step_num / args->step_denom) + 1);
+				/ args->step + 1);
 		} else if (! HAS_STEP(args)) {
-			SET_STEP(*args, args->right - args->left, args->count - 1);
+			SET_STEP(*args, (args->right - args->left) / (args->count - 1));
 		} else {
 			assert(! HAS_RIGHT(args));
-			SET_RIGHT(*args, args->left + (args->step_num / args->step_denom)
+			SET_RIGHT(*args, args->left + args->step
 				* (args->count - 1));
 		}
 	}
@@ -114,9 +114,9 @@ void complete_args(arguments * args) {
 	{
 		/* Ensure step direction aligns with relation between left and right */
 		const float expected_direction = (args->left <= args->right) ? +1 : -1;
-		const float step_direction = ((args->step_num / args->step_denom) >= 0) ? +1 : -1;
+		const float step_direction = (args->step >= 0) ? +1 : -1;
 		if (expected_direction != step_direction) {
-			args->step_num = -args->step_num;
+			args->step = -args->step;
 		}
 	}
 }
@@ -158,9 +158,9 @@ yield_status yield(arguments * args, float * dest) {
 
 		if (HAS_RIGHT(args)) {
 			if (((args->left <= args->right)
-						&& (args->left + (args->step_num / args->step_denom) > args->right))
+						&& (args->left + args->step > args->right))
 					|| ((args->left >= args->right)
-						&& (args->left + (args->step_num / args->step_denom) < args->right))) {
+						&& (args->left + args->step < args->right))) {
 				*dest = 0.123456f;  /* Arbitrary magic value */
 				return YIELD_NONE;
 			}
@@ -168,7 +168,7 @@ yield_status yield(arguments * args, float * dest) {
 			*dest = discrete_random_closed(
 				ENUM_MIN(args->left, args->right),
 				ENUM_MAX(args->left, args->right),
-				fabs(args->step_num / args->step_denom));
+				fabs(args->step));
 			args->position++;
 			assert(HAS_COUNT(args));
 			if (args->position == args->count) {
@@ -177,12 +177,12 @@ yield_status yield(arguments * args, float * dest) {
 				return YIELD_MORE;
 			}
 		} else {
-			const float min = ((args->step_num / args->step_denom) >= 0) ? args->left : -FLT_MAX;
-			const float max = ((args->step_num / args->step_denom) >= 0) ? FLT_MAX : args->left;
+			const float min = (args->step >= 0) ? args->left : -FLT_MAX;
+			const float max = (args->step >= 0) ? FLT_MAX : args->left;
 			*dest = discrete_random_closed(
 				min,
 				max,
-				fabs(args->step_num / args->step_denom));
+				fabs(args->step));
 			return YIELD_MORE;
 		}
 	}
@@ -196,7 +196,7 @@ yield_status yield(arguments * args, float * dest) {
 		return YIELD_NONE;
 	}
 
-	candidate = args->left + (args->step_num / args->step_denom) * args->position;
+	candidate = args->left + args->step * args->position;
 	/* TODO check for float overflow, float imprecision */
 
 	/* Gone too far now? */
