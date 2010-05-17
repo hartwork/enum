@@ -42,8 +42,6 @@
 #include <stdlib.h>
 #include <math.h>  /* for fabs(double) */
 
-#define CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
-
 #define HAS_LEFT(args)  CHECK_FLAG(args->flags, FLAG_LEFT_SET)
 #define HAS_RIGHT(args)  CHECK_FLAG(args->flags, FLAG_RIGHT_SET)
 #define HAS_STEP(args)  CHECK_FLAG(args->flags, FLAG_STEP_SET)

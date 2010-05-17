@@ -40,6 +40,8 @@
 #ifndef GENERATOR_H
 #define GENERATOR_H 1
 
+#define CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
+
 #define SET_LEFT(args, _left)  \
 	(args).left = _left; \
 	(args).flags |= FLAG_LEFT_SET
