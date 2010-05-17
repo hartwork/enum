@@ -66,7 +66,9 @@ enum argument_flags {
 	FLAG_STEP_SET = 1 << 2,
 	FLAG_COUNT_SET = 1 << 3,
 
-	FLAG_READY = 1 << 4
+	FLAG_READY = 1 << 4,
+
+	FLAG_RANDOM = 1 << 5
 };
 
 typedef enum _yield_status {

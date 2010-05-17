@@ -39,8 +39,12 @@
 
 #include "generator.h"
 #include "assertion.h"
-#include <stdlib.h>
-#include <math.h>  /* for fabs(double) */
+#include <stdlib.h>  /* for rand */
+#include <math.h>  /* for fabs, ceil, floor, fmod, log, pow, rand */
+#include <float.h>  /* for FLT_MAX */
+
+#define ENUM_MIN(a, b)  (((a) <= (b)) ? (a) : (b))
+#define ENUM_MAX(a, b)  (((a) >= (b)) ? (a) : (b))
 
 #define CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
 
@@ -117,10 +121,72 @@ void complete_args(arguments * args) {
 	}
 }
 
+float discrete_random_closed(float min, float max, float step_width) {
+	const float distance = fabs(max - min) + 1;
+	double zero_to_almost_one = 0;
+	double zero_to_almost_distance;
+	unsigned int depth;
+	int unsigned u;
+
+	assert(min <= max);
+	assert(step_width > 0);
+
+	/* Note: Using log(a)+log(b) for log(a*b) to push down overflow border */
+	depth = ceil((log(distance) + log(step_width)) / log(RAND_MAX));
+
+	/* Make random resolution at least on par with step_width */
+	/* z = (r * RAND_MAX^0 + .. + r * RAND_MAX^(n-1)) / RAND_MAX^n */
+	for (u = 0; u < depth; u++) {
+		zero_to_almost_one += rand() * pow(RAND_MAX, u);
+	}
+	zero_to_almost_one /= pow(RAND_MAX, depth);
+
+	zero_to_almost_distance = zero_to_almost_one * distance;
+	return min + zero_to_almost_distance - fmod(zero_to_almost_distance, step_width);
+}
+
 yield_status yield(arguments * args, float * dest) {
 	float candidate;
 
 	assert(CHECK_FLAG(args->flags, FLAG_READY));
+
+	if (CHECK_FLAG(args->flags, FLAG_RANDOM)) {
+		if (HAS_COUNT(args) && (args->position >= args->count)) {
+			*dest = 0.123456f;  /* Arbitrary magic value */
+			return YIELD_NONE;
+		}
+
+		if (HAS_RIGHT(args)) {
+			if (((args->left <= args->right)
+						&& (args->left + (args->step_num / args->step_denom) > args->right))
+					|| ((args->left >= args->right)
+						&& (args->left + (args->step_num / args->step_denom) < args->right))) {
+				*dest = 0.123456f;  /* Arbitrary magic value */
+				return YIELD_NONE;
+			}
+
+			*dest = discrete_random_closed(
+				ENUM_MIN(args->left, args->right),
+				ENUM_MAX(args->left, args->right),
+				fabs(args->step_num / args->step_denom));
+			args->position++;
+			assert(HAS_COUNT(args));
+			if (args->position == args->count) {
+				return YIELD_LAST;
+			} else {
+				return YIELD_MORE;
+			}
+		} else {
+			const float min = ((args->step_num / args->step_denom) >= 0) ? args->left : -FLT_MAX;
+			const float max = ((args->step_num / args->step_denom) >= 0) ? FLT_MAX : args->left;
+			*dest = discrete_random_closed(
+				min,
+				max,
+				fabs(args->step_num / args->step_denom));
+			return YIELD_MORE;
+		}
+	}
+
 	assert(HAS_LEFT(args) && HAS_STEP(args));
 	assert(! HAS_COUNT(args) || (HAS_COUNT(args) && (args->count > 0)));
 
