@@ -59,6 +59,11 @@
 	(args).count = _count; \
 	(args).flags |= FLAG_COUNT_SET
 
+#define INCREASE_PRECISION(args, _precision)  \
+	if (_precision > (args).precision) { \
+		(args).precision = _precision; \
+	}
+
 #define KNOWN(args)  (HAS_LEFT(args) + HAS_RIGHT(args) \
 	+ HAS_STEP(args) + HAS_COUNT(args))
 
@@ -68,7 +73,9 @@ enum argument_flags {
 	FLAG_STEP_SET = 1 << 2,
 	FLAG_COUNT_SET = 1 << 3,
 
-	FLAG_READY = 1 << 4
+	FLAG_READY = 1 << 4,
+
+	FLAG_USER_PRECISION = 1 << 5
 };
 
 typedef enum _yield_status {
@@ -85,6 +92,7 @@ typedef struct _arguments {
 	float step_denom;
 	unsigned int count;
 	unsigned int position;
+	unsigned int precision;
 } arguments;
 
 void complete_args(arguments * args);
