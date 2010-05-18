@@ -76,31 +76,31 @@ typedef struct _use_case {
 	unsigned int length;
 } use_case;
 
-int set_args_left(scaffolding * args, setter_value value) {
-	args->flags |= FLAG_LEFT_SET;
-	args->left = value.float_data;
+int set_scaffold_left(scaffolding * scaffold, setter_value value) {
+	scaffold->flags |= FLAG_LEFT_SET;
+	scaffold->left = value.float_data;
 	return 1;
 }
 
-int set_args_step(scaffolding * args, setter_value value) {
+int set_scaffold_step(scaffolding * scaffold, setter_value value) {
 	if (value.float_data == 0.0f) {
 		/* TODO Introduce named error code */
 		return 0;
 	}
-	args->flags |= FLAG_STEP_SET;
-	args->step = value.float_data;
+	scaffold->flags |= FLAG_STEP_SET;
+	scaffold->step = value.float_data;
 	return 1;
 }
 
-int set_args_right(scaffolding * args, setter_value value) {
-	args->flags |= FLAG_RIGHT_SET;
-	args->right = value.float_data;
+int set_scaffold_right(scaffolding * scaffold, setter_value value) {
+	scaffold->flags |= FLAG_RIGHT_SET;
+	scaffold->right = value.float_data;
 	return 1;
 }
 
-int set_args_count(scaffolding * args, setter_value value) {
-	args->flags |= FLAG_COUNT_SET;
-	args->count = value.uint_data;
+int set_scaffold_count(scaffolding * scaffold, setter_value value) {
+	scaffold->flags |= FLAG_COUNT_SET;
+	scaffold->count = value.uint_data;
 	return 1;
 }
 
@@ -157,25 +157,25 @@ int parse_args(unsigned int args_len, char **args, scaffolding *dest) {
 	unsigned int m;
 	use_case const *valid_case = NULL;
 
-	token_details const use_case_0[] = {{TOKEN_FLOAT, set_args_right}};
-	token_details const use_case_1[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_args_count}, {TOKEN_FLOAT, set_args_step}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_right}};
-	token_details const use_case_2[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_args_count}, {TOKEN_FLOAT, set_args_step}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_right}};
-	token_details const use_case_3[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_args_count}, {TOKEN_FLOAT, set_args_step}, {TOKEN_DOTDOT, NULL}};
-	token_details const use_case_4[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_args_count}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_right}};
-	token_details const use_case_5[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_step}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_right}};
-	token_details const use_case_6[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_args_count}, {TOKEN_FLOAT, set_args_step}, {TOKEN_DOTDOT, NULL}};
-	token_details const use_case_7[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_args_count}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_right}};
-	token_details const use_case_8[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_step}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_right}};
-	token_details const use_case_9[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_args_count}, {TOKEN_DOTDOT, NULL}};
-	token_details const use_case_10[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_step}, {TOKEN_DOTDOT, NULL}};
-	token_details const use_case_11[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_step}, {TOKEN_DOTDOT, NULL}};
-	token_details const use_case_12[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_args_count}, {TOKEN_DOTDOT, NULL}};
-	token_details const use_case_13[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_right}};
-	token_details const use_case_14[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_FLOAT, set_args_step}, {TOKEN_FLOAT, set_args_right}};
-	token_details const use_case_15[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_FLOAT, set_args_right}};
-	token_details const use_case_16[] = {{TOKEN_FLOAT, set_args_left}, {TOKEN_DOTDOT, NULL}};
-	token_details const use_case_17[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_args_right}};
-	token_details const use_case_18[] = {{TOKEN_MULTIPLIER, set_args_count}};
+	token_details const use_case_0[] = {{TOKEN_FLOAT, set_scaffold_right}};
+	token_details const use_case_1[] = {{TOKEN_FLOAT, set_scaffold_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_scaffold_count}, {TOKEN_FLOAT, set_scaffold_step}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_scaffold_right}};
+	token_details const use_case_2[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_scaffold_count}, {TOKEN_FLOAT, set_scaffold_step}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_scaffold_right}};
+	token_details const use_case_3[] = {{TOKEN_FLOAT, set_scaffold_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_scaffold_count}, {TOKEN_FLOAT, set_scaffold_step}, {TOKEN_DOTDOT, NULL}};
+	token_details const use_case_4[] = {{TOKEN_FLOAT, set_scaffold_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_scaffold_count}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_scaffold_right}};
+	token_details const use_case_5[] = {{TOKEN_FLOAT, set_scaffold_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_scaffold_step}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_scaffold_right}};
+	token_details const use_case_6[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_scaffold_count}, {TOKEN_FLOAT, set_scaffold_step}, {TOKEN_DOTDOT, NULL}};
+	token_details const use_case_7[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_scaffold_count}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_scaffold_right}};
+	token_details const use_case_8[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_scaffold_step}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_scaffold_right}};
+	token_details const use_case_9[] = {{TOKEN_FLOAT, set_scaffold_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_scaffold_count}, {TOKEN_DOTDOT, NULL}};
+	token_details const use_case_10[] = {{TOKEN_FLOAT, set_scaffold_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_scaffold_step}, {TOKEN_DOTDOT, NULL}};
+	token_details const use_case_11[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_scaffold_step}, {TOKEN_DOTDOT, NULL}};
+	token_details const use_case_12[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_MULTIPLIER, set_scaffold_count}, {TOKEN_DOTDOT, NULL}};
+	token_details const use_case_13[] = {{TOKEN_FLOAT, set_scaffold_left}, {TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_scaffold_right}};
+	token_details const use_case_14[] = {{TOKEN_FLOAT, set_scaffold_left}, {TOKEN_FLOAT, set_scaffold_step}, {TOKEN_FLOAT, set_scaffold_right}};
+	token_details const use_case_15[] = {{TOKEN_FLOAT, set_scaffold_left}, {TOKEN_FLOAT, set_scaffold_right}};
+	token_details const use_case_16[] = {{TOKEN_FLOAT, set_scaffold_left}, {TOKEN_DOTDOT, NULL}};
+	token_details const use_case_17[] = {{TOKEN_DOTDOT, NULL}, {TOKEN_FLOAT, set_scaffold_right}};
+	token_details const use_case_18[] = {{TOKEN_MULTIPLIER, set_scaffold_count}};
 
 	use_case table[19];
 	table[0].details = use_case_0;
