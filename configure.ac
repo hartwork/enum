@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.64])
-AC_INIT([enum], [0.1], [BUG-REPORT-ADDRESS])
+AC_INIT([enum], [0.1], [gitenum-members@fedoraproject.org])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_CONFIG_SRCDIR([src/main.c])
 # AC_CONFIG_HEADERS([config.h])
