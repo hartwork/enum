@@ -58,7 +58,12 @@
 			"%s: %s:%d: %s: Assertion `%s' failed.\n" \
 			"Aborted\n" \
 			"\n" \
-			"Please report this problem to <%s>.\n", \
+			"\n" \
+			"Please file a bug report for this problem at\n" \
+			"  https://fedorahosted.org/enum/newticket\n" \
+			"or write an email to <%s>.\n" \
+			"\n" \
+			"Thank you!\n", \
 			PACKAGE, __FILE__, __LINE__, __func__, #x, \
 			PACKAGE_BUGREPORT); \
 		exit(1); \
