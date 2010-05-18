@@ -87,42 +87,42 @@ void pseudo_call(float left, unsigned int count, float step, float right) {
 	puts("");
 }
 
-int towards_infinity(scaffolding const * args) {
-	return ((args->flags & (FLAG_RIGHT_SET | FLAG_COUNT_SET)) != (FLAG_RIGHT_SET | FLAG_COUNT_SET));
+int towards_infinity(scaffolding const * scaffold) {
+	return ((scaffold->flags & (FLAG_RIGHT_SET | FLAG_COUNT_SET)) != (FLAG_RIGHT_SET | FLAG_COUNT_SET));
 }
 
 int test_yield(float left, unsigned int count, float step, float right, const float * expected, unsigned int exp_len) {
-	scaffolding args;
+	scaffolding scaffold;
 	float dest;
 	unsigned int i;
 	int ret = 1;
 
 	pseudo_call(left, count, step, right);
 
-	initialize_scaffold(&args);
+	initialize_scaffold(&scaffold);
 
 	if (left != XX) {
-		SET_LEFT(args, left);
+		SET_LEFT(scaffold, left);
 	}
 
 	if (count != XX) {
-		SET_COUNT(args, count);
+		SET_COUNT(scaffold, count);
 	}
 
 	if (step != XX) {
-		SET_STEP(args, step);
+		SET_STEP(scaffold, step);
 	}
 
 	if (right != XX) {
-		SET_RIGHT(args, right);
+		SET_RIGHT(scaffold, right);
 	}
 
-	complete_scaffold(&args);
+	complete_scaffold(&scaffold);
 
 	puts(TEST_CASE_INDENT "    Received  Expected");
 	puts(TEST_CASE_INDENT "----------------------");
 	for (i = 0; i < exp_len; i++) {
-		yield_status status = yield(&args, &dest);
+		yield_status status = yield(&scaffold, &dest);
 
 		printf(TEST_CASE_INDENT "%2d) %8.1f  %8.1f\n", i + 1, dest, expected[i]);
 
@@ -138,7 +138,7 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 			}
 
 			if (i == (exp_len - 1)) {
-				if (towards_infinity(&args)) {
+				if (towards_infinity(&scaffold)) {
 					puts(TEST_CASE_INDENT "FAILURE (last despite infinity, generator?)");
 					ret = 0;
 				}
@@ -147,7 +147,7 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 
 		if (status == YIELD_MORE) {
 			if (i == (exp_len - 1)) {
-				if (! towards_infinity(&args)) {
+				if (! towards_infinity(&scaffold)) {
 					puts(TEST_CASE_INDENT "FAILURE (more instead of last, generator?)");
 					ret = 0;
 				}
@@ -155,13 +155,13 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 		}
 
 		if (expected[i] != dest) {
-			puts(TEST_CASE_INDENT "FAILURE (filling of args?)");
+			puts(TEST_CASE_INDENT "FAILURE (filling of scaffold?)");
 			ret = 0;
 		}
 	}
 
-	if (yield(&args, &dest) != YIELD_NONE) {
-		if (! towards_infinity(&args)) {
+	if (yield(&scaffold, &dest) != YIELD_NONE) {
+		if (! towards_infinity(&scaffold)) {
 			puts(TEST_CASE_INDENT "FAILURE (none expected, generator?)");
 			ret = 0;
 		}
