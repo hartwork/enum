@@ -52,6 +52,9 @@
 #define HAS_COUNT(args)  CHECK_FLAG(args->flags, FLAG_COUNT_SET)
 
 void complete_args(arguments * args) {
+	unsigned int precision = 0;
+	unsigned int i;
+
 	assert(KNOWN(args) >= 0);
 
 	if (KNOWN(args) == 1) {
@@ -99,6 +102,21 @@ void complete_args(arguments * args) {
 				/ args->step + 1);
 		} else if (! HAS_STEP(args)) {
 			SET_STEP(*args, (args->right - args->left) / (args->count - 1));
+			/* correct precision if necessary */
+			if (! CHECK_FLAG(args->flags, FLAG_USER_PRECISION)) {
+				unsigned int ptemp;
+				ptemp = (args->step - (int)args->step)
+					* pow(10, MAX_PD_DIGITS);
+				if (ptemp != 0) {
+					precision = MAX_PD_DIGITS;
+					for (i = MAX_PD_DIGITS; i > 0; i--) {
+						if (ptemp % (int)pow(10, i) != 0) {
+							precision = MAX_PD_DIGITS - i + 1;
+						}
+					}
+				}
+				INCREASE_PRECISION(*args, precision);
+			}
 		} else {
 			assert(! HAS_RIGHT(args));
 			SET_RIGHT(*args, args->left + args->step

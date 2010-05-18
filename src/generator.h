@@ -40,6 +40,8 @@
 #ifndef GENERATOR_H
 #define GENERATOR_H 1
 
+#define MAX_PD_DIGITS  5
+
 #define CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
 
 #define SET_LEFT(args, _left)  \
