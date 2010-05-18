@@ -99,7 +99,7 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 
 	pseudo_call(left, count, step, right);
 
-	initialize_args(&args);
+	initialize_scaffold(&args);
 
 	if (left != XX) {
 		SET_LEFT(args, left);
@@ -117,7 +117,7 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 		SET_RIGHT(args, right);
 	}
 
-	complete_args(&args);
+	complete_scaffold(&args);
 
 	puts(TEST_CASE_INDENT "    Received  Expected");
 	puts(TEST_CASE_INDENT "----------------------");

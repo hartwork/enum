@@ -51,14 +51,14 @@ int main(int argc, char **argv) {
 	int parsing_success;
 	char format[6];
 
-	initialize_args(&dest);
+	initialize_scaffold(&dest);
 	parsing_success = parse_args(alen, argv + 1, &dest);
 	if (parsing_success != 0) {
 		fprintf(stderr, "Command line parsing error\n");
 		return 1;
 	}
 
-	complete_args(&dest);
+	complete_scaffold(&dest);
 
 	assert(dest.precision < 100);
 	sprintf(format, "%%.%uf\n", dest.precision);

@@ -44,29 +44,29 @@
 
 #define CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
 
-#define SET_LEFT(args, _left)  \
-	(args).left = _left; \
-	(args).flags |= FLAG_LEFT_SET
+#define SET_LEFT(scaffold, _left)  \
+	(scaffold).left = _left; \
+	(scaffold).flags |= FLAG_LEFT_SET
 
-#define SET_RIGHT(args, _right)  \
-	(args).right = _right; \
-	(args).flags |= FLAG_RIGHT_SET
+#define SET_RIGHT(scaffold, _right)  \
+	(scaffold).right = _right; \
+	(scaffold).flags |= FLAG_RIGHT_SET
 
-#define SET_STEP(args, _step)  \
-	(args).step = _step; \
-	(args).flags |= FLAG_STEP_SET
+#define SET_STEP(scaffold, _step)  \
+	(scaffold).step = _step; \
+	(scaffold).flags |= FLAG_STEP_SET
 
-#define SET_COUNT(args, _count)  \
-	(args).count = _count; \
-	(args).flags |= FLAG_COUNT_SET
+#define SET_COUNT(scaffold, _count)  \
+	(scaffold).count = _count; \
+	(scaffold).flags |= FLAG_COUNT_SET
 
-#define INCREASE_PRECISION(args, _precision)  \
-	if (_precision > (args).precision) { \
-		(args).precision = _precision; \
+#define INCREASE_PRECISION(scaffold, _precision)  \
+	if (_precision > (scaffold).precision) { \
+		(scaffold).precision = _precision; \
 	}
 
-#define KNOWN(args)  (HAS_LEFT(args) + HAS_RIGHT(args) \
-	+ HAS_STEP(args) + HAS_COUNT(args))
+#define KNOWN(scaffold)  (HAS_LEFT(scaffold) + HAS_RIGHT(scaffold) \
+	+ HAS_STEP(scaffold) + HAS_COUNT(scaffold))
 
 enum scaffolding_flags {
 	FLAG_LEFT_SET = 1 << 0,
@@ -96,9 +96,9 @@ typedef struct _scaffolding {
 	unsigned int precision;
 } scaffolding;
 
-void complete_args(scaffolding * args);
-void calculator(scaffolding * args);
-yield_status yield(scaffolding * args, float * dest);
-void initialize_args(scaffolding * dest);
+void complete_scaffold(scaffolding * scaffold);
+void calculator(scaffolding * scaffold);
+yield_status yield(scaffolding * scaffold, float * dest);
+void initialize_scaffold(scaffolding * dest);
 
 #endif /* GENERATOR_H */

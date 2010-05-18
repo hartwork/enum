@@ -46,66 +46,67 @@
 #define ENUM_MIN(a, b)  (((a) <= (b)) ? (a) : (b))
 #define ENUM_MAX(a, b)  (((a) >= (b)) ? (a) : (b))
 
-#define HAS_LEFT(args)  CHECK_FLAG(args->flags, FLAG_LEFT_SET)
-#define HAS_RIGHT(args)  CHECK_FLAG(args->flags, FLAG_RIGHT_SET)
-#define HAS_STEP(args)  CHECK_FLAG(args->flags, FLAG_STEP_SET)
-#define HAS_COUNT(args)  CHECK_FLAG(args->flags, FLAG_COUNT_SET)
+#define HAS_LEFT(scaffold)  CHECK_FLAG(scaffold->flags, FLAG_LEFT_SET)
+#define HAS_RIGHT(scaffold)  CHECK_FLAG(scaffold->flags, FLAG_RIGHT_SET)
+#define HAS_STEP(scaffold)  CHECK_FLAG(scaffold->flags, FLAG_STEP_SET)
+#define HAS_COUNT(scaffold)  CHECK_FLAG(scaffold->flags, FLAG_COUNT_SET)
 
-void complete_args(scaffolding * args) {
+void complete_scaffold(scaffolding * scaffold) {
 	unsigned int precision = 0;
 	unsigned int i;
 
-	assert(KNOWN(args) >= 0);
+	assert(KNOWN(scaffold) >= 0);
 
-	if (KNOWN(args) == 1) {
-		if (! HAS_LEFT(args)) {
-			SET_LEFT(*args, 1.0f);
+	if (KNOWN(scaffold) == 1) {
+		if (! HAS_LEFT(scaffold)) {
+			SET_LEFT(*scaffold, 1.0f);
 		} else {
-			SET_STEP(*args, 1.0f);
+			SET_STEP(*scaffold, 1.0f);
 		}
-		assert(KNOWN(args) == 2);
+		assert(KNOWN(scaffold) == 2);
 	}
 
-	assert(KNOWN(args) >= 2);
-	if (KNOWN(args) == 2) {
-		if (HAS_LEFT(args) && HAS_STEP(args)) {
+	assert(KNOWN(scaffold) >= 2);
+	if (KNOWN(scaffold) == 2) {
+		if (HAS_LEFT(scaffold) && HAS_STEP(scaffold)) {
 			/* running to infinity */
-			args->flags |= FLAG_READY;
-			assert(! HAS_COUNT(args) && ! HAS_RIGHT(args));
-			assert(KNOWN(args) == 2);
+			scaffold->flags |= FLAG_READY;
+			assert(! HAS_COUNT(scaffold) && ! HAS_RIGHT(scaffold));
+			assert(KNOWN(scaffold) == 2);
 			return;
 		}
 
 		/* NOTE: Step has higher precedence */
-		if (! HAS_STEP(args)) {
-			SET_STEP(*args, 1.0f);
+		if (! HAS_STEP(scaffold)) {
+			SET_STEP(*scaffold, 1.0f);
 		} else {
-			if (HAS_RIGHT(args)) {
-				assert(HAS_STEP(args));
-				SET_LEFT(*args, args->right
-					- args->step * floor(
-					args->right / args->step));
+			if (HAS_RIGHT(scaffold)) {
+				assert(HAS_STEP(scaffold));
+				SET_LEFT(*scaffold, scaffold->right
+					- scaffold->step * floor(
+					scaffold->right / scaffold->step));
 			} else {
-				SET_LEFT(*args, 1.0f);
+				SET_LEFT(*scaffold, 1.0f);
 			}
 		}
-		assert(KNOWN(args) == 3);
+		assert(KNOWN(scaffold) == 3);
 	}
 
-	assert(KNOWN(args) >= 3);
-	if (KNOWN(args) == 3) {
-		if (! HAS_LEFT(args)) {
-			SET_LEFT(*args, args->right - (args->count - 1)
-				* args->step);
-		} else if (! HAS_COUNT(args)) {
-			SET_COUNT(*args, fabs(args->right - args->left)
-				/ args->step + 1);
-		} else if (! HAS_STEP(args)) {
-			SET_STEP(*args, (args->right - args->left) / (args->count - 1));
+	assert(KNOWN(scaffold) >= 3);
+	if (KNOWN(scaffold) == 3) {
+		if (! HAS_LEFT(scaffold)) {
+			SET_LEFT(*scaffold, scaffold->right - (scaffold->count - 1)
+				* scaffold->step);
+		} else if (! HAS_COUNT(scaffold)) {
+			SET_COUNT(*scaffold, fabs(scaffold->right - scaffold->left)
+				/ scaffold->step + 1);
+		} else if (! HAS_STEP(scaffold)) {
+			SET_STEP(*scaffold, (scaffold->right - scaffold->left)
+					/ (scaffold->count - 1));
 			/* correct precision if necessary */
-			if (! CHECK_FLAG(args->flags, FLAG_USER_PRECISION)) {
+			if (! CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION)) {
 				unsigned int ptemp;
-				ptemp = (args->step - (int)args->step)
+				ptemp = (scaffold->step - (int)scaffold->step)
 					* pow(10, MAX_PD_DIGITS);
 				if (ptemp != 0) {
 					precision = MAX_PD_DIGITS;
@@ -115,24 +116,24 @@ void complete_args(scaffolding * args) {
 						}
 					}
 				}
-				INCREASE_PRECISION(*args, precision);
+				INCREASE_PRECISION(*scaffold, precision);
 			}
 		} else {
-			assert(! HAS_RIGHT(args));
-			SET_RIGHT(*args, args->left + args->step
-				* (args->count - 1));
+			assert(! HAS_RIGHT(scaffold));
+			SET_RIGHT(*scaffold, scaffold->left + scaffold->step
+				* (scaffold->count - 1));
 		}
 	}
 
-	args->flags |= FLAG_READY;
-	assert(KNOWN(args) == 4);
+	scaffold->flags |= FLAG_READY;
+	assert(KNOWN(scaffold) == 4);
 
 	{
 		/* Ensure step direction aligns with relation between left and right */
-		const int expected_direction = (args->left <= args->right) ? +1 : -1;
-		const int step_direction = (args->step >= 0) ? +1 : -1;
+		const int expected_direction = (scaffold->left <= scaffold->right) ? +1 : -1;
+		const int step_direction = (scaffold->step >= 0) ? +1 : -1;
 		if (expected_direction != step_direction) {
-			args->step = -args->step;
+			scaffold->step = -scaffold->step;
 		}
 	}
 }
@@ -161,86 +162,86 @@ float discrete_random_closed(float min, float max, float step_width) {
 	return min + zero_to_almost_distance - fmod(zero_to_almost_distance, step_width);
 }
 
-yield_status yield(scaffolding * args, float * dest) {
+yield_status yield(scaffolding * scaffold, float * dest) {
 	float candidate;
 
-	assert(CHECK_FLAG(args->flags, FLAG_READY));
+	assert(CHECK_FLAG(scaffold->flags, FLAG_READY));
 
-	if (CHECK_FLAG(args->flags, FLAG_RANDOM)) {
-		if (HAS_COUNT(args) && (args->position >= args->count)) {
+	if (CHECK_FLAG(scaffold->flags, FLAG_RANDOM)) {
+		if (HAS_COUNT(scaffold) && (scaffold->position >= scaffold->count)) {
 			*dest = 0.123456f;  /* Arbitrary magic value */
 			return YIELD_NONE;
 		}
 
-		if (HAS_RIGHT(args)) {
-			if (((args->left <= args->right)
-						&& (args->left + args->step > args->right))
-					|| ((args->left >= args->right)
-						&& (args->left + args->step < args->right))) {
+		if (HAS_RIGHT(scaffold)) {
+			if (((scaffold->left <= scaffold->right)
+						&& (scaffold->left + scaffold->step > scaffold->right))
+					|| ((scaffold->left >= scaffold->right)
+						&& (scaffold->left + scaffold->step < scaffold->right))) {
 				*dest = 0.123456f;  /* Arbitrary magic value */
 				return YIELD_NONE;
 			}
 
 			*dest = discrete_random_closed(
-				ENUM_MIN(args->left, args->right),
-				ENUM_MAX(args->left, args->right),
-				fabs(args->step));
-			args->position++;
-			assert(HAS_COUNT(args));
-			if (args->position == args->count) {
+				ENUM_MIN(scaffold->left, scaffold->right),
+				ENUM_MAX(scaffold->left, scaffold->right),
+				fabs(scaffold->step));
+			scaffold->position++;
+			assert(HAS_COUNT(scaffold));
+			if (scaffold->position == scaffold->count) {
 				return YIELD_LAST;
 			} else {
 				return YIELD_MORE;
 			}
 		} else {
-			const float min = (args->step >= 0) ? args->left : -FLT_MAX;
-			const float max = (args->step >= 0) ? FLT_MAX : args->left;
+			const float min = (scaffold->step >= 0) ? scaffold->left : -FLT_MAX;
+			const float max = (scaffold->step >= 0) ? FLT_MAX : scaffold->left;
 			*dest = discrete_random_closed(
 				min,
 				max,
-				fabs(args->step));
+				fabs(scaffold->step));
 			return YIELD_MORE;
 		}
 	}
 
-	assert(HAS_LEFT(args) && HAS_STEP(args));
-	assert(! HAS_COUNT(args) || (HAS_COUNT(args) && (args->count > 0)));
+	assert(HAS_LEFT(scaffold) && HAS_STEP(scaffold));
+	assert(! HAS_COUNT(scaffold) || (HAS_COUNT(scaffold) && (scaffold->count > 0)));
 
 	/* Gone too far already? */
-	if (HAS_COUNT(args) && (args->position >= args->count)) {
+	if (HAS_COUNT(scaffold) && (scaffold->position >= scaffold->count)) {
 		*dest = 0.123456f;  /* Arbitrary magic value */
 		return YIELD_NONE;
 	}
 
-	candidate = args->left + args->step * args->position;
+	candidate = scaffold->left + scaffold->step * scaffold->position;
 	/* TODO check for float overflow, float imprecision */
 
 	/* Gone too far now? */
-	if (HAS_RIGHT(args)
-			&& (((args->left <= args->right) && (candidate > args->right))
-				|| ((args->left >= args->right) && (candidate < args->right)))) {
+	if (HAS_RIGHT(scaffold)
+			&& (((scaffold->left <= scaffold->right) && (candidate > scaffold->right))
+				|| ((scaffold->left >= scaffold->right) && (candidate < scaffold->right)))) {
 		*dest = 0.123456f;  /* Arbitrary magic value */
 		return YIELD_NONE;
 	}
 
 	*dest = candidate;
-	args->position++;
+	scaffold->position++;
 
 	/* One value only? */
-	if (HAS_COUNT(args) && (args->count == 1)) {
+	if (HAS_COUNT(scaffold) && (scaffold->count == 1)) {
 		return YIELD_LAST;
 	}
 
 	/* Will there be more? */
-	if ((HAS_COUNT(args) && (args->position == args->count))
-			|| (HAS_RIGHT(args) && (*dest == args->right))) {
+	if ((HAS_COUNT(scaffold) && (scaffold->position == scaffold->count))
+			|| (HAS_RIGHT(scaffold) && (*dest == scaffold->right))) {
 		return YIELD_LAST;
 	} else {
 		return YIELD_MORE;
 	}
 }
 
-void initialize_args(scaffolding * dest) {
+void initialize_scaffold(scaffolding * dest) {
 	dest->flags = 0;
 	dest->position = 0;
 	dest->precision = 0;
