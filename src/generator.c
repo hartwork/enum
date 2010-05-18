@@ -51,7 +51,7 @@
 #define HAS_STEP(args)  CHECK_FLAG(args->flags, FLAG_STEP_SET)
 #define HAS_COUNT(args)  CHECK_FLAG(args->flags, FLAG_COUNT_SET)
 
-void complete_args(arguments * args) {
+void complete_args(scaffolding * args) {
 	unsigned int precision = 0;
 	unsigned int i;
 
@@ -161,7 +161,7 @@ float discrete_random_closed(float min, float max, float step_width) {
 	return min + zero_to_almost_distance - fmod(zero_to_almost_distance, step_width);
 }
 
-yield_status yield(arguments * args, float * dest) {
+yield_status yield(scaffolding * args, float * dest) {
 	float candidate;
 
 	assert(CHECK_FLAG(args->flags, FLAG_READY));
@@ -240,7 +240,7 @@ yield_status yield(arguments * args, float * dest) {
 	}
 }
 
-void initialize_args(arguments * dest) {
+void initialize_args(scaffolding * dest) {
 	dest->flags = 0;
 	dest->position = 0;
 	dest->precision = 0;

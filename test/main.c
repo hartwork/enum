@@ -87,12 +87,12 @@ void pseudo_call(float left, unsigned int count, float step, float right) {
 	puts("");
 }
 
-int towards_infinity(arguments const * args) {
+int towards_infinity(scaffolding const * args) {
 	return ((args->flags & (FLAG_RIGHT_SET | FLAG_COUNT_SET)) != (FLAG_RIGHT_SET | FLAG_COUNT_SET));
 }
 
 int test_yield(float left, unsigned int count, float step, float right, const float * expected, unsigned int exp_len) {
-	arguments args;
+	scaffolding args;
 	float dest;
 	unsigned int i;
 	int ret = 1;

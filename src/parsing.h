@@ -42,6 +42,6 @@
 
 #include "generator.h"
 
-int parse_args(unsigned int args_len, char **args, arguments *dest);
+int parse_args(unsigned int args_len, char **args, scaffolding *dest);
 
 #endif /* PARSING_H */

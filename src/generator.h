@@ -68,7 +68,7 @@
 #define KNOWN(args)  (HAS_LEFT(args) + HAS_RIGHT(args) \
 	+ HAS_STEP(args) + HAS_COUNT(args))
 
-enum argument_flags {
+enum scaffolding_flags {
 	FLAG_LEFT_SET = 1 << 0,
 	FLAG_RIGHT_SET = 1 << 1,
 	FLAG_STEP_SET = 1 << 2,
@@ -86,7 +86,7 @@ typedef enum _yield_status {
 	YIELD_NONE  /* nothing could be calculated */
 } yield_status;
 
-typedef struct _arguments {
+typedef struct _scaffolding {
 	int flags;
 	float left;
 	float right;
@@ -94,11 +94,11 @@ typedef struct _arguments {
 	unsigned int count;
 	unsigned int position;
 	unsigned int precision;
-} arguments;
+} scaffolding;
 
-void complete_args(arguments * args);
-void calculator(arguments * args);
-yield_status yield(arguments * args, float * dest);
-void initialize_args(arguments * dest);
+void complete_args(scaffolding * args);
+void calculator(scaffolding * args);
+yield_status yield(scaffolding * args, float * dest);
+void initialize_args(scaffolding * dest);
 
 #endif /* GENERATOR_H */

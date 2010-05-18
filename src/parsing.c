@@ -64,7 +64,7 @@ typedef union _setter_value {
 	float float_data;
 } setter_value;
 
-typedef int (*setter_function_pointer)(arguments *, setter_value);
+typedef int (*setter_function_pointer)(scaffolding *, setter_value);
 
 typedef struct _token_details {
 	token_type type;
@@ -76,13 +76,13 @@ typedef struct _use_case {
 	unsigned int length;
 } use_case;
 
-int set_args_left(arguments * args, setter_value value) {
+int set_args_left(scaffolding * args, setter_value value) {
 	args->flags |= FLAG_LEFT_SET;
 	args->left = value.float_data;
 	return 1;
 }
 
-int set_args_step(arguments * args, setter_value value) {
+int set_args_step(scaffolding * args, setter_value value) {
 	if (value.float_data == 0.0f) {
 		/* TODO Introduce named error code */
 		return 0;
@@ -92,13 +92,13 @@ int set_args_step(arguments * args, setter_value value) {
 	return 1;
 }
 
-int set_args_right(arguments * args, setter_value value) {
+int set_args_right(scaffolding * args, setter_value value) {
 	args->flags |= FLAG_RIGHT_SET;
 	args->right = value.float_data;
 	return 1;
 }
 
-int set_args_count(arguments * args, setter_value value) {
+int set_args_count(scaffolding * args, setter_value value) {
 	args->flags |= FLAG_COUNT_SET;
 	args->count = value.uint_data;
 	return 1;
@@ -149,7 +149,7 @@ token_type identify_token(const char *arg, setter_value *value) {
 	return TOKEN_ERROR_PARSE;
 }
 
-int parse_args(unsigned int args_len, char **args, arguments *dest) {
+int parse_args(unsigned int args_len, char **args, scaffolding *dest) {
 	unsigned int i;
 	unsigned int j;
 	unsigned int k;

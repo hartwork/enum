@@ -45,7 +45,7 @@
 
 int main(int argc, char **argv) {
 	unsigned int alen = (unsigned int)(argc - 1);
-	arguments dest;
+	scaffolding dest;
 	float out;
 	int ret;
 	int parsing_success;
