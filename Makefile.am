@@ -15,4 +15,10 @@ man/enum.1: man/enum.1.ronn Makefile.am
 		< "$<" \
 		> "$@"
 
-dist-hook: man/enum.1
+git-describe-hook:
+	git diff --quiet || { echo 'STOP, you have uncommitted changes around' ; false ; }
+	sed 's|^\(AC_INIT(.\+, \[\)[^,]\+\(\], .\+\)$$|\1'`git describe`'\2|' -i configure.ac
+	autoreconf -i -f
+	git checkout HEAD configure.ac
+
+dist-hook: git-describe-hook man/enum.1
