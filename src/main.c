@@ -48,12 +48,12 @@ int main(int argc, char **argv) {
 	scaffolding dest;
 	float out;
 	int ret;
-	int parsing_success;
+	parse_return parsing_success;
 	char format[6];
 
 	initialize_scaffold(&dest);
 	parsing_success = parse_args(alen, argv + 1, &dest);
-	if (parsing_success != 0) {
+	if (parsing_success != PARSE_SUCCESS) {
 		fprintf(stderr, "Command line parsing error\n");
 		return 1;
 	}

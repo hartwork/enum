@@ -84,7 +84,7 @@ int set_scaffold_left(scaffolding * scaffold, setter_value value) {
 
 int set_scaffold_step(scaffolding * scaffold, setter_value value) {
 	if (value.float_data == 0.0f) {
-		/* TODO Introduce named error code */
+		/* error code handled below */
 		return 0;
 	}
 	scaffold->flags |= FLAG_STEP_SET;
@@ -238,8 +238,7 @@ int parse_args(unsigned int args_len, char **args, scaffolding *dest) {
 				}
 			}
 		} else {
-			/* TODO error handling */
-			return 1;
+			return PARSE_ERROR_UNKNOWN_TYPE;
 		}
 	}
 
@@ -264,7 +263,8 @@ int parse_args(unsigned int args_len, char **args, scaffolding *dest) {
 			if (type != TOKEN_DOTDOT) {
 				int success = valid_case->details[l].setter(dest, value);
 				if (! success) {
-					return 1;
+					/* only case for no success: step == 0 */
+					return PARSE_ERROR_ZERO_STEP;
 				}
 				/* auto-detect precision */
 				if (type == TOKEN_FLOAT) {
@@ -285,13 +285,11 @@ int parse_args(unsigned int args_len, char **args, scaffolding *dest) {
 		if (((dest->flags & (FLAG_LEFT_SET | FLAG_RIGHT_SET))
 					== (FLAG_LEFT_SET | FLAG_RIGHT_SET))
 				&& (dest->left == dest->right)) {
-			/* TODO named error code */
-			return 1;
+			return PARSE_ERROR_ZERO_RANGE;
 		}
 
-		return 0;
+		return PARSE_SUCCESS;
 	} else {
-		/* TODO invalid case */
-		return 1;
+		return PARSE_ERROR_INVALID_INPUT;
 	}
 }
