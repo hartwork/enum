@@ -52,5 +52,6 @@ typedef enum _parse_return {
 } parse_return;
 
 int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest);
+unsigned int parse_parameters(unsigned int original_argc, char **original_argv, scaffolding *dest);
 
 #endif /* PARSING_H */

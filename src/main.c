@@ -44,7 +44,7 @@
 #include <stdio.h>
 
 int main(int argc, char **argv) {
-	unsigned int alen = (unsigned int)(argc - 1);
+	unsigned int argpos;
 	scaffolding dest;
 	float out;
 	int ret;
@@ -52,7 +52,8 @@ int main(int argc, char **argv) {
 	char format[6];
 
 	initialize_scaffold(&dest);
-	parsing_success = parse_args(alen, argv + 1, &dest);
+	argpos = parse_parameters(argc, argv, &dest);
+	parsing_success = parse_args(argc - argpos, argv + argpos, &dest);
 	if (parsing_success != PARSE_SUCCESS) {
 		fprintf(stderr, "Command line parsing error\n");
 		return 1;

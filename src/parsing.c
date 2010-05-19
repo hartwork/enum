@@ -43,6 +43,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <getopt.h>
 
 #define IS_TOKEN_ERROR(type)  ((type) >= TOKEN_ERROR)
 
@@ -147,6 +148,67 @@ token_type identify_token(const char *arg, setter_value *value) {
 	}
 
 	return TOKEN_ERROR_PARSE;
+}
+
+unsigned int parse_parameters(unsigned int original_argc, char **original_argv, scaffolding *dest) {
+	int c;
+	int option_index = 0;
+	while (1) {
+		struct option long_options[] = {
+			{"help",         no_argument,       0, 'h'},
+			{"random",       no_argument,       0, 'r'},
+			{"characters",   no_argument,       0, 'c'},
+			{"omit-newline", no_argument,       0, 'n'},
+			{"seed",         required_argument, 0, 'i'},
+			{"format",       required_argument, 0, 'f'},
+			{"word",         required_argument, 0, 'w'},
+			{"separator",    required_argument, 0, 's'},
+			{"precision",    required_argument, 0, 'p'},
+			{0, 0, 0, 0}
+		};
+
+		c = getopt_long(original_argc, original_argv, "+cf:hi:np:rs:w:", long_options, &option_index);
+
+		if (c == -1) {
+			break;
+		}
+
+		switch (c) {
+		case 'c':
+			break;
+
+		case 'f':
+			break;
+
+		case 'h':
+			break;
+
+		case 'i':
+			break;
+
+		case 'n':
+			break;
+
+		case 'p':
+			break;
+
+		case 'r':
+			break;
+
+		case 's':
+			break;
+
+		case 'w':
+			break;
+
+		case '?':
+			break;
+
+		default:
+			abort();
+		}
+	}
+	return optind;
 }
 
 int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest) {
