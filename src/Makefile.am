@@ -11,8 +11,8 @@ enum_SOURCES = \
 	generator.h
 
 if ! USE_SYSTEM_GETOPT
-enum_CPPFLAGS = -Iglibc-2.11.1/posix
+enum_CPPFLAGS = -I../thirdparty/glibc-2.11.1/posix
 enum_SOURCES += \
-	glibc-2.11.1/posix/getopt.h \
-	glibc-2.11.1/posix/getopt.c
+	../thirdparty/glibc-2.11.1/posix/getopt.h \
+	../thirdparty/glibc-2.11.1/posix/getopt.c
 endif
