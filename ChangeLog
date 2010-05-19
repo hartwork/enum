@@ -1,5 +1,9 @@
 2010-05-19  Sebastian Pipping <sping@gentoo.org>
 
+	* Install shipped man page (fixes bug #16)
+
+2010-05-19  Sebastian Pipping <sping@gentoo.org>
+
 	* Integrate assertion.h into build system (fixes bug #15)
 
 2010-05-18  Jan Hauke Rahm <jhr@debian.org>

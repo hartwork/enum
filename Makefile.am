@@ -1,8 +1,10 @@
 SUBDIRS = src test
 
-EXTRA_DIST = \
-	man/enum.1.ronn \
+man1_MANS = \
 	man/enum.1
+
+EXTRA_DIST = \
+	man/enum.1.ronn
 
 
 PACKAGE_VERSION = `fgrep AC_INIT configure.ac | sed 's|^.\+, \[\(.\+\)\],.\+$$|\1|'`
