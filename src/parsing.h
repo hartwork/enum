@@ -51,6 +51,6 @@ typedef enum _parse_return {
 	PARSE_ERROR_INVALID_INPUT  /* generic parsing error */
 } parse_return;
 
-int parse_args(unsigned int args_len, char **args, scaffolding *dest);
+int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest);
 
 #endif /* PARSING_H */

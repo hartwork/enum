@@ -149,7 +149,7 @@ token_type identify_token(const char *arg, setter_value *value) {
 	return TOKEN_ERROR_PARSE;
 }
 
-int parse_args(unsigned int args_len, char **args, scaffolding *dest) {
+int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest) {
 	unsigned int i;
 	unsigned int j;
 	unsigned int k;
@@ -217,9 +217,9 @@ int parse_args(unsigned int args_len, char **args, scaffolding *dest) {
 	table[18].details = use_case_18;
 	table[18].length = sizeof(use_case_18) / sizeof(token_details);
 
-	for (i = 0; i < args_len; i++) {
+	for (i = 0; i < reduced_argc; i++) {
 		setter_value value;
-		token_type type = identify_token(args[i], &value);
+		token_type type = identify_token(reduced_argv[i], &value);
 
 		if (! IS_TOKEN_ERROR(type)) {
 			for (j = 0; j < (sizeof(table) / sizeof(use_case)); j++) {
@@ -246,7 +246,7 @@ int parse_args(unsigned int args_len, char **args, scaffolding *dest) {
 		if (table[k].length == 0)
 			continue;
 
-		if (table[k].length != args_len)
+		if (table[k].length != reduced_argc)
 			continue;
 
 		/* valid case left */
@@ -257,7 +257,7 @@ int parse_args(unsigned int args_len, char **args, scaffolding *dest) {
 	if (valid_case) {
 		setter_value value;
 		for (l = 0; l < valid_case->length; l++) {
-			token_type type = identify_token(args[l], &value);
+			token_type type = identify_token(reduced_argv[l], &value);
 			assert(type == valid_case->details[l].type);
 
 			if (type != TOKEN_DOTDOT) {
@@ -269,9 +269,9 @@ int parse_args(unsigned int args_len, char **args, scaffolding *dest) {
 				/* auto-detect precision */
 				if (type == TOKEN_FLOAT) {
 					if (! CHECK_FLAG(dest->flags, FLAG_USER_PRECISION)) {
-						unsigned int flen = strlen(args[l]);
+						unsigned int flen = strlen(reduced_argv[l]);
 						for (m = 0; m < flen; m++) {
-							if (args[l][m] == '.') {
+							if (reduced_argv[l][m] == '.') {
 								INCREASE_PRECISION(*dest, flen - m - 1);
 								break;
 							}
