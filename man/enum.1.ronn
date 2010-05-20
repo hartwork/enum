@@ -17,7 +17,11 @@ enum(1) -- seq- and jot-like enumerator
 
 ## DESCRIPTION
 
-TODO
+`enum` enumerates values (numbers) from <LEFT> to <RIGHT> adding
+<STEP> each time.  If <STEP> is not provided it is implied.
+No more than <COUNT> values are printed.  Before printing
+values are passed through a formatter.  Please see <OPTIONS> for
+details on controlling the formatter or <EXAMPLES> for use cases.
 
 
 ## EXAMPLES
@@ -27,7 +31,68 @@ TODO
 
 ## OPTIONS
 
-TODO
+### MODES
+
+  * `-r`, `--random`:
+    Produces random numbers instead of monotone sequences,
+    potentially with duplicates.
+
+### FORMATTING
+
+  * `-b`, `--dumb`=<TEXT>:
+    Overrides the output format to <TEXT> without interpolating
+    placeholders.  For instance `enum -b 'foo % 10' 3x` produces
+    the string "foo % 10" three times.
+    
+  * `-c`, `--characters`:
+    Overrides the output format to "%c" producing characters.
+    For example `enum -c 65 67` produces the letters "A", "B" and "C".
+    
+  * `-n`, `--omit-newline`:
+    Omits the trailing newline from being printed.
+
+    # abc
+    def
+    
+  * `-p`, `--precision`=<COUNT>:
+    Overrides automatic selection of precision to print <COUNT>
+    digits atfer the dot, e.g. "0.100" for <COUNT> = 3.
+    By default the number of digits to print is computed from the
+    arguments given and the potentially computed step size.
+
+  * `-s`, `--separator`=<TEXT>:
+    Overrides the seperator being printed between values.
+    By default values are seperated by a newline.
+    
+  * `-w`, `--word`, `--format`=<FORMAT>:
+    Overrides the default output format with <FORMAT>.
+    For details on allowed formats please see printf(3).
+
+    If <FORMAT> does not contain any placeholders enum will
+    error out with code 1.  In contrast, jot would have appended
+    the numbers value instead.  To make numbers appear at the end
+    please adjust <FORMAT> accordingly with enum.
+
+### OTHER
+
+  * `--help`:
+    Outputs usage information and exits with code 0 (success).
+
+  * `--version`:
+    Displays version information and exits with code 0 (success).
+    
+
+## HISTORY
+
+`enum` is a unifaction of GNU seq and BSD jot. At the core both
+tools print sequences of numbers.  GNU seq has a clean interface
+but very limited functionality.  In contrast BSD jot offers more
+advanced features like random numbers and custom formatting at
+the cost of a rather unfriendly interface.
+
+With `enum` we try to offer a tool with the power of BSD jot and
+and a usuable, easily memorable interface.  Enum is licensed
+under a BSD license and written in C89 for maximum adoptability.
 
 
 ## AUTHORS
