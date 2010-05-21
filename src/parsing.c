@@ -153,6 +153,8 @@ token_type identify_token(const char *arg, setter_value *value) {
 unsigned int parse_parameters(unsigned int original_argc, char **original_argv, scaffolding *dest) {
 	int c;
 	int option_index = 0;
+	unsigned int precision = 0;
+
 	while (1) {
 		struct option long_options[] = {
 			{"help",         no_argument,       0, 'h'},
@@ -192,6 +194,14 @@ unsigned int parse_parameters(unsigned int original_argc, char **original_argv, 
 			break;
 
 		case 'p':
+			precision = strtoul(optarg, NULL, 10);
+			if (precision > 99) {
+				/* TODO error handling */
+				fprintf(stderr, "Precision must be between 0 and 99\n");
+				break;
+			}
+			INCREASE_PRECISION(*dest, precision);
+			dest->flags |= FLAG_USER_PRECISION;
 			break;
 
 		case 'r':
