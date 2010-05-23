@@ -176,6 +176,14 @@ int escape(const char *str, const char esc, char **dest) {
         return 1;
 }
 
+void dump_usage() {
+	puts("TODO USAGE");
+}
+
+void dump_version() {
+	puts(PACKAGE_VERSION);
+}
+
 unsigned int parse_parameters(unsigned int original_argc, char **original_argv, scaffolding *dest) {
 	int c;
 	int option_index = 0;
@@ -184,6 +192,7 @@ unsigned int parse_parameters(unsigned int original_argc, char **original_argv, 
 	while (1) {
 		struct option long_options[] = {
 			{"help",         no_argument,       0, 'h'},
+			{"version",      no_argument,       0, 'v'},
 			{"random",       no_argument,       0, 'r'},
 			{"characters",   no_argument,       0, 'c'},
 			{"omit-newline", no_argument,       0, 'n'},
@@ -196,7 +205,7 @@ unsigned int parse_parameters(unsigned int original_argc, char **original_argv, 
 			{0, 0, 0, 0}
 		};
 
-		c = getopt_long(original_argc, original_argv, "+b:cf:hi:np:rs:w:", long_options, &option_index);
+		c = getopt_long(original_argc, original_argv, "+b:cf:hi:np:rs:vw:", long_options, &option_index);
 
 		if (c == -1) {
 			break;
@@ -224,6 +233,8 @@ unsigned int parse_parameters(unsigned int original_argc, char **original_argv, 
 			break;
 
 		case 'h':
+			dump_usage();
+			exit((original_argc == 2) ? 0 : 1);
 			break;
 
 		case 'i':
@@ -252,6 +263,15 @@ unsigned int parse_parameters(unsigned int original_argc, char **original_argv, 
 		case 's':
 			/* address of optarg in argv */
 			dest->separator = optarg;
+			break;
+
+		case 'v':
+			if (original_argc != 2) {
+				dump_usage();
+				exit(1);
+			}
+			dump_version();
+			exit(0);
 			break;
 
 		case '?':
