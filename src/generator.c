@@ -51,10 +51,26 @@
 #define HAS_STEP(scaffold)  CHECK_FLAG(scaffold->flags, FLAG_STEP_SET)
 #define HAS_COUNT(scaffold)  CHECK_FLAG(scaffold->flags, FLAG_COUNT_SET)
 
-void complete_scaffold(scaffolding * scaffold) {
+unsigned int calc_precision(float element) {
 	unsigned int precision = 0;
+	unsigned int ptemp;
 	unsigned int i;
 
+	ptemp = (element - (int)element) * pow(10, MAX_PD_DIGITS);
+	if (ptemp != 0) {
+		precision = MAX_PD_DIGITS;
+		for (i = MAX_PD_DIGITS; i > 0; i--) {
+			if (ptemp % (int)pow(10, i) != 0) {
+				precision = MAX_PD_DIGITS - i + 1;
+			}
+		}
+	}
+
+	return precision;
+}
+
+
+void complete_scaffold(scaffolding * scaffold) {
 	assert(KNOWN(scaffold) >= 0);
 
 	if (KNOWN(scaffold) == 1) {
@@ -105,18 +121,7 @@ void complete_scaffold(scaffolding * scaffold) {
 					/ (scaffold->count - 1));
 			/* correct precision if necessary */
 			if (! CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION)) {
-				unsigned int ptemp;
-				ptemp = (scaffold->step - (int)scaffold->step)
-					* pow(10, MAX_PD_DIGITS);
-				if (ptemp != 0) {
-					precision = MAX_PD_DIGITS;
-					for (i = MAX_PD_DIGITS; i > 0; i--) {
-						if (ptemp % (int)pow(10, i) != 0) {
-							precision = MAX_PD_DIGITS - i + 1;
-						}
-					}
-				}
-				INCREASE_PRECISION(*scaffold, precision);
+				INCREASE_PRECISION(*scaffold, calc_precision(scaffold->step));
 			}
 		} else {
 			assert(! HAS_RIGHT(scaffold));
