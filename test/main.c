@@ -208,6 +208,11 @@ int main() {
 	TEST_CASE(successes, failures,  11, XX, XX, 2, ARRAY(11, 10, 9, 8, 7, 6, 5, 4, 3, 2))
 
 
+	/* post dot digit precision */
+	TEST_CASE(successes, failures, 0.3, XX, XX, 0.7, ARRAY(0.3, 0.4, 0.5, 0.6, 0.7))
+	TEST_CASE(successes, failures, 0.7, XX, XX, 0.3, ARRAY(0.7, 0.6, 0.5, 0.4, 0.3))
+
+
 	assert(successes + failures > 0);
 	printf(
 		"Successes:   %2u  (%6.2f%%)\n"
