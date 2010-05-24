@@ -209,8 +209,8 @@ int main() {
 
 
 	/* post dot digit precision */
-	TEST_CASE(successes, failures, 0.3, XX, XX, 0.7, ARRAY(0.3, 0.4, 0.5, 0.6, 0.7))
-	TEST_CASE(successes, failures, 0.7, XX, XX, 0.3, ARRAY(0.7, 0.6, 0.5, 0.4, 0.3))
+	TEST_CASE(successes, failures, 0.3, XX, 0.1, 0.7, ARRAY(0.3, 0.4, 0.5, 0.6, 0.7))
+	TEST_CASE(successes, failures, 0.7, XX, -0.1, 0.3, ARRAY(0.7, 0.6, 0.5, 0.4, 0.3))
 
 
 	assert(successes + failures > 0);
