@@ -88,6 +88,7 @@ int set_scaffold_step(scaffolding * scaffold, setter_value value) {
 		return 0;
 	}
 	scaffold->flags |= FLAG_STEP_SET;
+	scaffold->flags |= FLAG_USER_STEP;
 	scaffold->step = value.float_data;
 	return 1;
 }

@@ -229,7 +229,13 @@ yield_status yield(scaffolding * scaffold, float * dest) {
 		return YIELD_NONE;
 	}
 
-	candidate = scaffold->left + scaffold->step * scaffold->position;
+	if (! CHECK_FLAG(scaffold->flags, FLAG_USER_STEP)
+			&& HAS_RIGHT(scaffold) && HAS_COUNT(scaffold)) {
+		candidate = scaffold->left + (scaffold->right - scaffold->left)
+			/ (scaffold->count - 1) * scaffold->position;
+	} else {
+		candidate = scaffold->left + scaffold->step * scaffold->position;
+	}
 	/* TODO check for float overflow, float imprecision */
 
 	/* Gone too far now? */
