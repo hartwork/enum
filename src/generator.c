@@ -95,6 +95,17 @@ void complete_scaffold(scaffolding * scaffold) {
 		/* NOTE: Step has higher precedence */
 		if (! HAS_STEP(scaffold)) {
 			SET_STEP(*scaffold, 1.0f);
+			/* Special case for post-dot digit precision */
+			if (HAS_LEFT(scaffold) && HAS_RIGHT(scaffold)) {
+				unsigned int leftprec = calc_precision(scaffold->left);
+				unsigned int rightprec = calc_precision(scaffold->right);
+
+				if (leftprec >= rightprec) {
+					SET_STEP(*scaffold, 1.0f / pow(10, leftprec));
+				} else {
+					SET_STEP(*scaffold, 1.0f / pow(10, rightprec));
+				}
+			}
 		} else {
 			if (HAS_RIGHT(scaffold)) {
 				assert(HAS_STEP(scaffold));
