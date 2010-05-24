@@ -125,8 +125,8 @@ void complete_scaffold(scaffolding * scaffold) {
 			SET_LEFT(*scaffold, scaffold->right - (scaffold->count - 1)
 				* scaffold->step);
 		} else if (! HAS_COUNT(scaffold)) {
-			SET_COUNT(*scaffold, fabs(scaffold->right - scaffold->left)
-				/ scaffold->step + 1);
+			SET_COUNT(*scaffold, ceil(fabs(scaffold->right - scaffold->left)
+				/ fabs(scaffold->step) + 1));
 		} else if (! HAS_STEP(scaffold)) {
 			SET_STEP(*scaffold, (scaffold->right - scaffold->left)
 					/ (scaffold->count - 1));
