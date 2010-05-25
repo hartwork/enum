@@ -56,7 +56,7 @@ void dump_usage() {
 		"  ...\n");
 	puts(
 		"Options:\n"
-		"  --version             show program's version number and exit\n"
+		"  -V, --version         show program's version number and exit\n"
 		"  -h, --help            show this help message and exit\n"
 		"\n"
 		"  -f, --format=FORMAT   adjust formatting of values\n"

@@ -100,7 +100,7 @@ OTHER
 *-h, --help*::
     Outputs usage information and exits with code 0 (success).
 
-*--version*::
+*-V, --version*::
     Displays version information and exits with code 0 (success).
 
 

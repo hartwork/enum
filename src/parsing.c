@@ -187,7 +187,7 @@ unsigned int parse_parameters(unsigned int original_argc, char **original_argv, 
 	while (1) {
 		struct option long_options[] = {
 			{"help",         no_argument,       0, 'h'},
-			{"version",      no_argument,       0, 'v'},
+			{"version",      no_argument,       0, 'V'},
 			{"random",       no_argument,       0, 'r'},
 			{"characters",   no_argument,       0, 'c'},
 			{"omit-newline", no_argument,       0, 'n'},
@@ -200,7 +200,7 @@ unsigned int parse_parameters(unsigned int original_argc, char **original_argv, 
 			{0, 0, 0, 0}
 		};
 
-		c = getopt_long(original_argc, original_argv, "+b:cf:hi:np:rs:vw:", long_options, &option_index);
+		c = getopt_long(original_argc, original_argv, "+b:cf:hi:np:rs:Vw:", long_options, &option_index);
 
 		if (c == -1) {
 			break;
@@ -257,7 +257,7 @@ unsigned int parse_parameters(unsigned int original_argc, char **original_argv, 
 			dest->separator = enum_strdup(optarg);
 			break;
 
-		case 'v':
+		case 'V':
 			if (original_argc != 2) {
 				dump_usage();
 				exit(1);
