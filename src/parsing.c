@@ -195,6 +195,7 @@ unsigned int parse_parameters(unsigned int original_argc, char **original_argv, 
 			break;
 
 		case 'r':
+			dest->flags |= FLAG_RANDOM;
 			break;
 
 		case 's':
