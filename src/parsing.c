@@ -244,8 +244,8 @@ unsigned int parse_parameters(unsigned int original_argc, char **original_argv, 
 				fprintf(stderr, "Precision must be between 0 and 99\n");
 				break;
 			}
-			INCREASE_PRECISION(*dest, precision);
-			dest->flags |= FLAG_USER_PRECISION;
+			dest->format = (char *)malloc(6);
+			sprintf(dest->format, "%%.%uf", precision);
 			break;
 
 		case 'r':
