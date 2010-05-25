@@ -37,36 +37,17 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "parsing.h"
-#include "generator.h"
-#include "assertion.h"
-#include "printing.h"
+#ifndef PRINTING_H
+#define PRINTING_H 1
 
-int main(int argc, char **argv) {
-	unsigned int alen = (unsigned int)(argc - 1);
-	scaffolding dest;
-	float out;
-	int ret;
-	parse_return parsing_success;
-	char format[6];
+typedef enum _custom_printf_return {
+	CUSTOM_PRINTF_SUCCESS,
+	CUSTOM_PRINTF_INVALID_FORMAT_ENUM,
+	CUSTOM_PRINTF_INVALID_FORMAT_PRINTF,
+	CUSTOM_PRINTF_OUT_OF_MEMORY
+} custom_printf_return;
 
-	initialize_scaffold(&dest);
-	parsing_success = parse_args(alen, argv + 1, &dest);
-	if (parsing_success != PARSE_SUCCESS) {
-		fprintf(stderr, "Command line parsing error\n");
-		return 1;
-	}
+custom_printf_return is_valid_format(const char * format);
+custom_printf_return multi_printf(const char * format, float value);
 
-	complete_scaffold(&dest);
-
-	assert(dest.precision < 100);
-	sprintf(format, "%%.%uf\n", dest.precision);
-
-	do {
-		ret = yield(&dest, &out);
-		if (ret != YIELD_NONE)
-			multi_printf(format, out);
-	} while (ret == YIELD_MORE);
-
-	return 0;
-}
+#endif /* PRINTING_H */

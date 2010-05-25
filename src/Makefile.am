@@ -7,6 +7,8 @@ enum_SOURCES = \
 	main.c \
 	parsing.c \
 	parsing.h \
+	printing.c \
+	printing.h \
 	generator.c \
 	generator.h
 
