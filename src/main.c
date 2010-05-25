@@ -53,6 +53,7 @@ int main(int argc, char **argv) {
 	int i = 0;
 
 	initialize_scaffold(&dest);
+	dest.flags |= FLAG_NEWLINE;
 
 	dest.separator = "\n";
 
@@ -82,6 +83,9 @@ int main(int argc, char **argv) {
 
 		i++;
 	}
+
+	if (CHECK_FLAG(dest.flags, FLAG_NEWLINE))
+		printf("\n");
 
 	return 0;
 }

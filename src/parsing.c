@@ -187,6 +187,8 @@ unsigned int parse_parameters(unsigned int original_argc, char **original_argv, 
 			break;
 
 		case 'n':
+			/* remove newline flag */
+			dest->flags &= ~FLAG_NEWLINE;
 			break;
 
 		case 'p':
