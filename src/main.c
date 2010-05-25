@@ -52,7 +52,6 @@ int main(int argc, char **argv) {
 	float out;
 	int ret;
 	parse_return parsing_success;
-	char format[6];
 	int i = 0;
 
 	initialize_scaffold(&dest);
@@ -69,10 +68,10 @@ int main(int argc, char **argv) {
 
 	complete_scaffold(&dest);
 
-	if (dest.format == 0) {
+	if (!dest.format) {
 		assert(dest.precision < 100);
-		sprintf(format, "%%.%uf", dest.precision);
-		dest.format = format;
+		dest.format = malloc(6); /* TODO */
+		sprintf(dest.format, "%%.%uf", dest.precision);
 	}
 
 	if (CHECK_FLAG(dest.flags, FLAG_RANDOM))
