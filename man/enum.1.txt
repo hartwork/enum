@@ -69,6 +69,14 @@ FORMATTING
     Overrides the output format to `%c` producing characters.
     For example *enum -c 65 67* produces the letters "A", "B" and "C".
 
+*-f, --format*='FORMAT'::
+    Overrides the default output format with 'FORMAT'.
+    For details on allowed formats please see printf(3). +
+    If 'FORMAT' does not contain any placeholders enum will
+    error out with code 1.  In contrast, jot would have appended
+    the numbers value instead.  To make numbers appear at the end
+    please adjust 'FORMAT' accordingly with enum.
+
 *-n, --omit-newline*::
     Omits the trailing newline from being printed.
 
@@ -82,13 +90,9 @@ FORMATTING
     Overrides the seperator being printed between values.
     By default values are seperated by a newline.
 
-*-w, --word, --format*='FORMAT'::
-    Overrides the default output format with 'FORMAT'.
-    For details on allowed formats please see printf(3). +
-    If 'FORMAT' does not contain any placeholders enum will
-    error out with code 1.  In contrast, jot would have appended
-    the numbers value instead.  To make numbers appear at the end
-    please adjust 'FORMAT' accordingly with enum.
+*-w, --word*='FORMAT'::
+    Alias for --format
+
 
 OTHER
 ~~~~~
