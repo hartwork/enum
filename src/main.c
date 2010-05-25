@@ -42,6 +42,9 @@
 #include "assertion.h"
 #include "printing.h"
 
+#include <stdlib.h>  /* for srand */
+#include <time.h>  /* for time */
+
 int main(int argc, char **argv) {
 	unsigned int argpos;
 	scaffolding dest;
@@ -70,6 +73,9 @@ int main(int argc, char **argv) {
 		sprintf(format, "%%.%uf", dest.precision);
 		dest.format = format;
 	}
+
+	if (CHECK_FLAG(dest.flags, FLAG_RANDOM))
+		srand(time(NULL));
 
 	while (1) {
 		ret = yield(&dest, &out);
