@@ -196,6 +196,8 @@ unsigned int parse_parameters(unsigned int original_argc, char **original_argv, 
 			break;
 
 		case 's':
+			/* address of optarg in argv */
+			dest->separator = optarg;
 			break;
 
 		case 'w':

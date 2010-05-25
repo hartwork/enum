@@ -94,6 +94,8 @@ typedef struct _scaffolding {
 	unsigned int count;
 	unsigned int position;
 	unsigned int precision;
+	char * format;
+	const char * separator;
 } scaffolding;
 
 void complete_scaffold(scaffolding * scaffold);

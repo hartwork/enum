@@ -50,8 +50,12 @@ int main(int argc, char **argv) {
 	int ret;
 	parse_return parsing_success;
 	char format[6];
+	int i = 0;
 
 	initialize_scaffold(&dest);
+
+	dest.separator = "\n";
+
 	argpos = parse_parameters(argc, argv, &dest);
 	parsing_success = parse_args(argc - argpos, argv + argpos, &dest);
 	if (parsing_success != PARSE_SUCCESS) {
@@ -62,13 +66,22 @@ int main(int argc, char **argv) {
 	complete_scaffold(&dest);
 
 	assert(dest.precision < 100);
-	sprintf(format, "%%.%uf\n", dest.precision);
+	sprintf(format, "%%.%uf", dest.precision);
 
-	do {
+	while (1) {
 		ret = yield(&dest, &out);
+
+		if (i != 0)
+			printf("%s", dest.separator);
+
 		if (ret != YIELD_NONE)
 			printf(format, out);
-	} while (ret == YIELD_MORE);
+
+		if (ret != YIELD_MORE)
+			break;
+
+		i++;
+	}
 
 	return 0;
 }
