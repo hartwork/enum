@@ -395,13 +395,11 @@ int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest
 				}
 				/* auto-detect precision */
 				if (type == TOKEN_FLOAT) {
-					if (! CHECK_FLAG(dest->flags, FLAG_USER_PRECISION)) {
-						unsigned int flen = strlen(reduced_argv[l]);
-						for (m = 0; m < flen; m++) {
-							if (reduced_argv[l][m] == '.') {
-								INCREASE_PRECISION(*dest, flen - m - 1);
-								break;
-							}
+					unsigned int flen = strlen(reduced_argv[l]);
+					for (m = 0; m < flen; m++) {
+						if (reduced_argv[l][m] == '.') {
+							INCREASE_PRECISION(*dest, flen - m - 1);
+							break;
 						}
 					}
 				}

@@ -124,10 +124,8 @@ void complete_scaffold(scaffolding * scaffold) {
 		} else if (! HAS_STEP(scaffold)) {
 			SET_STEP(*scaffold, (scaffold->right - scaffold->left)
 					/ (scaffold->count - 1));
-			/* correct precision if necessary */
-			if (! CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION)) {
-				INCREASE_PRECISION(*scaffold, calc_precision(scaffold->step));
-			}
+			/* correct precision */
+			INCREASE_PRECISION(*scaffold, calc_precision(scaffold->step));
 		} else {
 			assert(! HAS_RIGHT(scaffold));
 			SET_RIGHT(*scaffold, scaffold->left + scaffold->step
