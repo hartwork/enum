@@ -92,5 +92,8 @@ int main(int argc, char **argv) {
 	if (CHECK_FLAG(dest.flags, FLAG_MALLOC_FORMAT))
 		free(dest.format);
 
+	if (CHECK_FLAG(dest.flags, FLAG_MALLOC_SEPARATOR))
+		free(dest.separator);
+
 	return 0;
 }

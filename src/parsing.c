@@ -218,10 +218,9 @@ unsigned int parse_parameters(unsigned int original_argc, char **original_argv, 
 
 		case 'f':
 		case 'w':
-			dest->format = (char *)malloc(sizeof(optarg));
+			dest->format = strdup(optarg);
 			if (dest->format == NULL)
 				return PARSE_ERROR_MALLOC;
-			strcpy(dest->format, optarg);
 			/* TODO look for %f or similar and error out unless found */
 			dest->flags |= FLAG_MALLOC_FORMAT;
 			break;
@@ -256,7 +255,8 @@ unsigned int parse_parameters(unsigned int original_argc, char **original_argv, 
 
 		case 's':
 			/* address of optarg in argv */
-			dest->separator = optarg;
+			dest->separator = strdup(optarg);
+			dest->flags |= FLAG_MALLOC_SEPARATOR;
 			break;
 
 		case 'v':

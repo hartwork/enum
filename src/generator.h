@@ -80,7 +80,8 @@ enum scaffolding_flags {
 	FLAG_USER_PRECISION = 1 << 6,
 	FLAG_USER_STEP = 1 << 7,
 	FLAG_NEWLINE = 1 << 8,
-	FLAG_MALLOC_FORMAT = 1 << 9
+	FLAG_MALLOC_FORMAT = 1 << 9,
+	FLAG_MALLOC_SEPARATOR = 1 << 10
 };
 
 typedef enum _yield_status {
