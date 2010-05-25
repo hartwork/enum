@@ -150,6 +150,33 @@ token_type identify_token(const char *arg, setter_value *value) {
 	return TOKEN_ERROR_PARSE;
 }
 
+int escape(const char *str, const char esc, char **dest) {
+        unsigned int len;
+        unsigned int i;
+        unsigned int j;
+        char *newstr;
+
+        len = strlen(str);
+        newstr = (char *)malloc(len + 1);
+        if (newstr == NULL)
+                return 0;
+
+        for (i = j = 0; i < len; i++) {
+                newstr[j] = str[i];
+                if (str[i] == esc) {
+                        j++;
+                        newstr = (char *)realloc(newstr, sizeof(newstr) + 1);
+                        if (newstr == NULL)
+                                return 0;
+                        newstr[j] = esc;
+                }
+                j++;
+        }
+
+        *dest = newstr;
+        return 1;
+}
+
 unsigned int parse_parameters(unsigned int original_argc, char **original_argv, scaffolding *dest) {
 	int c;
 	int option_index = 0;
@@ -164,12 +191,13 @@ unsigned int parse_parameters(unsigned int original_argc, char **original_argv, 
 			{"seed",         required_argument, 0, 'i'},
 			{"format",       required_argument, 0, 'f'},
 			{"word",         required_argument, 0, 'w'},
+			{"dumb",         required_argument, 0, 'b'},
 			{"separator",    required_argument, 0, 's'},
 			{"precision",    required_argument, 0, 'p'},
 			{0, 0, 0, 0}
 		};
 
-		c = getopt_long(original_argc, original_argv, "+cf:hi:np:rs:w:", long_options, &option_index);
+		c = getopt_long(original_argc, original_argv, "+b:cf:hi:np:rs:w:", long_options, &option_index);
 
 		if (c == -1) {
 			break;
