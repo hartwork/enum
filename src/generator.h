@@ -78,7 +78,9 @@ enum scaffolding_flags {
 
 	FLAG_RANDOM = 1 << 5,
 	FLAG_USER_PRECISION = 1 << 6,
-	FLAG_USER_STEP = 1 << 7
+	FLAG_USER_STEP = 1 << 7,
+	FLAG_NEWLINE = 1 << 8,
+	FLAG_MALLOC_FORMAT = 1 << 9
 };
 
 typedef enum _yield_status {
@@ -95,6 +97,8 @@ typedef struct _scaffolding {
 	unsigned int count;
 	unsigned int position;
 	unsigned int precision;
+	char * format;
+	const char * separator;
 } scaffolding;
 
 void complete_scaffold(scaffolding * scaffold);

@@ -43,15 +43,21 @@
 #include "printing.h"
 
 int main(int argc, char **argv) {
-	unsigned int alen = (unsigned int)(argc - 1);
+	unsigned int argpos;
 	scaffolding dest;
 	float out;
 	int ret;
 	parse_return parsing_success;
 	char format[6];
+	int i = 0;
 
 	initialize_scaffold(&dest);
-	parsing_success = parse_args(alen, argv + 1, &dest);
+	dest.flags |= FLAG_NEWLINE;
+
+	dest.separator = "\n";
+
+	argpos = parse_parameters(argc, argv, &dest);
+	parsing_success = parse_args(argc - argpos, argv + argpos, &dest);
 	if (parsing_success != PARSE_SUCCESS) {
 		fprintf(stderr, "Command line parsing error\n");
 		return 1;
@@ -59,14 +65,32 @@ int main(int argc, char **argv) {
 
 	complete_scaffold(&dest);
 
-	assert(dest.precision < 100);
-	sprintf(format, "%%.%uf\n", dest.precision);
+	if (dest.format == 0) {
+		assert(dest.precision < 100);
+		sprintf(format, "%%.%uf", dest.precision);
+		dest.format = format;
+	}
 
-	do {
+	while (1) {
 		ret = yield(&dest, &out);
+
+		if (i != 0)
+			printf("%s", dest.separator);
+
 		if (ret != YIELD_NONE)
-			multi_printf(format, out);
-	} while (ret == YIELD_MORE);
+			multi_printf(dest.format, out);
+
+		if (ret != YIELD_MORE)
+			break;
+
+		i++;
+	}
+
+	if (CHECK_FLAG(dest.flags, FLAG_NEWLINE))
+		printf("\n");
+
+	if (CHECK_FLAG(dest.flags, FLAG_MALLOC_FORMAT))
+		free(dest.format);
 
 	return 0;
 }

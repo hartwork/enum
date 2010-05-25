@@ -43,6 +43,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <getopt.h>
 
 #define IS_TOKEN_ERROR(type)  ((type) >= TOKEN_ERROR)
 
@@ -148,6 +149,140 @@ token_type identify_token(const char *arg, setter_value *value) {
 	}
 
 	return TOKEN_ERROR_PARSE;
+}
+
+int escape(const char *str, const char esc, char **dest) {
+        unsigned int len;
+        unsigned int rpos;
+        unsigned int wpos;
+        char *newstr;
+
+        len = strlen(str);
+        newstr = (char *)malloc(len * 2 + 1);
+        if (newstr == NULL)
+                return 0;
+
+        for (rpos = wpos = 0; rpos <= len; rpos++, wpos++) {
+                newstr[wpos] = str[rpos];
+                if (str[rpos] == esc) {
+                        wpos++;
+                        newstr[wpos] = esc;
+                }
+        }
+	newstr = (char *)realloc(newstr, strlen(newstr));
+	if (newstr == NULL)
+		return 0;
+
+        *dest = newstr;
+        return 1;
+}
+
+void dump_usage() {
+	puts("TODO USAGE");
+}
+
+void dump_version() {
+	puts(PACKAGE_VERSION);
+}
+
+unsigned int parse_parameters(unsigned int original_argc, char **original_argv, scaffolding *dest) {
+	int c;
+	int option_index = 0;
+	unsigned int precision = 0;
+
+	while (1) {
+		struct option long_options[] = {
+			{"help",         no_argument,       0, 'h'},
+			{"version",      no_argument,       0, 'v'},
+			{"random",       no_argument,       0, 'r'},
+			{"characters",   no_argument,       0, 'c'},
+			{"omit-newline", no_argument,       0, 'n'},
+			{"seed",         required_argument, 0, 'i'},
+			{"format",       required_argument, 0, 'f'},
+			{"word",         required_argument, 0, 'w'},
+			{"dumb",         required_argument, 0, 'b'},
+			{"separator",    required_argument, 0, 's'},
+			{"precision",    required_argument, 0, 'p'},
+			{0, 0, 0, 0}
+		};
+
+		c = getopt_long(original_argc, original_argv, "+b:cf:hi:np:rs:vw:", long_options, &option_index);
+
+		if (c == -1) {
+			break;
+		}
+
+		switch (c) {
+		case 'b':
+			if (! escape(optarg, '%', &(dest->format)))
+				return PARSE_ERROR_MALLOC;
+			dest->flags |= FLAG_MALLOC_FORMAT;
+			break;
+
+		case 'c':
+			dest->format = (char *)"%c";
+			break;
+
+		case 'f':
+		case 'w':
+			dest->format = (char *)malloc(sizeof(optarg));
+			if (dest->format == NULL)
+				return PARSE_ERROR_MALLOC;
+			strcpy(dest->format, optarg);
+			/* TODO look for %f or similar and error out unless found */
+			dest->flags |= FLAG_MALLOC_FORMAT;
+			break;
+
+		case 'h':
+			dump_usage();
+			exit((original_argc == 2) ? 0 : 1);
+			break;
+
+		case 'i':
+			break;
+
+		case 'n':
+			/* remove newline flag */
+			dest->flags &= ~FLAG_NEWLINE;
+			break;
+
+		case 'p':
+			precision = strtoul(optarg, NULL, 10);
+			if (precision > 99) {
+				/* TODO error handling */
+				fprintf(stderr, "Precision must be between 0 and 99\n");
+				break;
+			}
+			INCREASE_PRECISION(*dest, precision);
+			dest->flags |= FLAG_USER_PRECISION;
+			break;
+
+		case 'r':
+			dest->flags |= FLAG_RANDOM;
+			break;
+
+		case 's':
+			/* address of optarg in argv */
+			dest->separator = optarg;
+			break;
+
+		case 'v':
+			if (original_argc != 2) {
+				dump_usage();
+				exit(1);
+			}
+			dump_version();
+			exit(0);
+			break;
+
+		case '?':
+			break;
+
+		default:
+			abort();
+		}
+	}
+	return optind;
 }
 
 int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest) {
