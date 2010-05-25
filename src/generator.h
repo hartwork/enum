@@ -78,7 +78,8 @@ enum scaffolding_flags {
 
 	FLAG_RANDOM = 1 << 5,
 	FLAG_USER_PRECISION = 1 << 6,
-	FLAG_NEWLINE = 1 << 7
+	FLAG_NEWLINE = 1 << 7,
+	FLAG_MALLOC_FORMAT = 1 << 8
 };
 
 typedef enum _yield_status {

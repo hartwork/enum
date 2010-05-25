@@ -75,8 +75,12 @@ int main(int argc, char **argv) {
 		if (i != 0)
 			printf("%s", dest.separator);
 
-		if (ret != YIELD_NONE)
-			printf(format, out);
+		if (ret != YIELD_NONE) {
+			if (CHECK_FLAG(dest.flags, FLAG_MALLOC_FORMAT))
+				printf(dest.format, out);
+			else
+				printf(format, out);
+		}
 
 		if (ret != YIELD_MORE)
 			break;
@@ -86,6 +90,9 @@ int main(int argc, char **argv) {
 
 	if (CHECK_FLAG(dest.flags, FLAG_NEWLINE))
 		printf("\n");
+
+	if (CHECK_FLAG(dest.flags, FLAG_MALLOC_FORMAT))
+		free(dest.format);
 
 	return 0;
 }
