@@ -41,6 +41,7 @@
 #include "generator.h"
 #include "assertion.h"
 #include "info.h"
+#include "utils.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -209,7 +210,6 @@ unsigned int parse_parameters(unsigned int original_argc, char **original_argv, 
 		case 'b':
 			if (! escape(optarg, '%', &(dest->format)))
 				return PARSE_ERROR_MALLOC;
-			dest->flags |= FLAG_MALLOC_FORMAT;
 			break;
 
 		case 'c':
@@ -218,11 +218,10 @@ unsigned int parse_parameters(unsigned int original_argc, char **original_argv, 
 
 		case 'f':
 		case 'w':
-			dest->format = strdup(optarg);
+			dest->format = enum_strdup(optarg);
 			if (dest->format == NULL)
 				return PARSE_ERROR_MALLOC;
 			/* TODO look for %f or similar and error out unless found */
-			dest->flags |= FLAG_MALLOC_FORMAT;
 			break;
 
 		case 'h':
@@ -255,8 +254,7 @@ unsigned int parse_parameters(unsigned int original_argc, char **original_argv, 
 
 		case 's':
 			/* address of optarg in argv */
-			dest->separator = strdup(optarg);
-			dest->flags |= FLAG_MALLOC_SEPARATOR;
+			dest->separator = enum_strdup(optarg);
 			break;
 
 		case 'v':

@@ -39,6 +39,7 @@
 
 #include "printing.h"
 #include "assertion.h"
+#include "utils.h"
 
 #include <stdlib.h>  /* for malloc */
 #include <stdio.h>  /* for FILE*, fopen, fclose */

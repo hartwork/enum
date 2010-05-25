@@ -41,6 +41,7 @@
 #include "generator.h"
 #include "assertion.h"
 #include "printing.h"
+#include "utils.h"
 
 #include <stdlib.h>  /* for srand */
 #include <time.h>  /* for time */
@@ -57,7 +58,7 @@ int main(int argc, char **argv) {
 	initialize_scaffold(&dest);
 	dest.flags |= FLAG_NEWLINE;
 
-	dest.separator = "\n";
+	dest.separator = enum_strdup("\n");
 
 	argpos = parse_parameters(argc, argv, &dest);
 	parsing_success = parse_args(argc - argpos, argv + argpos, &dest);
@@ -95,11 +96,8 @@ int main(int argc, char **argv) {
 	if (CHECK_FLAG(dest.flags, FLAG_NEWLINE))
 		printf("\n");
 
-	if (CHECK_FLAG(dest.flags, FLAG_MALLOC_FORMAT))
-		free(dest.format);
-
-	if (CHECK_FLAG(dest.flags, FLAG_MALLOC_SEPARATOR))
-		free(dest.separator);
+	free(dest.format);
+	free(dest.separator);
 
 	return 0;
 }
