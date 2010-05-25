@@ -97,7 +97,7 @@ FORMATTING
 OTHER
 ~~~~~
 
-*--help*::
+*-h, --help*::
     Outputs usage information and exits with code 0 (success).
 
 *--version*::
