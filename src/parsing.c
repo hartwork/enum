@@ -213,7 +213,7 @@ unsigned int parse_parameters(unsigned int original_argc, char **original_argv, 
 			break;
 
 		case 'c':
-			dest->format = (char *)"%c";
+			dest->format = enum_strdup("%c");
 			break;
 
 		case 'f':
