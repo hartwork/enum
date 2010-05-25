@@ -5,6 +5,8 @@ enum_LDFLAGS = -lm
 enum_SOURCES = \
 	assertion.h \
 	main.c \
+	info.c \
+	info.h \
 	parsing.c \
 	parsing.h \
 	printing.c \

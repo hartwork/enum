@@ -40,6 +40,7 @@
 #include "parsing.h"
 #include "generator.h"
 #include "assertion.h"
+#include "info.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -175,14 +176,6 @@ int escape(const char *str, const char esc, char **dest) {
 
         *dest = newstr;
         return 1;
-}
-
-void dump_usage() {
-	puts("TODO USAGE");
-}
-
-void dump_version() {
-	puts(PACKAGE_VERSION);
 }
 
 unsigned int parse_parameters(unsigned int original_argc, char **original_argv, scaffolding *dest) {
