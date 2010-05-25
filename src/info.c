@@ -39,6 +39,8 @@
 
 #include "info.h"
 
+#include <stdio.h>
+
 void dump_version() {
 	puts(PACKAGE_VERSION);
 }
@@ -51,16 +53,16 @@ void dump_usage() {
 		"  enum [ OPTIONS ] LEFT STEP RIGHT\n"
 		"  enum [ OPTIONS ] LEFT RIGHT\n"
 		"  enum [ OPTIONS ] RIGHT\n"
-		"  ...\n"
-		"\n"
+		"  ...\n");
+	puts(
 		"Options:\n"
 		"  --version             show program's version number and exit\n"
 		"  -h, --help            show this help message and exit\n"
 		"\n"
 		"  -f, --format=FORMAT   adjust formatting of values\n"
 		"  -s, --separator=TEXT  adjust seperator (printed between values)\n"
-		"  -n, --omit-newline    omit trailing newline\n"
-		"\n"
+		"  -n, --omit-newline    omit trailing newline\n");
+	puts(
 		"  -c, --characters      print characters, not numbers\n"
 		"  -p, --precision=COUNT adjust the number of decimal places printed\n"
 		"\n"
