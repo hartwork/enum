@@ -66,8 +66,11 @@ int main(int argc, char **argv) {
 
 	complete_scaffold(&dest);
 
-	assert(dest.precision < 100);
-	sprintf(format, "%%.%uf", dest.precision);
+	if (dest.format == 0) {
+		assert(dest.precision < 100);
+		sprintf(format, "%%.%uf", dest.precision);
+		dest.format = format;
+	}
 
 	while (1) {
 		ret = yield(&dest, &out);
@@ -75,12 +78,8 @@ int main(int argc, char **argv) {
 		if (i != 0)
 			printf("%s", dest.separator);
 
-		if (ret != YIELD_NONE) {
-			if (CHECK_FLAG(dest.flags, FLAG_MALLOC_FORMAT))
-				printf(dest.format, out);
-			else
-				printf(format, out);
-		}
+		if (ret != YIELD_NONE)
+			printf(dest.format, out);
 
 		if (ret != YIELD_MORE)
 			break;
