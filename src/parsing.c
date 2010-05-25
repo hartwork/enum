@@ -152,26 +152,25 @@ token_type identify_token(const char *arg, setter_value *value) {
 
 int escape(const char *str, const char esc, char **dest) {
         unsigned int len;
-        unsigned int i;
-        unsigned int j;
+        unsigned int rpos;
+        unsigned int wpos;
         char *newstr;
 
         len = strlen(str);
-        newstr = (char *)malloc(len + 1);
+        newstr = (char *)malloc(len * 2 + 1);
         if (newstr == NULL)
                 return 0;
 
-        for (i = j = 0; i < len; i++) {
-                newstr[j] = str[i];
-                if (str[i] == esc) {
-                        j++;
-                        newstr = (char *)realloc(newstr, sizeof(newstr) + 1);
-                        if (newstr == NULL)
-                                return 0;
-                        newstr[j] = esc;
+        for (rpos = wpos = 0; rpos <= len; rpos++, wpos++) {
+                newstr[wpos] = str[rpos];
+                if (str[rpos] == esc) {
+                        wpos++;
+                        newstr[wpos] = esc;
                 }
-                j++;
         }
+	newstr = (char *)realloc(newstr, strlen(newstr));
+	if (newstr == NULL)
+		return 0;
 
         *dest = newstr;
         return 1;
