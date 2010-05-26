@@ -59,6 +59,8 @@
 
 #define TEST_CASE_INDENT "  "
 
+#define TOLERANCE_DELTA  0.001f
+
 const unsigned int XX = 999;
 
 void pseudo_call(float left, unsigned int count, float step, float right) {
@@ -154,8 +156,8 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 			}
 		}
 
-		if (expected[i] != dest) {
-			puts(TEST_CASE_INDENT "FAILURE (filling of scaffold?)");
+		if (fabs(expected[i] - dest) > TOLERANCE_DELTA) {
+			puts(TEST_CASE_INDENT "FAILURE (value mismatch)");
 			ret = 0;
 		}
 	}
