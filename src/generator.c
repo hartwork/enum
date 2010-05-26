@@ -232,8 +232,8 @@ yield_status yield(scaffolding * scaffold, float * dest) {
 
 	/* Gone too far now? */
 	if (HAS_RIGHT(scaffold)
-			&& (((scaffold->left <= scaffold->right) && (candidate > scaffold->right))
-				|| ((scaffold->left >= scaffold->right) && (candidate < scaffold->right)))) {
+			&& (((scaffold->left <= scaffold->right) && ((candidate - scaffold->right) > FLOAT_EQUAL_DELTA))
+				|| ((scaffold->left >= scaffold->right) && (scaffold->right - candidate) > FLOAT_EQUAL_DELTA))) {
 		*dest = 0.123456f;  /* Arbitrary magic value */
 		return YIELD_NONE;
 	}

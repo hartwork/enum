@@ -41,6 +41,7 @@
 #define GENERATOR_H 1
 
 #define MAX_PD_DIGITS  5
+#define FLOAT_EQUAL_DELTA  0.0001f
 
 #define CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
 
