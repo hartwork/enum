@@ -131,8 +131,30 @@ void complete_scaffold(scaffolding * scaffold) {
 			SET_LEFT(*scaffold, scaffold->right - (scaffold->count - 1)
 				* scaffold->step);
 		} else if (! HAS_COUNT(scaffold)) {
-			SET_COUNT(*scaffold, ceil(fabs(scaffold->right - scaffold->left)
-				/ fabs(scaffold->step) + 1));
+			assert(HAS_STEP(scaffold));
+			assert(HAS_LEFT(scaffold));
+			assert(HAS_RIGHT(scaffold));
+
+			ensure_proper_step_sign(scaffold);
+			{
+				int count_candidate =
+					ceil(fabs(scaffold->right - scaffold->left)
+					/ fabs(scaffold->step) + 1);
+
+				/* Will values be running over right? */
+				/* For instance for "enum 1 .. 2 .. 4" count must be 2, not 3. */
+				const float last = scaffold->left
+					+ scaffold->step * (count_candidate - 1);
+				const float over_by = (scaffold->step > 0)
+					? last - scaffold->right
+					: scaffold->right - last;
+				if (over_by > FLOAT_EQUAL_DELTA) {
+					count_candidate--;
+				}
+
+				assert(count_candidate > 0);
+				SET_COUNT(*scaffold, (unsigned int)count_candidate);
+			}
 		} else if (! HAS_STEP(scaffold)) {
 			SET_STEP(*scaffold, (scaffold->right - scaffold->left)
 					/ (scaffold->count - 1));
