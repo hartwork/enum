@@ -155,6 +155,14 @@ int main(int argc, char **argv) {
 	while (1) {
 		ret = enum_yield(&dest, &out);
 
+		if (CHECK_FLAG(dest.flags, FLAG_EXCLUDE_LEFT)
+				&& dest.left == out)
+			continue;
+
+		if (CHECK_FLAG(dest.flags, FLAG_EXCLUDE_RIGHT)
+				&& dest.right == out)
+			break;
+
 		if (i != 0) {
 			if (CHECK_FLAG(dest.flags, FLAG_NULL_BYTES)) {
 				fputc('\0', stdout);

@@ -752,13 +752,14 @@ int parse_parameters(int original_argc, char **original_argv, scaffolding *dest)
 			{"separator",    required_argument, 0, 's'},
 			{"precision",    required_argument, 0, 'p'},
 			{"terminator",   required_argument, 0, 't'},
+			{"exclude",      required_argument, 0, 'x'},
 			{"equal-width",  no_argument,       0, 'e'},
 			{"null",         no_argument,       0, 'z'},
 			{"zero",         no_argument,       0, 'z'},
 			{0, 0, 0, 0}
 		};
 
-		c = getopt_long(original_argc, original_argv, "+b:cef:hi:lnp:rs:t:Vw:z", long_options, &option_index);
+		c = getopt_long(original_argc, original_argv, "+b:cef:hi:lnp:rs:t:Vw:x:z", long_options, &option_index);
 
 		if (c == -1) {
 			break;
@@ -931,6 +932,19 @@ int parse_parameters(int original_argc, char **original_argv, scaffolding *dest)
 
 		case 'z':
 			set_separator(dest, NULL, APPLY_NULL_BYTES);
+			break;
+
+		case 'x':
+			if ((strcmp(optarg, "left") == 0)
+					|| (strcmp(optarg, "l") == 0))
+				dest->flags |= FLAG_EXCLUDE_LEFT;
+			else if ((strcmp(optarg, "right") == 0)
+					|| (strcmp(optarg, "r") == 0))
+				dest->flags |= FLAG_EXCLUDE_RIGHT;
+			else {
+				print_problem(USER_ERROR, "Only (l)eft or (r)ight can be excluded.");
+				success = 0;
+			}
 			break;
 
 		case '?':
