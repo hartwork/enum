@@ -113,6 +113,7 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 
 	if (step != XX) {
 		SET_STEP(scaffold, step);
+		scaffold.flags |= FLAG_USER_STEP;
 	}
 
 	if (right != XX) {
