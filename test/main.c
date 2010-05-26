@@ -169,6 +169,13 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 		}
 	}
 
+	if (! towards_infinity(&scaffold)) {
+		if (scaffold.count != exp_len) {
+			printf(TEST_CASE_INDENT "FAILURE (count miscalculated, expected: %d, calculated: %d)\n", exp_len, scaffold.count);
+			ret = 0;
+		}
+	}
+
 	if (ret) {
 		puts(TEST_CASE_INDENT "Success\n");
 	} else {
