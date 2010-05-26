@@ -87,8 +87,8 @@ FORMATTING
     arguments given and the potentially computed step size.
 
 *-s, --separator*='TEXT'::
-    Overrides the seperator being printed between values.
-    By default values are seperated by a newline.
+    Overrides the separator being printed between values.
+    By default values are separated by a newline.
 
 *-w, --word*='FORMAT'::
     Alias for --format

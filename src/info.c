@@ -60,7 +60,7 @@ void dump_usage() {
 		"  -h, --help            show this help message and exit\n"
 		"\n"
 		"  -f, --format=FORMAT   adjust formatting of values\n"
-		"  -s, --separator=TEXT  adjust seperator (printed between values)\n"
+		"  -s, --separator=TEXT  adjust separator (printed between values)\n"
 		"  -n, --omit-newline    omit trailing newline\n");
 	puts(
 		"  -c, --characters      print characters, not numbers\n"
