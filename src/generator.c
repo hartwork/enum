@@ -70,6 +70,18 @@ unsigned int calc_precision(float element) {
 }
 
 
+/*
+ * Ensure step direction aligns with relation between left and right
+ */
+void ensure_proper_step_sign(scaffolding * scaffold) {
+	const int expected_direction = (scaffold->left <= scaffold->right) ? +1 : -1;
+	const int step_direction = (scaffold->step >= 0) ? +1 : -1;
+	if (expected_direction != step_direction) {
+		scaffold->step = -scaffold->step;
+	}
+}
+
+
 void complete_scaffold(scaffolding * scaffold) {
 	assert(KNOWN(scaffold) >= 0);
 
@@ -136,14 +148,7 @@ void complete_scaffold(scaffolding * scaffold) {
 	scaffold->flags |= FLAG_READY;
 	assert(KNOWN(scaffold) == 4);
 
-	{
-		/* Ensure step direction aligns with relation between left and right */
-		const int expected_direction = (scaffold->left <= scaffold->right) ? +1 : -1;
-		const int step_direction = (scaffold->step >= 0) ? +1 : -1;
-		if (expected_direction != step_direction) {
-			scaffold->step = -scaffold->step;
-		}
-	}
+	ensure_proper_step_sign(scaffold);
 }
 
 float discrete_random_closed(float min, float max, float step_width) {
