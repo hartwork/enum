@@ -223,6 +223,11 @@ int main() {
 	TEST_CASE(successes, failures, 0.7, XX, -0.1, 0.3, ARRAY(0.7, 0.6, 0.5, 0.4, 0.3))
 
 
+	/* calculation of count */
+	TEST_CASE(successes, failures, 1, XX, 2, 4, ARRAY(1, 3))
+	TEST_CASE(successes, failures, 1, XX, 2, 5, ARRAY(1, 3, 5))
+
+
 	assert(successes + failures > 0);
 	printf(
 		"Successes:   %2u  (%6.2f%%)\n"
