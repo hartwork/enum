@@ -154,7 +154,7 @@ token_type identify_token(const char *arg, setter_value *value) {
 	return TOKEN_ERROR_PARSE;
 }
 
-int escape(const char *str, const char esc, char **dest) {
+int escape_strdup(const char *str, const char esc, char **dest) {
 	unsigned int len;
 	unsigned int rpos;
 	unsigned int wpos;
@@ -246,7 +246,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 
 		switch (c) {
 		case 'b':
-			if (! escape(optarg, '%', &(dest->format))) {
+			if (! escape_strdup(optarg, '%', &(dest->format))) {
 				report_parse_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 				success = 0;
 			}
