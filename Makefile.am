@@ -14,7 +14,8 @@ man/enum.1: man/enum.1.txt Makefile.am
 	a2x --attribute="enumversion=$(PACKAGE_VERSION)" --format=manpage "$<"
 
 snapshot:
-	git diff --quiet || { echo 'STOP, you have uncommitted changes around' ; false ; }
+	git diff --quiet || { echo 'STOP, you have uncommitted changes in the working directory' ; false ; }
+	git diff --cached --quiet || { echo 'STOP, you have uncommitted changes in the index' ; false ; }
 	sed 's|^\(AC_INIT(.\+, \[\)[^,]\+\(\], .\+\)$$|\1'"$(SNAPSHOT_VERSION)"'\2|' -i configure.ac
 	autoreconf -i -f
 	$(MAKE) dist
