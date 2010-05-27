@@ -79,6 +79,8 @@ typedef struct _use_case {
 	unsigned int length;
 } use_case;
 
+extern int opterr;
+
 int set_scaffold_left(scaffolding * scaffold, setter_value value) {
 	scaffold->flags |= FLAG_LEFT_SET;
 	scaffold->left = value.float_data;
@@ -217,6 +219,9 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 	int success = 1;
 	int usage_needed = 0;
 
+	/* Inhibit getopt's own error message for unrecognized options */
+	opterr = 0;
+
 	while (1) {
 		struct option long_options[] = {
 			{"help",         no_argument,       0, 'h'},
@@ -312,6 +317,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 			break;
 
 		case '?':
+			fprintf(stderr, "ERROR: Unrecognized option \"%s\"\n", original_argv[optind - 1]);
 			success = 0;
 			usage_needed = 1;
 			break;
