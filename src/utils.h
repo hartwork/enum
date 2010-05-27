@@ -42,4 +42,6 @@
 
 char * enum_strdup(const char * text);
 
+int enum_is_nan_float(float value);
+
 #endif /* UTILS_H */

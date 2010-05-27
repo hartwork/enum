@@ -39,8 +39,13 @@
 
 #include "utils.h"
 
-#include <stdlib.h>  /* for malloc */
+#include <stdlib.h>  /* for malloc, strtod */
 #include <string.h>  /* for strlen */
+
+typedef union _float_int {
+	float float_data;
+	float int_data;
+} float_int;
 
 char * enum_strdup(const char * text) {
 	const size_t len = strlen(text);
@@ -50,4 +55,21 @@ char * enum_strdup(const char * text) {
 	strncpy(dup, text, len);
 	dup[len] = '\0';
 	return dup;
+}
+
+int enum_is_nan_float(float value) {
+	/*
+	 * Workaround strtod("NAN", NULL) != strtod("NAN", NULL)
+	 * by comparing bits ourselves
+	 */
+	float_int fi_test;
+	float_int fi_nan;
+
+	fi_test.int_data = 0;
+	fi_test.float_data = value;
+
+	fi_nan.int_data = 0;
+	fi_nan.float_data = (float)strtod("NAN", NULL);
+
+	return fi_test.int_data == fi_test.int_data;
 }
