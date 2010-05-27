@@ -155,29 +155,29 @@ token_type identify_token(const char *arg, setter_value *value) {
 }
 
 int escape(const char *str, const char esc, char **dest) {
-        unsigned int len;
-        unsigned int rpos;
-        unsigned int wpos;
-        char *newstr;
+	unsigned int len;
+	unsigned int rpos;
+	unsigned int wpos;
+	char *newstr;
 
-        len = strlen(str);
-        newstr = (char *)malloc(len * 2 + 1);
-        if (newstr == NULL)
-                return 0;
+	len = strlen(str);
+	newstr = (char *)malloc(len * 2 + 1);
+	if (newstr == NULL)
+		return 0;
 
-        for (rpos = wpos = 0; rpos <= len; rpos++, wpos++) {
-                newstr[wpos] = str[rpos];
-                if (str[rpos] == esc) {
-                        wpos++;
-                        newstr[wpos] = esc;
-                }
-        }
+	for (rpos = wpos = 0; rpos <= len; rpos++, wpos++) {
+		newstr[wpos] = str[rpos];
+		if (str[rpos] == esc) {
+			wpos++;
+			newstr[wpos] = esc;
+		}
+	}
 	newstr = (char *)realloc(newstr, strlen(newstr));
 	if (newstr == NULL)
 		return 0;
 
-        *dest = newstr;
-        return 1;
+	*dest = newstr;
+	return 1;
 }
 
 typedef enum _parameter_error {
