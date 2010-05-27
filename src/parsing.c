@@ -471,13 +471,6 @@ int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest
 			}
 		}
 
-		/* Reject left == right */
-		if (((dest->flags & (FLAG_LEFT_SET | FLAG_RIGHT_SET))
-					== (FLAG_LEFT_SET | FLAG_RIGHT_SET))
-				&& (dest->left == dest->right)) {
-			return PARSE_ERROR_ZERO_RANGE;
-		}
-
 		return PARSE_SUCCESS;
 	} else {
 		return PARSE_ERROR_INVALID_INPUT;
