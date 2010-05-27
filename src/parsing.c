@@ -119,7 +119,7 @@ int ends_with_x(const char *str) {
 
 int is_nan_or_inf(float f) {
 	const float INF = strtod("INF", NULL);
-	return (enum_is_nan_float(f) || (f == INF)) ? 1 : 0;
+	return (enum_is_nan_float(f) || (f == INF) || (f == -INF)) ? 1 : 0;
 }
 
 token_type identify_token(const char *arg, setter_value *value) {
