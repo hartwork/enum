@@ -37,6 +37,7 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include "assertion.h"
 #include "utils.h"
 
 #include <stdlib.h>  /* for malloc, strtod */
@@ -44,7 +45,7 @@
 
 typedef union _float_int {
 	float float_data;
-	float int_data;
+	long int int_data;
 } float_int;
 
 char * enum_strdup(const char * text) {
@@ -65,11 +66,13 @@ int enum_is_nan_float(float value) {
 	float_int fi_test;
 	float_int fi_nan;
 
+	assert(sizeof(long int) >= sizeof(float));
+
 	fi_test.int_data = 0;
 	fi_test.float_data = value;
 
 	fi_nan.int_data = 0;
 	fi_nan.float_data = (float)strtod("NAN", NULL);
 
-	return fi_test.int_data == fi_test.int_data;
+	return fi_test.int_data == fi_nan.int_data;
 }
