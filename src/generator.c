@@ -248,6 +248,12 @@ yield_status yield(scaffolding * scaffold, float * dest) {
 		return YIELD_NONE;
 	}
 
+	/* One value only? */
+	if (HAS_COUNT(scaffold) && (scaffold->count == 1)) {
+		*dest = scaffold->left;
+		return YIELD_LAST;
+	}
+
 	if (! CHECK_FLAG(scaffold->flags, FLAG_USER_STEP)
 			&& HAS_RIGHT(scaffold) && HAS_COUNT(scaffold)) {
 		candidate = scaffold->left + (scaffold->right - scaffold->left)
@@ -267,11 +273,6 @@ yield_status yield(scaffolding * scaffold, float * dest) {
 
 	*dest = candidate;
 	scaffold->position++;
-
-	/* One value only? */
-	if (HAS_COUNT(scaffold) && (scaffold->count == 1)) {
-		return YIELD_LAST;
-	}
 
 	/* Will there be more? */
 	if ((HAS_COUNT(scaffold) && (scaffold->position == scaffold->count))
