@@ -210,6 +210,27 @@ void report_parse_error(int code) {
 	}
 }
 
+int set_format_strdup(char ** dest, const char * new) {
+	char * newformat;
+
+	if (*dest) {
+		newformat = enum_strdup(new);
+		if (newformat == NULL)
+			return 0;
+		fprintf(stderr,
+				"WARNING: Discarding previous format "
+				"\"%s\" in favor of \"%s\"!\n",
+				*dest, newformat
+				);
+		*dest = newformat;
+	} else {
+		*dest = enum_strdup(new);
+		if (*dest == NULL)
+			return 0;
+	}
+	return 1;
+}
+
 int parse_parameters(unsigned int original_argc, char **original_argv, scaffolding *dest) {
 	int c;
 	int option_index = 0;
@@ -246,20 +267,30 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 
 		switch (c) {
 		case 'b':
-			if (! escape_strdup(optarg, '%', &(dest->format))) {
+			{
+				char * newformat;
+				escape_strdup(optarg, '%', &newformat);
+				if (newformat == NULL) {
+					report_parse_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+					success = 0;
+				}
+				if (! set_format_strdup(&(dest->format), newformat)) {
+					report_parse_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+					success = 0;
+				}
+			}
+			break;
+
+		case 'c':
+			if (! set_format_strdup(&(dest->format), "%c")) {
 				report_parse_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 				success = 0;
 			}
 			break;
 
-		case 'c':
-			dest->format = enum_strdup("%c");
-			break;
-
 		case 'f':
 		case 'w':
-			dest->format = enum_strdup(optarg);
-			if (dest->format == NULL) {
+			if (! set_format_strdup(&(dest->format), optarg)) {
 				report_parse_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 				success = 0;
 			}
@@ -290,12 +321,16 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				report_parse_error(PARAMETER_ERROR_INVALID_PRECISION);
 				success = 0;
 			} else {
-				dest->format = (char *)malloc(6);
-				if (!dest->format) {
+				char * newformat = (char *)malloc(6);
+				if (! newformat) {
 					report_parse_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 					success = 0;
 				}
-				sprintf(dest->format, "%%.%uf", precision);
+				sprintf(newformat, "%%.%uf", precision);
+				if (! set_format_strdup(&(dest->format), newformat)) {
+					report_parse_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+					success = 0;
+				}
 			}
 			break;
 
