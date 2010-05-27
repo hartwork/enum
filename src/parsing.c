@@ -218,6 +218,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 
 	int success = 1;
 	int usage_needed = 0;
+	int quit = 0;
 
 	/* Inhibit getopt's own error message for unrecognized options */
 	opterr = 0;
@@ -272,6 +273,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				success = 0;
 			} else {
 				dump_usage(stdout);
+				quit = 1;
 			}
 			break;
 
@@ -313,6 +315,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				success = 0;
 			} else {
 				dump_version();
+				quit = 1;
 			}
 			break;
 
@@ -332,7 +335,11 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 		dump_usage(stderr);
 	}
 
-	return success ? optind : 0;
+	return success
+		? (quit
+			? 0
+			: optind)
+		: -1;
 }
 
 int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest) {

@@ -60,8 +60,16 @@ int main(int argc, char **argv) {
 	dest.separator = enum_strdup("\n");
 
 	argpos = parse_parameters(argc, argv, &dest);
-	if (argpos < 1) {
+	switch (argpos) {
+	case 0:
+		/* usage or version shown, no numbers wanted */
+		exit(0);
+	case -1:
+		/* errors reported already */
 		exit(1);
+	default:
+		/* normal run with numbers */
+		break;
 	}
 
 	parsing_success = parse_args(argc - argpos, argv + argpos, &dest);
