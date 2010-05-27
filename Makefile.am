@@ -4,6 +4,7 @@ man1_MANS = \
 	man/enum.1
 
 EXTRA_DIST = \
+	man/enum.1 \
 	man/enum.1.txt
 
 

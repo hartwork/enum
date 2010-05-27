@@ -1,3 +1,7 @@
+2010-05-27  Sebastian Pipping <sping@gentoo.org>
+
+	* Build system: fix make distcheck (bug #22)
+
 2010-05-26  Jan Hauke Rahm <jhr@debian.org>
 
 	* 0.2: the still-not-ready-but-now-with-great-features release
