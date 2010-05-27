@@ -184,7 +184,7 @@ float discrete_random_closed(float min, float max, float step_width) {
 	assert(step_width > 0);
 
 	/* Note: Using log(a)+log(b) for log(a*b) to push down overflow border */
-	depth = ceil((log(distance) + log(step_width)) / log(RAND_MAX));
+	depth = ENUM_MAX(1, ceil((log(distance) + log(step_width)) / log(RAND_MAX)));
 
 	/* Make random resolution at least on par with step_width */
 	/* z = (r * RAND_MAX^0 + .. + r * RAND_MAX^(n-1)) / RAND_MAX^n */
