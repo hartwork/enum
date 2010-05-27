@@ -273,10 +273,11 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				if (newformat == NULL) {
 					report_parse_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 					success = 0;
-				}
-				if (! set_format_strdup(&(dest->format), newformat)) {
-					report_parse_error(PARAMETER_ERROR_OUT_OF_MEMORY);
-					success = 0;
+				} else {
+					if (! set_format_strdup(&(dest->format), newformat)) {
+						report_parse_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+						success = 0;
+					}
 				}
 			}
 			break;
@@ -325,11 +326,12 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				if (! newformat) {
 					report_parse_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 					success = 0;
-				}
-				sprintf(newformat, "%%.%uf", precision);
-				if (! set_format_strdup(&(dest->format), newformat)) {
-					report_parse_error(PARAMETER_ERROR_OUT_OF_MEMORY);
-					success = 0;
+				} else {
+					sprintf(newformat, "%%.%uf", precision);
+					if (! set_format_strdup(&(dest->format), newformat)) {
+						report_parse_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+						success = 0;
+					}
 				}
 			}
 			break;
