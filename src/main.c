@@ -47,7 +47,7 @@
 #include <time.h>  /* for time */
 
 int main(int argc, char **argv) {
-	unsigned int argpos;
+	int argpos;
 	scaffolding dest;
 	float out;
 	int ret;
@@ -60,6 +60,10 @@ int main(int argc, char **argv) {
 	dest.separator = enum_strdup("\n");
 
 	argpos = parse_parameters(argc, argv, &dest);
+	if (argpos < 1) {
+		exit(1);
+	}
+
 	parsing_success = parse_args(argc - argpos, argv + argpos, &dest);
 	if (parsing_success != PARSE_SUCCESS) {
 		fprintf(stderr, "Command line parsing error\n");

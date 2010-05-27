@@ -179,10 +179,43 @@ int escape(const char *str, const char esc, char **dest) {
         return 1;
 }
 
-unsigned int parse_parameters(unsigned int original_argc, char **original_argv, scaffolding *dest) {
+typedef enum _parameter_error {
+	PARAMETER_ERROR_OUT_OF_MEMORY,
+	PARAMETER_ERROR_INVALID_PRECISION,
+	PARAMETER_ERROR_VERSION_NOT_ALONE,
+	PARAMETER_ERROR_HELP_NOT_ALONE
+} parameter_error;
+
+void fatal(const char * message) {
+	fprintf(stderr, "ERROR: %s\n", message);
+}
+
+void report_parse_error(int code) {
+	switch (code) {
+	case PARAMETER_ERROR_OUT_OF_MEMORY:
+		fatal("System too low on memory to continue.");
+		break;
+	case PARAMETER_ERROR_INVALID_PRECISION:
+		fatal("Precision must be between 0 and 99.");
+		break;
+	case PARAMETER_ERROR_VERSION_NOT_ALONE:
+		fatal("-V and --version must come alone.");
+		break;
+	case PARAMETER_ERROR_HELP_NOT_ALONE:
+		fatal("-h and --help must come alone.");
+		break;
+	default:
+		assert(0);
+	}
+}
+
+int parse_parameters(unsigned int original_argc, char **original_argv, scaffolding *dest) {
 	int c;
 	int option_index = 0;
 	unsigned int precision = 0;
+
+	int success = 1;
+	int usage_needed = 0;
 
 	while (1) {
 		struct option long_options[] = {
@@ -208,8 +241,10 @@ unsigned int parse_parameters(unsigned int original_argc, char **original_argv, 
 
 		switch (c) {
 		case 'b':
-			if (! escape(optarg, '%', &(dest->format)))
-				return PARSE_ERROR_MALLOC;
+			if (! escape(optarg, '%', &(dest->format))) {
+				report_parse_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+				success = 0;
+			}
 			break;
 
 		case 'c':
@@ -219,14 +254,20 @@ unsigned int parse_parameters(unsigned int original_argc, char **original_argv, 
 		case 'f':
 		case 'w':
 			dest->format = enum_strdup(optarg);
-			if (dest->format == NULL)
-				return PARSE_ERROR_MALLOC;
+			if (dest->format == NULL) {
+				report_parse_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+				success = 0;
+			}
 			/* TODO look for %f or similar and error out unless found */
 			break;
 
 		case 'h':
-			dump_usage();
-			exit((original_argc == 2) ? 0 : 1);
+			if (original_argc != 2) {
+				report_parse_error(PARAMETER_ERROR_HELP_NOT_ALONE);
+				success = 0;
+			} else {
+				dump_usage();
+			}
 			break;
 
 		case 'i':
@@ -240,12 +281,16 @@ unsigned int parse_parameters(unsigned int original_argc, char **original_argv, 
 		case 'p':
 			precision = strtoul(optarg, NULL, 10);
 			if (precision > 99) {
-				/* TODO error handling */
-				fprintf(stderr, "Precision must be between 0 and 99\n");
-				break;
+				report_parse_error(PARAMETER_ERROR_INVALID_PRECISION);
+				success = 0;
+			} else {
+				dest->format = (char *)malloc(6);
+				if (!dest->format) {
+					report_parse_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+					success = 0;
+				}
+				sprintf(dest->format, "%%.%uf", precision);
 			}
-			dest->format = (char *)malloc(6);
-			sprintf(dest->format, "%%.%uf", precision);
 			break;
 
 		case 'r':
@@ -259,21 +304,29 @@ unsigned int parse_parameters(unsigned int original_argc, char **original_argv, 
 
 		case 'V':
 			if (original_argc != 2) {
-				dump_usage();
-				exit(1);
+				report_parse_error(PARAMETER_ERROR_VERSION_NOT_ALONE);
+				success = 0;
+			} else {
+				dump_version();
 			}
-			dump_version();
-			exit(0);
 			break;
 
 		case '?':
+			success = 0;
+			usage_needed = 1;
 			break;
 
 		default:
-			abort();
+			assert(0);
 		}
 	}
-	return optind;
+
+	if (! success && usage_needed) {
+		fprintf(stderr, "\n");
+		dump_usage();
+	}
+
+	return success ? optind : 0;
 }
 
 int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest) {
