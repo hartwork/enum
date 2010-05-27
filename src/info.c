@@ -39,35 +39,36 @@
 
 #include "info.h"
 
-#include <stdio.h>
-
 void dump_version() {
 	puts(PACKAGE_VERSION);
 }
 
-void dump_usage() {
-	puts(
+void dump_usage(FILE * file) {
+	fprintf(file,
 		"Usage: \n"
 		"  enum [ OPTIONS ] LEFT \"..\" COUNT\"x\" STEP \"..\" RIGHT\n"
 		"\n"
 		"  enum [ OPTIONS ] LEFT STEP RIGHT\n"
 		"  enum [ OPTIONS ] LEFT RIGHT\n"
 		"  enum [ OPTIONS ] RIGHT\n"
-		"  ...\n");
-	puts(
+		"  ...\n"
+		"\n");
+	fprintf(file,
 		"Options:\n"
 		"  -V, --version         show program's version number and exit\n"
 		"  -h, --help            show this help message and exit\n"
 		"\n"
 		"  -f, --format=FORMAT   adjust formatting of values\n"
 		"  -s, --separator=TEXT  adjust separator (printed between values)\n"
-		"  -n, --omit-newline    omit trailing newline\n");
-	puts(
+		"  -n, --omit-newline    omit trailing newline\n"
+		"\n");
+	fprintf(file,
 		"  -c, --characters      print characters, not numbers\n"
 		"  -p, --precision=COUNT adjust the number of decimal places printed\n"
 		"\n"
 		"  -r, --random          output random numbers, not sequential ones\n"
 		"\n"
 		"  -w, --word=FORMAT     alias for --format\n"
-		"  -b, --dumb=TEXT       use verbatim text for values");
+		"  -b, --dumb=TEXT       use verbatim text for values"
+		"\n");
 }

@@ -271,7 +271,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				report_parse_error(PARAMETER_ERROR_HELP_NOT_ALONE);
 				success = 0;
 			} else {
-				dump_usage();
+				dump_usage(stdout);
 			}
 			break;
 
@@ -329,7 +329,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 
 	if (! success && usage_needed) {
 		fprintf(stderr, "\n");
-		dump_usage();
+		dump_usage(stderr);
 	}
 
 	return success ? optind : 0;

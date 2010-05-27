@@ -40,7 +40,9 @@
 #ifndef INFO_H
 #define INFO_H 1
 
+#include <stdio.h>  /* for FILE* */
+
 void dump_version();
-void dump_usage();
+void dump_usage(FILE * file);
 
 #endif /* INFO_H */
