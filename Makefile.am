@@ -8,7 +8,7 @@ EXTRA_DIST = \
 
 
 PACKAGE_VERSION = `fgrep AC_INIT configure.ac | sed 's|^.\+, \[\(.\+\)\],.\+$$|\1|'`
-SNAPSHOT_VERSION = `git describe | sed 's|-\([0-9]\+\)-g[0-9a-f]\+$$|.\1|'`
+SNAPSHOT_VERSION = `git describe --tags | sed 's|-\([0-9]\+\)-g[0-9a-f]\+$$|.\1|'`
 
 man/enum.1: man/enum.1.txt Makefile.am
 	a2x --attribute="enumversion=$(PACKAGE_VERSION)" --format=manpage "$<"
