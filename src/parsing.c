@@ -203,7 +203,7 @@ void report_parameter_error(int code) {
 		fatal("System too low on memory to continue.");
 		break;
 	case PARAMETER_ERROR_INVALID_PRECISION:
-		fatal("Precision must be between 0 and 99.");
+		fatal("Precision must be an integer between 0 and 99.");
 		break;
 	case PARAMETER_ERROR_VERSION_NOT_ALONE:
 		fatal("-V and --version must come alone.");
@@ -352,7 +352,14 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 			break;
 
 		case 'p':
-			precision = strtoul(optarg, NULL, 10);
+			{
+				char * end;
+				precision = strtoul(optarg, &end, 10);
+				if (end - optarg != (int)strlen(optarg)) {
+					precision = -1;  /* Triggers range error */
+					success = 0;
+				}
+			}
 			if (precision > 99) {
 				report_parameter_error(PARAMETER_ERROR_INVALID_PRECISION);
 				success = 0;
