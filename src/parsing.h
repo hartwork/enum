@@ -42,15 +42,6 @@
 
 #include "generator.h"
 
-typedef enum _parse_return {
-	PARSE_SUCCESS,
-
-	PARSE_ERROR_MALLOC,        /* memory allocation problem */
-	PARSE_ERROR_UNKNOWN_TYPE,  /* token error: type of argument not known */
-	PARSE_ERROR_ZERO_STEP,     /* step == 0 */
-	PARSE_ERROR_INVALID_INPUT  /* generic parsing error */
-} parse_return;
-
 int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest);
 int parse_parameters(unsigned int original_argc, char **original_argv, scaffolding *dest);
 

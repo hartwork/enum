@@ -187,6 +187,15 @@ typedef enum _parameter_error {
 	PARAMETER_ERROR_HELP_NOT_ALONE
 } parameter_error;
 
+typedef enum _parse_return {
+	PARSE_SUCCESS,
+
+	PARSE_ERROR_MALLOC,        /* memory allocation problem */
+	PARSE_ERROR_UNKNOWN_TYPE,  /* token error: type of argument not known */
+	PARSE_ERROR_ZERO_STEP,     /* step == 0 */
+	PARSE_ERROR_INVALID_INPUT  /* generic parsing error */
+} parse_return;
+
 void fatal(const char * message) {
 	fprintf(stderr, "ERROR: %s\n", message);
 }
@@ -467,7 +476,8 @@ int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest
 				}
 			}
 		} else {
-			return PARSE_ERROR_UNKNOWN_TYPE;
+			/* return PARSE_ERROR_UNKNOWN_TYPE; */
+			return 0;
 		}
 	}
 
@@ -493,7 +503,8 @@ int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest
 				int success = valid_case->details[l].setter(dest, value);
 				if (! success) {
 					/* only case for no success: step == 0 */
-					return PARSE_ERROR_ZERO_STEP;
+					/* return PARSE_ERROR_ZERO_STEP; */
+					return 0;
 				}
 				/* auto-detect precision */
 				if (type == TOKEN_FLOAT) {
@@ -508,8 +519,10 @@ int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest
 			}
 		}
 
-		return PARSE_SUCCESS;
+		/* return PARSE_SUCCESS; */
+		return 1;
 	} else {
-		return PARSE_ERROR_INVALID_INPUT;
+		/* return PARSE_ERROR_INVALID_INPUT; */
+		return 0;
 	}
 }

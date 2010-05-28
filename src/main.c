@@ -51,7 +51,6 @@ int main(int argc, char **argv) {
 	scaffolding dest;
 	float out;
 	int ret;
-	parse_return parsing_success;
 	int i = 0;
 
 	initialize_scaffold(&dest);
@@ -72,8 +71,7 @@ int main(int argc, char **argv) {
 		break;
 	}
 
-	parsing_success = parse_args(argc - argpos, argv + argpos, &dest);
-	if (parsing_success != PARSE_SUCCESS) {
+	if (! parse_args(argc - argpos, argv + argpos, &dest)) {
 		fprintf(stderr, "Command line parsing error\n");
 		return 1;
 	}
