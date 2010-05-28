@@ -1,3 +1,11 @@
+2010-05-28  Jan Hauke Rahm <jhr@debian.org>
+
+	* 0.3
+	* Bug fixing about pseudo numbers INF/NAN (bugs #20, #21, #24)
+	* Fixing a few weird outputs
+	* Fixing a few "random" issues (bugs #17, #18)
+	* Proper output for --version and --help
+
 2010-05-27  Sebastian Pipping <sping@gentoo.org>
 
 	* Build system: fix make distcheck (bug #22)
