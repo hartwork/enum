@@ -188,9 +188,6 @@ typedef enum _parameter_error {
 } parameter_error;
 
 typedef enum _parse_return {
-	PARSE_SUCCESS,
-
-	PARSE_ERROR_MALLOC,        /* memory allocation problem */
 	PARSE_ERROR_UNKNOWN_TYPE,  /* token error: type of argument not known */
 	PARSE_ERROR_ZERO_STEP,     /* step == 0 */
 	PARSE_ERROR_INVALID_INPUT  /* generic parsing error */
