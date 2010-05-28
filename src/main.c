@@ -72,7 +72,6 @@ int main(int argc, char **argv) {
 	}
 
 	if (! parse_args(argc - argpos, argv + argpos, &dest)) {
-		fprintf(stderr, "Command line parsing error\n");
 		return 1;
 	}
 

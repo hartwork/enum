@@ -216,6 +216,29 @@ void report_parameter_error(int code) {
 	}
 }
 
+void report_parse_error(int code, int myargc, char **myargv) {
+	int i;
+
+	switch (code) {
+	case PARSE_ERROR_ZERO_STEP:
+		fatal("A step of 0 is invald.");
+		break;
+	case PARSE_ERROR_UNKNOWN_TYPE:
+		fatal("Unidentified token:");
+		break;
+	case PARSE_ERROR_INVALID_INPUT:
+		fatal("Combination of command line arguments could not be parsed:");
+		break;
+	}
+
+	if (myargc > 0) {
+		for (i = 0; i < myargc; i++) {
+			fprintf(stderr, "%s ", myargv[i]);
+		}
+		fprintf(stderr, "\n");
+	}
+}
+
 int set_format_strdup(char ** dest, const char * new) {
 	char * newformat;
 
@@ -473,7 +496,7 @@ int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest
 				}
 			}
 		} else {
-			/* return PARSE_ERROR_UNKNOWN_TYPE; */
+			report_parse_error(PARSE_ERROR_UNKNOWN_TYPE, 1, &reduced_argv[i]);
 			return 0;
 		}
 	}
@@ -500,7 +523,7 @@ int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest
 				int success = valid_case->details[l].setter(dest, value);
 				if (! success) {
 					/* only case for no success: step == 0 */
-					/* return PARSE_ERROR_ZERO_STEP; */
+					report_parse_error(PARSE_ERROR_ZERO_STEP, 0, NULL);
 					return 0;
 				}
 				/* auto-detect precision */
@@ -516,10 +539,9 @@ int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest
 			}
 		}
 
-		/* return PARSE_SUCCESS; */
 		return 1;
 	} else {
-		/* return PARSE_ERROR_INVALID_INPUT; */
+		report_parse_error(PARSE_ERROR_INVALID_INPUT, reduced_argc, reduced_argv);
 		return 0;
 	}
 }
