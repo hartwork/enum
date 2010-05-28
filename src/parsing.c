@@ -221,7 +221,7 @@ void report_parse_error(int code, int myargc, char **myargv) {
 
 	switch (code) {
 	case PARSE_ERROR_ZERO_STEP:
-		fatal("A step of 0 is invald.");
+		fatal("A step of 0 (zero) is invalid.");
 		break;
 	case PARSE_ERROR_UNKNOWN_TYPE:
 		fatal("Unidentified token:");
