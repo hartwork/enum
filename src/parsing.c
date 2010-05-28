@@ -197,7 +197,7 @@ void fatal(const char * message) {
 	fprintf(stderr, "ERROR: %s\n", message);
 }
 
-void report_parse_error(int code) {
+void report_parameter_error(int code) {
 	switch (code) {
 	case PARAMETER_ERROR_OUT_OF_MEMORY:
 		fatal("System too low on memory to continue.");
@@ -277,11 +277,11 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				char * newformat;
 				escape_strdup(optarg, '%', &newformat);
 				if (newformat == NULL) {
-					report_parse_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+					report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 					success = 0;
 				} else {
 					if (! set_format_strdup(&(dest->format), newformat)) {
-						report_parse_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+						report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 						success = 0;
 					}
 				}
@@ -290,7 +290,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 
 		case 'c':
 			if (! set_format_strdup(&(dest->format), "%c")) {
-				report_parse_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+				report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 				success = 0;
 			}
 			break;
@@ -298,7 +298,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 		case 'f':
 		case 'w':
 			if (! set_format_strdup(&(dest->format), optarg)) {
-				report_parse_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+				report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 				success = 0;
 			}
 			/* TODO look for %f or similar and error out unless found */
@@ -306,7 +306,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 
 		case 'h':
 			if (original_argc != 2) {
-				report_parse_error(PARAMETER_ERROR_HELP_NOT_ALONE);
+				report_parameter_error(PARAMETER_ERROR_HELP_NOT_ALONE);
 				success = 0;
 			} else {
 				dump_usage(stdout);
@@ -325,17 +325,17 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 		case 'p':
 			precision = strtoul(optarg, NULL, 10);
 			if (precision > 99) {
-				report_parse_error(PARAMETER_ERROR_INVALID_PRECISION);
+				report_parameter_error(PARAMETER_ERROR_INVALID_PRECISION);
 				success = 0;
 			} else {
 				char * newformat = (char *)malloc(6);
 				if (! newformat) {
-					report_parse_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+					report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 					success = 0;
 				} else {
 					sprintf(newformat, "%%.%uf", precision);
 					if (! set_format_strdup(&(dest->format), newformat)) {
-						report_parse_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+						report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 						success = 0;
 					}
 				}
@@ -353,7 +353,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 
 		case 'V':
 			if (original_argc != 2) {
-				report_parse_error(PARAMETER_ERROR_VERSION_NOT_ALONE);
+				report_parameter_error(PARAMETER_ERROR_VERSION_NOT_ALONE);
 				success = 0;
 			} else {
 				dump_version();
