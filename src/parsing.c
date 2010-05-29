@@ -95,13 +95,13 @@ typedef struct _use_case {
 
 extern int opterr;
 
-int set_scaffold_left(scaffolding * scaffold, setter_value value) {
+static int set_scaffold_left(scaffolding * scaffold, setter_value value) {
 	scaffold->flags |= FLAG_LEFT_SET;
 	scaffold->left = value.float_data;
 	return 1;
 }
 
-int set_scaffold_step(scaffolding * scaffold, setter_value value) {
+static int set_scaffold_step(scaffolding * scaffold, setter_value value) {
 	if (value.float_data == 0.0f) {
 		/* error code handled below */
 		return 0;
@@ -112,31 +112,31 @@ int set_scaffold_step(scaffolding * scaffold, setter_value value) {
 	return 1;
 }
 
-int set_scaffold_right(scaffolding * scaffold, setter_value value) {
+static int set_scaffold_right(scaffolding * scaffold, setter_value value) {
 	scaffold->flags |= FLAG_RIGHT_SET;
 	scaffold->right = value.float_data;
 	return 1;
 }
 
-int set_scaffold_count(scaffolding * scaffold, setter_value value) {
+static int set_scaffold_count(scaffolding * scaffold, setter_value value) {
 	scaffold->flags |= FLAG_COUNT_SET;
 	scaffold->count = value.uint_data;
 	return 1;
 }
 
-int ends_with_x(const char *str) {
+static int ends_with_x(const char *str) {
 	const int len = strlen(str);
 	if (str[len - 1] == 'x')
 		return 1;
 	return 0;
 }
 
-int is_nan_or_inf(float f) {
+static int is_nan_or_inf(float f) {
 	const float INF = strtod("INF", NULL);
 	return (enum_is_nan_float(f) || (f == INF) || (f == -INF)) ? 1 : 0;
 }
 
-token_type identify_token(const char *arg, setter_value *value) {
+static token_type identify_token(const char *arg, setter_value *value) {
 	char *end;
 	if (*arg == '\0')
 		return TOKEN_ERROR_EMPTY;
@@ -168,7 +168,7 @@ token_type identify_token(const char *arg, setter_value *value) {
 	return TOKEN_ERROR_PARSE;
 }
 
-int escape_strdup(const char *str, const char esc, char **dest) {
+static int escape_strdup(const char *str, const char esc, char **dest) {
 	unsigned int len;
 	unsigned int rpos;
 	unsigned int wpos;
@@ -208,11 +208,11 @@ typedef enum _parse_return {
 	PARSE_ERROR_INVALID_INPUT  /* generic parsing error */
 } parse_return;
 
-void fatal(const char * message) {
+static void fatal(const char * message) {
 	fprintf(stderr, "ERROR: %s\n", message);
 }
 
-void report_parameter_error(int code) {
+static void report_parameter_error(int code) {
 	switch (code) {
 	case PARAMETER_ERROR_OUT_OF_MEMORY:
 		fatal("System too low on memory to continue.");
@@ -234,7 +234,7 @@ void report_parameter_error(int code) {
 	}
 }
 
-void report_parse_error(int code, int myargc, char **myargv) {
+static void report_parse_error(int code, int myargc, char **myargv) {
 	int i;
 
 	switch (code) {
@@ -257,7 +257,7 @@ void report_parse_error(int code, int myargc, char **myargv) {
 	}
 }
 
-int set_format_strdup(char ** dest, const char * new) {
+static int set_format_strdup(char ** dest, const char * new) {
 	char * newformat;
 
 	if (*dest) {

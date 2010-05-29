@@ -46,7 +46,7 @@
 #define ENUM_MIN(a, b)  (((a) <= (b)) ? (a) : (b))
 #define ENUM_MAX(a, b)  (((a) >= (b)) ? (a) : (b))
 
-unsigned int calc_precision(float element) {
+static unsigned int calc_precision(float element) {
 	unsigned int precision = 0;
 	unsigned int ptemp;
 	unsigned int i;
@@ -73,7 +73,7 @@ static float precision_to_step(unsigned int precision) {
 /*
  * Ensure step direction aligns with relation between left and right
  */
-void ensure_proper_step_sign(scaffolding * scaffold) {
+static void ensure_proper_step_sign(scaffolding * scaffold) {
 	const int expected_direction = (scaffold->left <= scaffold->right) ? +1 : -1;
 	const int step_direction = (scaffold->step >= 0) ? +1 : -1;
 	if (expected_direction != step_direction) {
@@ -187,7 +187,7 @@ void complete_scaffold(scaffolding * scaffold) {
 	ensure_proper_step_sign(scaffold);
 }
 
-float discrete_random_closed(float min, float max, float step_width) {
+static float discrete_random_closed(float min, float max, float step_width) {
 	const float distance = fabs(max - min) + step_width;
 	double zero_to_almost_one = 0;
 	double zero_to_almost_distance;
