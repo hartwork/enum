@@ -62,9 +62,11 @@ int main(int argc, char **argv) {
 	switch (argpos) {
 	case 0:
 		/* usage or version shown, no numbers wanted */
+		free(dest.separator);
 		exit(0);
 	case -1:
 		/* errors reported already */
+		free(dest.separator);
 		exit(1);
 	default:
 		/* normal run with numbers */
@@ -72,6 +74,7 @@ int main(int argc, char **argv) {
 	}
 
 	if (! parse_args(argc - argpos, argv + argpos, &dest)) {
+		free(dest.separator);
 		return 1;
 	}
 

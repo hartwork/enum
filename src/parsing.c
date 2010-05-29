@@ -313,6 +313,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 						report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 						success = 0;
 					}
+					free(newformat);
 				}
 			}
 			break;
@@ -375,6 +376,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 						success = 0;
 					}
 				}
+				free(newformat);
 			}
 			break;
 
