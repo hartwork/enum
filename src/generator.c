@@ -105,6 +105,23 @@ static void ensure_proper_step_sign(scaffolding * scaffold) {
 	}
 }
 
+/** Switch ranges.
+ *
+ * In order to reverse the output, switch left to right and the other way
+ * round.
+ *
+ * @param[in,out] scaffold
+ *
+ * @since FIXME
+ */
+static void switch_ranges(scaffolding * scaffold) {
+	float temp;
+
+	temp = scaffold->left;
+	scaffold->left = scaffold->right;
+	scaffold->right = temp;
+}
+
 /** Calculate values in scaffold not given by user input.
  *
  * Main function to produce a usable scaffold for output calculation. All
@@ -223,6 +240,9 @@ void complete_scaffold(scaffolding * scaffold) {
 			}
 		}
 	}
+
+	if (CHECK_FLAG(scaffold->flags, FLAG_REVERSE))
+		switch_ranges(scaffold);
 
 	scaffold->flags |= FLAG_READY;
 	assert(KNOWN(scaffold) == 4);

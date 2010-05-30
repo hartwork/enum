@@ -745,6 +745,7 @@ int parse_parameters(int original_argc, char **original_argv, scaffolding *dest)
 			{"characters",   no_argument,       0, 'c'},
 			{"omit-newline", no_argument,       0, 'n'},
 			{"line",         no_argument,       0, 'l'},
+			{"decremental",  no_argument,       0, 'd'},
 			{"seed",         required_argument, 0, 'i'},
 			{"format",       required_argument, 0, 'f'},
 			{"word",         required_argument, 0, 'w'},
@@ -758,7 +759,7 @@ int parse_parameters(int original_argc, char **original_argv, scaffolding *dest)
 			{0, 0, 0, 0}
 		};
 
-		c = getopt_long(original_argc, original_argv, "+b:cef:hi:lnp:rs:t:Vw:z", long_options, &option_index);
+		c = getopt_long(original_argc, original_argv, "+b:cdef:hi:lnp:rs:t:Vw:z", long_options, &option_index);
 
 		if (c == -1) {
 			break;
@@ -791,6 +792,10 @@ int parse_parameters(int original_argc, char **original_argv, scaffolding *dest)
 				report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 				success = 0;
 			}
+			break;
+
+		case 'd':
+			dest->flags |= FLAG_REVERSE;
 			break;
 
 		case 'f':

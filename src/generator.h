@@ -140,7 +140,8 @@ enum scaffolding_flags {
 	FLAG_USER_PRECISION = 1 << 7,
 	FLAG_EQUAL_WIDTH = 1 << 8,
 	FLAG_USER_SEED = 1 << 9,
-	FLAG_NULL_BYTES = 1 << 10
+	FLAG_NULL_BYTES = 1 << 10,
+	FLAG_REVERSE = 1 << 11
 };
 
 /** Enumeration of possible return states of enum_yield() */
