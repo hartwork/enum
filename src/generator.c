@@ -208,7 +208,8 @@ yield_status yield(scaffolding * scaffold, float * dest) {
 			return YIELD_NONE;
 		}
 
-		if (HAS_RIGHT(scaffold)) {
+		assert(HAS_RIGHT(scaffold));
+
 			if (((scaffold->left <= scaffold->right)
 						&& (scaffold->left + scaffold->step > scaffold->right))
 					|| ((scaffold->left >= scaffold->right)
@@ -228,15 +229,6 @@ yield_status yield(scaffolding * scaffold, float * dest) {
 			} else {
 				return YIELD_MORE;
 			}
-		} else {
-			const float min = (scaffold->step >= 0) ? scaffold->left : -FLT_MAX;
-			const float max = (scaffold->step >= 0) ? FLT_MAX : scaffold->left;
-			*dest = discrete_random_closed(
-				min,
-				max,
-				fabs(scaffold->step));
-			return YIELD_MORE;
-		}
 	}
 
 	assert(HAS_LEFT(scaffold) && HAS_STEP(scaffold));
