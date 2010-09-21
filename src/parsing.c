@@ -185,7 +185,8 @@ typedef enum _parameter_error {
 	PARAMETER_ERROR_OUT_OF_MEMORY,
 	PARAMETER_ERROR_INVALID_PRECISION,
 	PARAMETER_ERROR_VERSION_NOT_ALONE,
-	PARAMETER_ERROR_HELP_NOT_ALONE
+	PARAMETER_ERROR_HELP_NOT_ALONE,
+	PARAMETER_ERROR_INVALID_RANDOM     /* useless arguments for random mode */
 } parameter_error;
 
 typedef enum _parse_return {
@@ -211,6 +212,9 @@ void report_parameter_error(int code) {
 		break;
 	case PARAMETER_ERROR_HELP_NOT_ALONE:
 		fatal("-h and --help must come alone.");
+		break;
+	case PARAMETER_ERROR_INVALID_RANDOM:
+		fatal("Command line arguments not useful in random mode");
 		break;
 	default:
 		assert(0);
@@ -544,6 +548,7 @@ int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest
 			continue;
 
 		if (CHECK_FLAG(dest->flags, FLAG_RANDOM) && (! table[k].random)) {
+			report_parameter_error(PARAMETER_ERROR_INVALID_RANDOM);
 			return 0;
 		}
 
