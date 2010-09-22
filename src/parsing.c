@@ -543,6 +543,10 @@ int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest
 		if (table[k].length != reduced_argc)
 			continue;
 
+		if (CHECK_FLAG(dest->flags, FLAG_RANDOM) && (! table[k].random)) {
+			return 0;
+		}
+
 		/* valid case left */
 		assert(valid_case == NULL);
 		valid_case = table + k;
