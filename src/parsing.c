@@ -77,6 +77,7 @@ typedef struct _token_details {
 typedef struct _use_case {
 	token_details const *details;
 	unsigned int length;
+	unsigned int random;          /* bool for random usefulness */
 } use_case;
 
 extern int opterr;
