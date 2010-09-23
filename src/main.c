@@ -45,6 +45,7 @@
 
 #include <stdlib.h>  /* for srand */
 #include <time.h>  /* for time */
+#include <unistd.h>  /* for getpid */
 
 int main(int argc, char **argv) {
 	int argpos;
@@ -87,7 +88,7 @@ int main(int argc, char **argv) {
 	}
 
 	if (CHECK_FLAG(dest.flags, FLAG_RANDOM))
-		srand(time(NULL));
+		srand(time(NULL) + getpid());
 
 	while (1) {
 		ret = yield(&dest, &out);
