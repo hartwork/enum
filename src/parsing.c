@@ -220,7 +220,7 @@ void report_parameter_error(int code) {
 		fatal("-h and --help must come alone.");
 		break;
 	case PARAMETER_ERROR_INVALID_RANDOM:
-		fatal("Command line arguments not useful in random mode");
+		fatal("Combining random and infinity not supported.");
 		break;
 	default:
 		assert(0);
