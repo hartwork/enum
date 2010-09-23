@@ -447,16 +447,16 @@ int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest
 	unsigned int m;
 	use_case const *valid_case = NULL;
 
-	token_details const use_case_0[] = {RIGHT};
-	token_details const use_case_1[] = {LEFT, DOTDOT, COUNT, STEP, DOTDOT, RIGHT};
-	token_details const use_case_2[] = {DOTDOT, COUNT, STEP, DOTDOT, RIGHT};
-	token_details const use_case_3[] = {LEFT, DOTDOT, COUNT, STEP, DOTDOT};
-	token_details const use_case_4[] = {LEFT, DOTDOT, COUNT, DOTDOT, RIGHT};
-	token_details const use_case_5[] = {LEFT, DOTDOT, STEP, DOTDOT, RIGHT};
-	token_details const use_case_6[] = {DOTDOT, COUNT, STEP, DOTDOT};
-	token_details const use_case_7[] = {DOTDOT, COUNT, DOTDOT, RIGHT};
-	token_details const use_case_8[] = {DOTDOT, STEP, DOTDOT, RIGHT};
-	token_details const use_case_9[] = {LEFT, DOTDOT, COUNT, DOTDOT};
+	token_details const use_case_0[]  = {RIGHT};
+	token_details const use_case_1[]  = {LEFT, DOTDOT, COUNT, STEP, DOTDOT, RIGHT};
+	token_details const use_case_2[]  = {DOTDOT, COUNT, STEP, DOTDOT, RIGHT};
+	token_details const use_case_3[]  = {LEFT, DOTDOT, COUNT, STEP, DOTDOT};
+	token_details const use_case_4[]  = {LEFT, DOTDOT, COUNT, DOTDOT, RIGHT};
+	token_details const use_case_5[]  = {LEFT, DOTDOT, STEP, DOTDOT, RIGHT};
+	token_details const use_case_6[]  = {DOTDOT, COUNT, STEP, DOTDOT};
+	token_details const use_case_7[]  = {DOTDOT, COUNT, DOTDOT, RIGHT};
+	token_details const use_case_8[]  = {DOTDOT, STEP, DOTDOT, RIGHT};
+	token_details const use_case_9[]  = {LEFT, DOTDOT, COUNT, DOTDOT};
 	token_details const use_case_10[] = {LEFT, DOTDOT, STEP, DOTDOT};
 	token_details const use_case_11[] = {DOTDOT, STEP, DOTDOT};
 	token_details const use_case_12[] = {DOTDOT, COUNT, DOTDOT};
@@ -468,16 +468,17 @@ int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest
 	token_details const use_case_18[] = {COUNT};
 
 	use_case table[19];
-	INSTALL_USE_CASE(0, 1)
-	INSTALL_USE_CASE(1, 1)
-	INSTALL_USE_CASE(2, 1)
-	INSTALL_USE_CASE(3, 1)
-	INSTALL_USE_CASE(4, 1)
-	INSTALL_USE_CASE(5, 1)
-	INSTALL_USE_CASE(6, 1)
-	INSTALL_USE_CASE(7, 1)
-	INSTALL_USE_CASE(8, 1)
-	INSTALL_USE_CASE(9, 1)
+	/* incrementing use_case_NN, random support (bool) */
+	INSTALL_USE_CASE( 0, 1)
+	INSTALL_USE_CASE( 1, 1)
+	INSTALL_USE_CASE( 2, 1)
+	INSTALL_USE_CASE( 3, 1)
+	INSTALL_USE_CASE( 4, 1)
+	INSTALL_USE_CASE( 5, 1)
+	INSTALL_USE_CASE( 6, 1)
+	INSTALL_USE_CASE( 7, 1)
+	INSTALL_USE_CASE( 8, 1)
+	INSTALL_USE_CASE( 9, 1)
 	INSTALL_USE_CASE(10, 0)
 	INSTALL_USE_CASE(11, 0)
 	INSTALL_USE_CASE(12, 1)
