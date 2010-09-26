@@ -210,9 +210,9 @@ yield_status yield(scaffolding * scaffold, float * dest) {
 
 		assert(HAS_RIGHT(scaffold));
 
-		if (((scaffold->left <= scaffold->right)
+		if (((scaffold->left < scaffold->right)
 					&& (scaffold->left + scaffold->step > scaffold->right))
-				|| ((scaffold->left >= scaffold->right)
+				|| ((scaffold->left > scaffold->right)
 					&& (scaffold->left + scaffold->step < scaffold->right))) {
 			*dest = 0.123456f;  /* Arbitrary magic value */
 			return YIELD_NONE;
