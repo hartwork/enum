@@ -169,11 +169,15 @@ void complete_scaffold(scaffolding * scaffold) {
 			}
 			}
 		} else if (! HAS_STEP(scaffold)) {
+			if (CHECK_FLAG(scaffold->flags, FLAG_RANDOM)) {
+				SET_STEP(*scaffold, precision_to_step(scaffold->precision));
+			} else {
 			assert(scaffold->count - 1 != 0);
 			SET_STEP(*scaffold, (scaffold->right - scaffold->left)
 					/ (scaffold->count - 1));
 			/* correct precision */
 			INCREASE_PRECISION(*scaffold, calc_precision(scaffold->step));
+			}
 		} else {
 			assert(! HAS_RIGHT(scaffold));
 			assert(scaffold->count - 1 != 0);
