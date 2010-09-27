@@ -128,8 +128,12 @@ void complete_scaffold(scaffolding * scaffold) {
 	assert(KNOWN(scaffold) >= 3);
 	if (KNOWN(scaffold) == 3) {
 		if (! HAS_LEFT(scaffold)) {
+			if (CHECK_FLAG(scaffold->flags, FLAG_RANDOM)) {
+				SET_LEFT(*scaffold, 1.0);
+			} else {
 			SET_LEFT(*scaffold, scaffold->right - (scaffold->count - 1)
 				* scaffold->step);
+			}
 		} else if (! HAS_COUNT(scaffold)) {
 			if (CHECK_FLAG(scaffold->flags, FLAG_RANDOM)) {
 				SET_COUNT(*scaffold, 1);
