@@ -70,6 +70,11 @@ unsigned int calc_precision(float element) {
 }
 
 
+static float precision_to_step(unsigned int precision) {
+	return 1.0f / pow(10, precision);
+}
+
+
 /*
  * Ensure step direction aligns with relation between left and right
  */
@@ -108,7 +113,7 @@ void complete_scaffold(scaffolding * scaffold) {
 		if (! HAS_STEP(scaffold)) {
 			if (HAS_LEFT(scaffold) && HAS_RIGHT(scaffold)) {
 				/* Special case for post-dot digit precision */
-				SET_STEP(*scaffold, 1.0f / pow(10, scaffold->precision));
+				SET_STEP(*scaffold, precision_to_step(scaffold->precision));
 			} else {
 				SET_STEP(*scaffold, 1.0f);
 			}
