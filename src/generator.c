@@ -131,6 +131,9 @@ void complete_scaffold(scaffolding * scaffold) {
 			SET_LEFT(*scaffold, scaffold->right - (scaffold->count - 1)
 				* scaffold->step);
 		} else if (! HAS_COUNT(scaffold)) {
+			if (CHECK_FLAG(scaffold->flags, FLAG_RANDOM)) {
+				SET_COUNT(*scaffold, 1);
+			} else {
 			assert(HAS_STEP(scaffold));
 			assert(HAS_LEFT(scaffold));
 			assert(HAS_RIGHT(scaffold));
@@ -154,6 +157,7 @@ void complete_scaffold(scaffolding * scaffold) {
 
 				assert(count_candidate > 0);
 				SET_COUNT(*scaffold, (unsigned int)count_candidate);
+			}
 			}
 		} else if (! HAS_STEP(scaffold)) {
 			assert(scaffold->count - 1 != 0);
