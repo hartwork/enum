@@ -156,12 +156,14 @@ void complete_scaffold(scaffolding * scaffold) {
 				SET_COUNT(*scaffold, (unsigned int)count_candidate);
 			}
 		} else if (! HAS_STEP(scaffold)) {
+			assert(scaffold->count - 1 != 0);
 			SET_STEP(*scaffold, (scaffold->right - scaffold->left)
 					/ (scaffold->count - 1));
 			/* correct precision */
 			INCREASE_PRECISION(*scaffold, calc_precision(scaffold->step));
 		} else {
 			assert(! HAS_RIGHT(scaffold));
+			assert(scaffold->count - 1 != 0);
 			SET_RIGHT(*scaffold, scaffold->left + scaffold->step
 				* (scaffold->count - 1));
 		}
