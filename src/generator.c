@@ -180,7 +180,10 @@ float discrete_random_closed(float min, float max, float step_width) {
 	unsigned int depth;
 	int unsigned u;
 
-	assert(min <= max);
+	if (min == max) {
+		return min;
+	}
+	assert(min < max);
 	assert(step_width > 0);
 
 	/* Note: Using log(a)+log(b) for log(a*b) to push down overflow border */
