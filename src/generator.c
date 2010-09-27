@@ -136,47 +136,47 @@ void complete_scaffold(scaffolding * scaffold) {
 			if (CHECK_FLAG(scaffold->flags, FLAG_RANDOM)) {
 				SET_LEFT(*scaffold, 1.0);
 			} else {
-			SET_LEFT(*scaffold, scaffold->right - (scaffold->count - 1)
-				* scaffold->step);
+				SET_LEFT(*scaffold, scaffold->right - (scaffold->count - 1)
+					* scaffold->step);
 			}
 		} else if (! HAS_COUNT(scaffold)) {
 			if (CHECK_FLAG(scaffold->flags, FLAG_RANDOM)) {
 				SET_COUNT(*scaffold, 1);
 			} else {
-			assert(HAS_STEP(scaffold));
-			assert(HAS_LEFT(scaffold));
-			assert(HAS_RIGHT(scaffold));
+				assert(HAS_STEP(scaffold));
+				assert(HAS_LEFT(scaffold));
+				assert(HAS_RIGHT(scaffold));
 
-			ensure_proper_step_sign(scaffold);
-			{
-				int count_candidate =
-					ceil(fabs(scaffold->right - scaffold->left)
-					/ fabs(scaffold->step) + 1);
+				ensure_proper_step_sign(scaffold);
+				{
+					int count_candidate =
+						ceil(fabs(scaffold->right - scaffold->left)
+						/ fabs(scaffold->step) + 1);
 
-				/* Will values be running over right? */
-				/* For instance for "enum 1 .. 2 .. 4" count must be 2, not 3. */
-				const float last = scaffold->left
-					+ scaffold->step * (count_candidate - 1);
-				const float over_by = (scaffold->step > 0)
-					? last - scaffold->right
-					: scaffold->right - last;
-				if (over_by > FLOAT_EQUAL_DELTA) {
-					count_candidate--;
+					/* Will values be running over right? */
+					/* For instance for "enum 1 .. 2 .. 4" count must be 2, not 3. */
+					const float last = scaffold->left
+						+ scaffold->step * (count_candidate - 1);
+					const float over_by = (scaffold->step > 0)
+						? last - scaffold->right
+						: scaffold->right - last;
+					if (over_by > FLOAT_EQUAL_DELTA) {
+						count_candidate--;
+					}
+
+					assert(count_candidate > 0);
+					SET_COUNT(*scaffold, (unsigned int)count_candidate);
 				}
-
-				assert(count_candidate > 0);
-				SET_COUNT(*scaffold, (unsigned int)count_candidate);
-			}
 			}
 		} else if (! HAS_STEP(scaffold)) {
 			if (CHECK_FLAG(scaffold->flags, FLAG_RANDOM)) {
 				SET_STEP(*scaffold, precision_to_step(scaffold->precision));
 			} else {
-			assert(scaffold->count - 1 != 0);
-			SET_STEP(*scaffold, (scaffold->right - scaffold->left)
-					/ (scaffold->count - 1));
-			/* correct precision */
-			INCREASE_PRECISION(*scaffold, calc_precision(scaffold->step));
+				assert(scaffold->count - 1 != 0);
+				SET_STEP(*scaffold, (scaffold->right - scaffold->left)
+						/ (scaffold->count - 1));
+				/* correct precision */
+				INCREASE_PRECISION(*scaffold, calc_precision(scaffold->step));
 			}
 		} else {
 			assert(! HAS_RIGHT(scaffold));
