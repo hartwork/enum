@@ -40,11 +40,38 @@
 #ifndef GENERATOR_H
 #define GENERATOR_H 1
 
+/** @name Constants
+ * Constants used by generator
+ *
+ * @since 0.3
+ */
+/*@{*/
 #define MAX_PD_DIGITS  5
 #define FLOAT_EQUAL_DELTA  0.0001f
+/*@}*/
 
+/** Check whether a flag is set.
+ *
+ * @param[in] bitfield
+ * @param[in] flag
+ *
+ * @return 1 or 0
+ *
+ * @since 0.3
+ */
 #define CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
 
+/** @name Macros to set scaffold values
+ *
+ * Set scaffold value according to macro name and at the same time set the
+ * relevant flag to document this.
+ *
+ * @param[out] scaffold
+ * @param[in] value
+ *
+ * @since 0.3
+ */
+/*@{*/
 #define SET_LEFT(scaffold, _left)  \
 	(scaffold).left = _left; \
 	(scaffold).flags |= FLAG_LEFT_SET
@@ -60,20 +87,55 @@
 #define SET_COUNT(scaffold, _count)  \
 	(scaffold).count = _count; \
 	(scaffold).flags |= FLAG_COUNT_SET
+/*@}*/
 
+/** Macro to increase precision.
+ *
+ * If a given value is higher than the precision already set in given scaffold,
+ * increase it there.
+ *
+ * @param[in,out] scaffold
+ * @param[in] _precision
+ *
+ * @since 0.3
+ */
 #define INCREASE_PRECISION(scaffold, _precision)  \
 	if (_precision > (scaffold).precision) { \
 		(scaffold).precision = _precision; \
 	}
 
+/** @name Scaffold flag checkers
+ * Macros to check if scaffold values are set by using their respective flags.
+ *
+ * @param[in] scaffold
+ *
+ * @return boolean meaning of 1 or 0 depending on whether the flag is set
+ *
+ * @since 0.3
+ */
+
+/*@{*/
 #define HAS_LEFT(scaffold)  CHECK_FLAG(scaffold->flags, FLAG_LEFT_SET)
 #define HAS_RIGHT(scaffold)  CHECK_FLAG(scaffold->flags, FLAG_RIGHT_SET)
 #define HAS_STEP(scaffold)  CHECK_FLAG(scaffold->flags, FLAG_STEP_SET)
 #define HAS_COUNT(scaffold)  CHECK_FLAG(scaffold->flags, FLAG_COUNT_SET)
+/*@}*/
 
+/** Report about number of know values in scaffold.
+ *
+ * Most important values in scaffold are left, right, step, and count. Add 1
+ * for each value set in scaffold and return that number.
+ *
+ * @param scaffold
+ *
+ * @return 0 to 4
+ *
+ * @since 0.3
+ */
 #define KNOWN(scaffold)  (HAS_LEFT(scaffold) + HAS_RIGHT(scaffold) \
 	+ HAS_STEP(scaffold) + HAS_COUNT(scaffold))
 
+/** Enumeration for flags set in scaffold->flags */
 enum scaffolding_flags {
 	FLAG_LEFT_SET = 1 << 0,
 	FLAG_RIGHT_SET = 1 << 1,
@@ -87,22 +149,28 @@ enum scaffolding_flags {
 	FLAG_NEWLINE = 1 << 7
 };
 
+/** Enumeration of possible return states of yield() */
 typedef enum _yield_status {
-	YIELD_MORE, /* value calculated, more available */
-	YIELD_LAST, /* value calculated, no more available */
-	YIELD_NONE  /* nothing could be calculated */
+	YIELD_MORE, /**< value calculated, more available */
+	YIELD_LAST, /**< value calculated, no more available */
+	YIELD_NONE  /**< nothing could be calculated */
 } yield_status;
 
+/** Main data structure for output calculation.
+ *
+ * The most important source for information in order to calculate the output.
+ * It's filled during parsing, then by calculation.
+ */
 typedef struct _scaffolding {
-	int flags;
-	float left;
-	float right;
-	float step;
-	unsigned int count;
-	unsigned int position;
-	unsigned int precision;
-	char * format;
-	char * separator;
+	int flags;              /**< store for flags to indicate set values */
+	float left;             /**< lower border of return values */
+	float right;            /**< upper border of return values */
+	float step;             /**< step between values */
+	unsigned int count;     /**< number of values to return */
+	unsigned int position;  /**< current position while walking through values */
+	unsigned int precision; /**< number of decimal places */
+	char * format;          /**< output format string */
+	char * separator;       /**< separation string between output values (default: \n) */
 } scaffolding;
 
 void complete_scaffold(scaffolding * scaffold);

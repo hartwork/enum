@@ -43,9 +43,33 @@
 #include <math.h>  /* for fabs, ceil, floor, fmod, log, pow, rand */
 #include <float.h>  /* for FLT_MAX */
 
+/** @name Min/Max macros
+ * Macros to find the smaller/larger number.
+ *
+ * @param[in] a
+ * @param[in] b
+ *
+ * @return a or b respectively, depending on which is smaller
+ *
+ * @since 0.3
+ */
+
+/*@{*/
 #define ENUM_MIN(a, b)  (((a) <= (b)) ? (a) : (b))
 #define ENUM_MAX(a, b)  (((a) >= (b)) ? (a) : (b))
+/*@}*/
 
+/** Calculate precision of float.
+ *
+ * Precision, i.e. number of decimal places, is calculated by counting the
+ * sensible number of decimal places of the given float.
+ *
+ * @param[in] element floating point number to calculate the precision from
+ *
+ * @return number of decimal places of given float
+ *
+ * @since 0.3
+ */
 static unsigned int calc_precision(float element) {
 	unsigned int precision = 0;
 	unsigned int ptemp;
@@ -64,14 +88,29 @@ static unsigned int calc_precision(float element) {
 	return precision;
 }
 
-
+/** Calculate a default step altered by precision.
+ *
+ * Default step is 1. If precision, i.e. number of decimal places, is higher
+ * than 1, the step needs to be adjusted to reflect that precision.
+ *
+ * @param[in] precision
+ *
+ * @return step with possibly higher precision (float)
+ *
+ * @since 0.3
+ */
 static float precision_to_step(unsigned int precision) {
 	return 1.0f / pow(10, precision);
 }
 
 
-/*
- * Ensure step direction aligns with relation between left and right
+/** Correct sign of step in necessary.
+ *
+ * Ensure step direction aligns with relation between left and right.
+ *
+ * @param[in,out] scaffold
+ *
+ * @since 0.3
  */
 static void ensure_proper_step_sign(scaffolding * scaffold) {
 	const int expected_direction = (scaffold->left <= scaffold->right) ? +1 : -1;
@@ -81,7 +120,16 @@ static void ensure_proper_step_sign(scaffolding * scaffold) {
 	}
 }
 
-
+/** Calculate values in scaffold not given by user input.
+ *
+ * Main function to produce a usable scaffold for output calculation. All
+ * values unknown after user input should be calculated here, i.e. scaffold is
+ * output usable after calling this function.
+ *
+ * @param[in,out] scaffold
+ *
+ * @since 0.3
+ */
 void complete_scaffold(scaffolding * scaffold) {
 	assert(KNOWN(scaffold) >= 0);
 
@@ -107,7 +155,7 @@ void complete_scaffold(scaffolding * scaffold) {
 		/* NOTE: Step has higher precedence */
 		if (! HAS_STEP(scaffold)) {
 			if (HAS_LEFT(scaffold) && HAS_RIGHT(scaffold)) {
-				/* Special case for post-dot digit precision */
+				/* Special case for decimal place precision */
 				SET_STEP(*scaffold, precision_to_step(scaffold->precision));
 			} else {
 				SET_STEP(*scaffold, 1.0f);
@@ -187,6 +235,19 @@ void complete_scaffold(scaffolding * scaffold) {
 	ensure_proper_step_sign(scaffold);
 }
 
+/** Calculate a random value out of possible output values.
+ *
+ * Left and right borders given as well as the step, a random value is "picked"
+ * out of the list of possible output values and returned.
+ *
+ * @param[in] min
+ * @param[in] max
+ * @param[in] step_width
+ *
+ * @return A random value within given range considering step
+ *
+ * @since 0.3
+ */
 static float discrete_random_closed(float min, float max, float step_width) {
 	const float distance = fabs(max - min) + step_width;
 	double zero_to_almost_one = 0;
@@ -214,6 +275,23 @@ static float discrete_random_closed(float min, float max, float step_width) {
 	return min + zero_to_almost_distance - fmod(zero_to_almost_distance, step_width);
 }
 
+/** Main output function.
+ *
+ * Calculate next value based on given scaffold and write it to dest. Assuming
+ * scaffold was filled correctly and not altered inbetween calls, yield will
+ * find the next value to be printed.
+ *
+ * In order to determine its success, yield returns a yield_status indicating
+ * whether a value has been written to dest or not, and even if this might be
+ * the last one yield would be able to offer.
+ *
+ * @param[in] scaffold
+ * @param[out] dest
+ *
+ * @return yield
+ *
+ * @since 0.3
+ */
 yield_status yield(scaffolding * scaffold, float * dest) {
 	float candidate;
 
@@ -292,6 +370,15 @@ yield_status yield(scaffolding * scaffold, float * dest) {
 	}
 }
 
+/** Initialization of scaffold.
+ *
+ * In order to have usable defaults in at least some basic scaffold members,
+ * initialize it here.
+ *
+ * @param[out] dest (scaffold)
+ *
+ * @since 0.3
+ */
 void initialize_scaffold(scaffolding * dest) {
 	dest->flags = 0;
 	dest->position = 0;
