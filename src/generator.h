@@ -101,7 +101,6 @@ typedef struct _scaffolding {
 } scaffolding;
 
 void complete_scaffold(scaffolding * scaffold);
-void calculator(scaffolding * scaffold);
 yield_status yield(scaffolding * scaffold, float * dest);
 void initialize_scaffold(scaffolding * dest);
 
