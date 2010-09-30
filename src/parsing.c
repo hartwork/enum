@@ -48,8 +48,15 @@
 #include <getopt.h>
 #include <math.h>   /* for log10 */
 
+/** Macro to have a boolean kind of answer about if a token is invalid somehow
+ * @since 0.3
+ */
 #define IS_TOKEN_ERROR(type)  ((type) >= TOKEN_ERROR)
 
+/** @name Shortcuts for setting up the use_case table
+ * @since 0.3
+ */
+/*@{*/
 #define LEFT	{TOKEN_FLOAT, set_scaffold_left}
 #define RIGHT	{TOKEN_FLOAT, set_scaffold_right}
 #define STEP	{TOKEN_FLOAT, set_scaffold_step}
@@ -61,40 +68,89 @@
 	table[UC].details = use_case_##UC; \
 	table[UC].length = sizeof(use_case_##UC) / sizeof(token_details); \
 	table[UC].random = RAND;
+/*@}*/
 
+/** Enumeration for token types.
+ *
+ * What a user gives us as command line argument is considered a token. There
+ * are a few valid types that we can use, the rest are error cases.
+ *
+ * Note that all types after (and including) TOKEN_ERROR are considered to be
+ * errors.
+ *
+ * @see IS_TOKEN_ERROR
+ *
+ * @since 0.3
+ */
 typedef enum _token_type {
-  TOKEN_FLOAT,
-  TOKEN_MULTIPLIER,
-  TOKEN_DOTDOT,
+  TOKEN_FLOAT,            /**< what is considered to be a floating point number */
+  TOKEN_MULTIPLIER,       /**< number followed by an x */
+  TOKEN_DOTDOT,           /**< two dots */
 
   /* Only errors from here */
-  TOKEN_ERROR,
-  TOKEN_ERROR_EMPTY,
-  TOKEN_ERROR_BAD_COUNT,
-  TOKEN_ERROR_BAD_FLOAT,
-  TOKEN_ERROR_PARSE
+  TOKEN_ERROR,            /**< general token error (unused) */
+  TOKEN_ERROR_EMPTY,      /**< token is empty */
+  TOKEN_ERROR_BAD_COUNT,  /**< looking like a count value can't be one */
+  TOKEN_ERROR_BAD_FLOAT,  /**< should be float but isn't, like nan/inf */
+  TOKEN_ERROR_PARSE       /**< token not recognizable at all */
 } token_type;
 
+/** union used in function_pointer
+ * @see setter_function_pointer
+ *
+ * @since 0.3
+ */
 typedef union _setter_value {
-	unsigned int uint_data;
-	float float_data;
+	unsigned int uint_data; /**< unsigned int */
+	float float_data;       /**< float */
 } setter_value;
 
+/** function_pointer to install a value into scaffold
+ * @since 0.3
+ */
 typedef int (*setter_function_pointer)(scaffolding *, setter_value);
 
+/** structure to keep function_pointer and token type together
+ * @since 0.3
+ */
 typedef struct _token_details {
-	token_type type;
-	setter_function_pointer setter;
+	token_type type;                /**< type of current token */
+	setter_function_pointer setter; /**< function to set token */
 } token_details;
 
+/** use case structure.
+ *
+ * All possible combinations of command line arguments are stored as use cases.
+ * This structure keeps the important details about such use case.
+ *
+ * @since 0.3
+ */
 typedef struct _use_case {
-	token_details const *details;
-	unsigned int length;
-	unsigned int random;          /* bool for random usefulness */
+	token_details const *details; /**< combination of token type and its setter function */
+	unsigned int length;          /**< length of use case */
+	unsigned int random;          /**< bool for random usefulness */
 } use_case;
 
+/** from getopt */
 extern int opterr;
 
+/** @name Setter functions
+ * Functions to be used through function_pointer.
+ *
+ * For each value possibly given by command line arguments a setter function is
+ * implemented and called by a function_pointer.
+ *
+ * @see setter_function_pointer
+ *
+ * @param[out] scaffold
+ * @param[in] value
+ *
+ * @return boolean meaning of 1 or 0
+ *
+ * @since 0.3
+ */
+
+/*@{*/
 static int set_scaffold_left(scaffolding * scaffold, setter_value value) {
 	scaffold->flags |= FLAG_LEFT_SET;
 	scaffold->left = value.float_data;
@@ -123,7 +179,16 @@ static int set_scaffold_count(scaffolding * scaffold, setter_value value) {
 	scaffold->count = value.uint_data;
 	return 1;
 }
+/*@}*/
 
+/** Figure out if a string ends on an x.
+ *
+ * @param[in] str
+ *
+ * @return boolean meaning of 1 or 0
+ *
+ * @since 0.3
+ */
 static int ends_with_x(const char *str) {
 	const int len = strlen(str);
 	if (str[len - 1] == 'x')
@@ -131,11 +196,37 @@ static int ends_with_x(const char *str) {
 	return 0;
 }
 
+/** Figure out if a float is not a number or infinity.
+ *
+ * @param[in] f
+ *
+ * @return boolean meaning of 1 or 0
+ *
+ * @since 0.3
+ */
 static int is_nan_or_inf(float f) {
 	const float INF = strtod("INF", NULL);
 	return (enum_is_nan_float(f) || (f == INF) || (f == -INF)) ? 1 : 0;
 }
 
+/** Identify type of a token.
+ *
+ * As defined by token_type every token is of a specific type, possibly an
+ * error type, obviously.
+ *
+ * The token type is important for command line parsing as not every type can
+ * be at every position on the command line, and also for the type of number
+ * since count must be unsigned int for example.
+ *
+ * @param[in] arg
+ * @param[in] value
+ *
+ * @return type of token as defined above.
+ *
+ * @see token_type
+ *
+ * @since 0.3
+ */
 static token_type identify_token(const char *arg, setter_value *value) {
 	char *end;
 	if (*arg == '\0')
@@ -168,6 +259,20 @@ static token_type identify_token(const char *arg, setter_value *value) {
 	return TOKEN_ERROR_PARSE;
 }
 
+/** Escape a string by given escape char and copy new string.
+ *
+ * Escape the string str by escape character esc and write new string to dest.
+ *
+ * Example: '5§f' escaped by '§' leads to '5§§f'.
+ *
+ * @param[in] str
+ * @param[in] esc
+ * @param[out] dest
+ *
+ * @return boolean meaning of 1 or 0
+ *
+ * @since 0.3
+ */
 static int escape_strdup(const char *str, const char esc, char **dest) {
 	unsigned int len;
 	unsigned int rpos;
@@ -194,6 +299,18 @@ static int escape_strdup(const char *str, const char esc, char **dest) {
 	return 1;
 }
 
+/** @name Error handling
+ * Enumerations and functions for error handling during parsing.
+ */
+
+/*@{*/
+/** Errors during parsing of parameters.
+ *
+ * Parameters are to be considered what others call switches, i.e. command line
+ * arguments with one or two leading dashes.
+ *
+ * @since 0.3
+ */
 typedef enum _parameter_error {
 	PARAMETER_ERROR_OUT_OF_MEMORY,
 	PARAMETER_ERROR_INVALID_PRECISION,
@@ -201,6 +318,14 @@ typedef enum _parameter_error {
 	PARAMETER_ERROR_HELP_NOT_ALONE
 } parameter_error;
 
+/** Errors during parsing of arguments.
+ *
+ * Arguments, in contrast to parameters, are given on the command line without
+ * leading dashes. They provide the basic information needed to fill a
+ * scaffold.
+ *
+ * @since 0.3
+ */
 typedef enum _parse_return {
 	PARSE_ERROR_UNKNOWN_TYPE,  /* token error: type of argument not known */
 	PARSE_ERROR_ZERO_STEP,     /* step == 0 */
@@ -208,10 +333,22 @@ typedef enum _parse_return {
 	PARSE_ERROR_INVALID_RANDOM /* useless arguments for random mode */
 } parse_return;
 
+/** Print error message to stderr.
+ *
+ * @param[in] message
+ *
+ * @since 0.3
+ */
 static void fatal(const char * message) {
 	fprintf(stderr, "ERROR: %s\n", message);
 }
 
+/** Report error during parameter parsing.
+ *
+ * @param[in] code
+ *
+ * @since 0.3
+ */
 static void report_parameter_error(int code) {
 	switch (code) {
 	case PARAMETER_ERROR_OUT_OF_MEMORY:
@@ -231,6 +368,17 @@ static void report_parameter_error(int code) {
 	}
 }
 
+/** Report error during argument parsing.
+ *
+ * In contrast to errors during parameter parsing, argument parsing errors also
+ * provide information about which argument failed to be parsed.
+ *
+ * @param[in] code
+ * @param[in] myargc
+ * @param[in] myargv
+ *
+ * @since 0.3
+ */
 static void report_parse_error(int code, int myargc, char **myargv) {
 	int i;
 
@@ -257,7 +405,20 @@ static void report_parse_error(int code, int myargc, char **myargv) {
 		fprintf(stderr, "\n");
 	}
 }
+/*@}*/
 
+/** Set new format string.
+ *
+ * Copying the new string to destination pointer, issuing a warning to stderr
+ * if an earlier format string thereby is overwritten.
+ *
+ * @param[in,out] dest
+ * @param[in] new
+ *
+ * @return boolean value of 1 or 0
+ *
+ * @since 0.3
+ */
 static int set_format_strdup(char ** dest, const char * new) {
 	char * newformat;
 
@@ -279,6 +440,19 @@ static int set_format_strdup(char ** dest, const char * new) {
 	return 1;
 }
 
+/** Store a default format string to scaffold.
+ *
+ * A default format string, consisting of a floating point number with decimal
+ * places according to given precision, is created in allocated memory and then
+ * stored into a scaffold's format key, scaffold->format.
+ *
+ * @param[in,out] dest
+ * @param[in] precision
+ *
+ * @return boolean meaning of 1 or 0
+ *
+ * @since 0.4
+ */
 int make_default_format_string(scaffolding * dest, unsigned int precision) {
 	const char base[] = "%%.%uf";
 	const size_t min_length = sizeof(base) - 2;
@@ -299,6 +473,22 @@ int make_default_format_string(scaffolding * dest, unsigned int precision) {
 	return 0;
 }
 
+/** @name Command line parsing */
+
+/*@{*/
+/** Parsing of command line parameters.
+ *
+ * Parameters are all parts of given command line args that start with one or
+ * two dashes, i.e. whatever getopt can handle.
+ *
+ * @param[in] original_argc
+ * @param[in] original_argv
+ * @param[out] dest
+ *
+ * @return zero in case of failure, non-zero otherwise
+ *
+ * @since 0.3
+ */
 int parse_parameters(unsigned int original_argc, char **original_argv, scaffolding *dest) {
 	int c;
 	int option_index = 0;
@@ -447,6 +637,19 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 		: -1;
 }
 
+/** Parsing of command line arguments that are not considered parameters.
+ *
+ * Knowing about all possible combinations of command line arguments, a table
+ * of use cases is built and compared to what was given by the user.
+ *
+ * @param[in] reduced_argc
+ * @param[in] reduced_argv
+ * @param[out] dest
+ *
+ * @return zero in case of failure, non-zero otherwise
+ *
+ * @since 0.3
+ */
 int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest) {
 	unsigned int i;
 	unsigned int j;
@@ -572,3 +775,4 @@ int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest
 		return 0;
 	}
 }
+/*@}*/
