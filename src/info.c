@@ -39,10 +39,12 @@
 
 #include "info.h"
 
+/** Return version of program. */
 void dump_version() {
 	puts(PACKAGE_VERSION);
 }
 
+/** Print usage of program. */
 void dump_usage(FILE * file) {
 	fprintf(file,
 		"Usage: \n"
