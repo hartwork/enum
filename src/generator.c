@@ -46,11 +46,6 @@
 #define ENUM_MIN(a, b)  (((a) <= (b)) ? (a) : (b))
 #define ENUM_MAX(a, b)  (((a) >= (b)) ? (a) : (b))
 
-#define HAS_LEFT(scaffold)  CHECK_FLAG(scaffold->flags, FLAG_LEFT_SET)
-#define HAS_RIGHT(scaffold)  CHECK_FLAG(scaffold->flags, FLAG_RIGHT_SET)
-#define HAS_STEP(scaffold)  CHECK_FLAG(scaffold->flags, FLAG_STEP_SET)
-#define HAS_COUNT(scaffold)  CHECK_FLAG(scaffold->flags, FLAG_COUNT_SET)
-
 unsigned int calc_precision(float element) {
 	unsigned int precision = 0;
 	unsigned int ptemp;
