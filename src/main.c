@@ -82,9 +82,7 @@ int main(int argc, char **argv) {
 	complete_scaffold(&dest);
 
 	if (!dest.format) {
-		assert(dest.precision < 100);
-		dest.format = malloc(6); /* TODO */
-		sprintf(dest.format, "%%.%uf", dest.precision);
+		make_default_format_string(&dest, dest.precision);
 	}
 
 	if (CHECK_FLAG(dest.flags, FLAG_RANDOM))
