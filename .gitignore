@@ -15,3 +15,4 @@ Makefile
 core
 /test/enum_test
 /man/*.1
+/doc
