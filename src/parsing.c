@@ -46,6 +46,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <getopt.h>
+#include <math.h>   /* for log10 */
 
 #define IS_TOKEN_ERROR(type)  ((type) >= TOKEN_ERROR)
 
@@ -217,7 +218,7 @@ void report_parameter_error(int code) {
 		fatal("System too low on memory to continue.");
 		break;
 	case PARAMETER_ERROR_INVALID_PRECISION:
-		fatal("Precision must be an integer between 0 and 99.");
+		fatal("Precision must be a non-negative integer.");
 		break;
 	case PARAMETER_ERROR_VERSION_NOT_ALONE:
 		fatal("-V and --version must come alone.");
@@ -275,6 +276,26 @@ int set_format_strdup(char ** dest, const char * new) {
 			return 0;
 	}
 	return 1;
+}
+
+int make_default_format_string(scaffolding * dest, unsigned int precision) {
+	const char base[] = "%%.%uf";
+	const size_t min_length = sizeof(base) - 2;
+
+	const size_t precision_digits = ((precision == 0) ? 0 : (size_t)log10(precision)) + 1;
+
+	char * const newformat = (char *)malloc(min_length + precision_digits + 1);
+
+	if (newformat != NULL) {
+		sprintf(newformat, base, precision);
+		if (! set_format_strdup(&(dest->format), newformat)) {
+			free(newformat);
+			return 0;
+		}
+		free(newformat);
+		return 1;
+	}
+	return 0;
 }
 
 int parse_parameters(unsigned int original_argc, char **original_argv, scaffolding *dest) {
@@ -372,28 +393,14 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 		case 'p':
 			{
 				char * end;
+
 				precision = strtoul(optarg, &end, 10);
-				if (end - optarg != (int)strlen(optarg)) {
-					precision = -1;  /* Triggers range error */
+				if (end - optarg != (int)strlen(optarg) || (strchr(optarg, '-') != NULL)) {
+					report_parameter_error(PARAMETER_ERROR_INVALID_PRECISION);
 					success = 0;
+					break;
 				}
-			}
-			if (precision > 99) {
-				report_parameter_error(PARAMETER_ERROR_INVALID_PRECISION);
-				success = 0;
-			} else {
-				char * newformat = (char *)malloc(6);
-				if (! newformat) {
-					report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
-					success = 0;
-				} else {
-					sprintf(newformat, "%%.%uf", precision);
-					if (! set_format_strdup(&(dest->format), newformat)) {
-						report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
-						success = 0;
-					}
-				}
-				free(newformat);
+				make_default_format_string(dest, precision);
 			}
 			break;
 
