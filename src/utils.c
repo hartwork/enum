@@ -43,11 +43,26 @@
 #include <stdlib.h>  /* for malloc, strtod */
 #include <string.h>  /* for strlen */
 
+/** Simple union of float and int.
+ *
+ * @since 0.3
+ */
 typedef union _float_int {
-	float float_data;
-	long int int_data;
+	float float_data;  /**< float */
+	long int int_data; /**< int */
 } float_int;
 
+/** Custom strdup function.
+ *
+ * Copies given string to newly allocated memory and adds trailing \\0 to
+ * string.
+ *
+ * @param[in] text
+ *
+ * @return Pointer to copy of string or NULL if malloc failed
+ *
+ * @since 0.3
+ */
 char * enum_strdup(const char * text) {
 	const size_t len = strlen(text);
 	char * const dup = malloc(len + 1);
@@ -58,11 +73,19 @@ char * enum_strdup(const char * text) {
 	return dup;
 }
 
+/** Custom check whether a float is NAN.
+ *
+ * Since strtod("NAN", NULL) != strtod("NAN", NULL), this function compares
+ * bits of a given float to those of NAN and thus determines whether given
+ * float it NAN or not.
+ *
+ * @param[in] value
+ *
+ * @return boolean meaning of 1 or 0
+ *
+ * @since 0.3
+ */
 int enum_is_nan_float(float value) {
-	/*
-	 * Workaround strtod("NAN", NULL) != strtod("NAN", NULL)
-	 * by comparing bits ourselves
-	 */
 	float_int fi_test;
 	float_int fi_nan;
 
