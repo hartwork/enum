@@ -45,7 +45,11 @@
 #include <stdio.h>  /* for FILE*, fopen, fclose */
 #include <string.h>  /* for strncpy */
 
-
+/** @name printf specifier groups
+ *
+ * @since 0.3
+ */
+/*@{*/
 #define CASE_INT_LIKE_SPECIFIER  \
 	case 'd': \
 	case 'i': \
@@ -81,8 +85,15 @@
 	case '7': \
 	case '8': \
 	case '9':
+/*@}*/
 
-
+/** Enumeration of states during format string parsing.
+ *
+ * These constants are used when walking through a custom format string in
+ * order to produce actual output using it (and thus checking it for validity).
+ *
+ * @since 0.3
+ */
 typedef enum _format_parse_state {
 	STATE_AT_FIRST,
 	STATE_INSIDE_FLAGS,
@@ -94,12 +105,23 @@ typedef enum _format_parse_state {
 } format_parse_state;
 
 
-/*
- * Helper function called by <multi_printf>.
- * Runs printf on the format from <start> to <after_last> (exclusively)
- * passing a casted instanced <value> as needed.
- * With <pretend> != 0 no printing will be done; instead,
- * the given format will be checked for validity.
+/** Helper function called by multi_printf.
+ *
+ * Runs printf on the format from start to after_last (exclusively) passing a
+ * casted instanced value as needed. With pretend != 0 no printing will be
+ * done; instead, the given format will be checked for validity.
+ *
+ * Function prints to stdout.
+ *
+ * @param[in] start
+ * @param[in] after_last
+ * @param[in] specifier
+ * @param[in] value
+ * @param[in] pretend
+ *
+ * @return success status as represented by custom_printf_return
+ *
+ * @since 0.3
  */
 static custom_printf_return single_cast_printf(const char *start, const char *after_last, char specifier, float value, int pretend) {
 	const int len = after_last - start;
@@ -149,12 +171,20 @@ static custom_printf_return single_cast_printf(const char *start, const char *af
 }
 
 
-/*
- * Parses <format> for points of interpolation (e.g. "%3i")
- * and calls <single_cast_printf> on substrings containing
- * on point of interpolation at most.
- * With <pretend> != 0 no printing will be done; instead,
- * <format> will be checked for validity.
+/** Helper for multi_printf.
+ *
+ * Parses format for points of interpolation (e.g. "%3i") and calls
+ * single_cast_printf on substrings containing one point of interpolation at
+ * most. With pretend != 0 no printing will be done; instead, format will be
+ * checked for validity.
+ *
+ * @param[in] format
+ * @param[in] value
+ * @param[in] pretend
+ *
+ * @return success status as represented by custom_printf_return
+ *
+ * @since 0.3
  */
 static custom_printf_return multi_printf_internal(const char * format, float value, int pretend) {
 	const char * start = format;
@@ -285,18 +315,33 @@ static custom_printf_return multi_printf_internal(const char * format, float val
 }
 
 
-/*
- * Parses <format> for points of interpolation (e.g. "%3i")
- * and calls <single_cast_printf> on substrings containing
- * on point of interpolation at most.
+/** Print value using custom format string.
+ *
+ * Parses format for points of interpolation (e.g. "%3i") and calls
+ * single_cast_printf on substrings containing one point of interpolation at
+ * most.
+ *
+ * @param[in] format
+ * @param[in] value
+ *
+ * @return success state as represented by custom_printf_return
+ *
+ * @since 0.3
  */
 custom_printf_return multi_printf(const char * format, float value) {
 	return multi_printf_internal(format, value, 0);
 }
 
 
-/*
- * Checks <format> for validity.
+/** Checks format for validity.
+ *
+ * Checks if a given custom format string is valid for output printing.
+ *
+ * @param[in] format
+ *
+ * @return success state as represented by custom_printf_return
+ *
+ * @since 0.3
  */
 custom_printf_return is_valid_format(const char * format) {
 	return multi_printf_internal(format, 1.23456f, 1);

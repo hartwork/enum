@@ -40,6 +40,7 @@
 #ifndef PRINTING_H
 #define PRINTING_H 1
 
+/** Simple enumeration of possible return values of custom printf functions */
 typedef enum _custom_printf_return {
 	CUSTOM_PRINTF_SUCCESS,
 	CUSTOM_PRINTF_INVALID_FORMAT_ENUM,
