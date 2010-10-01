@@ -198,14 +198,14 @@ typedef enum _parameter_error {
 	PARAMETER_ERROR_OUT_OF_MEMORY,
 	PARAMETER_ERROR_INVALID_PRECISION,
 	PARAMETER_ERROR_VERSION_NOT_ALONE,
-	PARAMETER_ERROR_HELP_NOT_ALONE,
-	PARAMETER_ERROR_INVALID_RANDOM     /* useless arguments for random mode */
+	PARAMETER_ERROR_HELP_NOT_ALONE
 } parameter_error;
 
 typedef enum _parse_return {
 	PARSE_ERROR_UNKNOWN_TYPE,  /* token error: type of argument not known */
 	PARSE_ERROR_ZERO_STEP,     /* step == 0 */
-	PARSE_ERROR_INVALID_INPUT  /* generic parsing error */
+	PARSE_ERROR_INVALID_INPUT, /* generic parsing error */
+	PARSE_ERROR_INVALID_RANDOM /* useless arguments for random mode */
 } parse_return;
 
 static void fatal(const char * message) {
@@ -226,9 +226,6 @@ static void report_parameter_error(int code) {
 	case PARAMETER_ERROR_HELP_NOT_ALONE:
 		fatal("-h and --help must come alone.");
 		break;
-	case PARAMETER_ERROR_INVALID_RANDOM:
-		fatal("Combining random and infinity not supported.");
-		break;
 	default:
 		assert(0);
 	}
@@ -246,6 +243,9 @@ static void report_parse_error(int code, int myargc, char **myargv) {
 		break;
 	case PARSE_ERROR_INVALID_INPUT:
 		fatal("Combination of command line arguments could not be parsed:");
+		break;
+	case PARSE_ERROR_INVALID_RANDOM:
+		fatal("Combining random and infinity not supported.");
 		break;
 	}
 
@@ -530,7 +530,7 @@ int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest
 			continue;
 
 		if (CHECK_FLAG(dest->flags, FLAG_RANDOM) && (! table[k].random)) {
-			report_parameter_error(PARAMETER_ERROR_INVALID_RANDOM);
+			report_parse_error(PARSE_ERROR_INVALID_RANDOM, 0, NULL);
 			return 0;
 		}
 
