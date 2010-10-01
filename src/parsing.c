@@ -250,6 +250,7 @@ static void report_parse_error(int code, int myargc, char **myargv) {
 	}
 
 	if (myargc > 0) {
+		assert(myargv != NULL);
 		for (i = 0; i < myargc; i++) {
 			fprintf(stderr, "%s ", myargv[i]);
 		}
