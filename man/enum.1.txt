@@ -107,7 +107,7 @@ OTHER
 HISTORY
 -------
 
-*enum* is a unifaction of GNU seq and BSD jot. At the core both
+*enum* is a unifaction of GNU seq and BSD jot.  At the core both
 tools print sequences of numbers.  GNU seq has a clean interface
 but very limited functionality.  In contrast BSD jot offers more
 advanced features like random numbers and custom formatting at
@@ -115,7 +115,7 @@ the cost of a rather unfriendly interface.
 
 With *enum* we try to offer a tool with the power of BSD jot and
 and a usuable, easily memorable interface.  Enum is licensed
-under a BSD license and written in C89 for maximum adoptability.
+under a BSD license and written in C89 for maximum portability.
 
 
 AUTHORS
