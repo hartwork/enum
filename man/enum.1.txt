@@ -126,6 +126,13 @@ Jan Hauke Rahm <jhr@debian.org>
 Sebastian Pipping <sping@gentoo.org>
 
 
+RESOURCES
+---------
+Main web site:  https://fedorahosted.org/enum/
+
+Gitweb:  http://git.fedorahosted.org/git/?p=enum.git
+
+
 SEE ALSO
 --------
 jot(1), seq(1), printf(3)
