@@ -107,13 +107,13 @@ OTHER
 HISTORY
 -------
 
-*enum* is a unifaction of GNU seq and BSD jot.  At the core both
+*enum* is a unifaction of GNU seq and jot.  At the core both
 tools print sequences of numbers.  GNU seq has a clean interface
-but very limited functionality.  In contrast BSD jot offers more
+but very limited functionality.  In contrast, jot offers more
 advanced features like random numbers and custom formatting at
 the cost of a rather unfriendly interface.
 
-With *enum* we try to offer a tool with the power of BSD jot and
+With *enum* we try to offer a tool with the power of jot and
 and a usuable, easily memorable interface.  Enum is licensed
 under a BSD license and written in C89 for maximum portability.
 
@@ -121,7 +121,7 @@ under a BSD license and written in C89 for maximum portability.
 COMPARISON TO JOT
 -----------------
 
-Simplified, the full feature space of BSD jot plus a few enhancements
+Simplified, the full feature space of jot plus a few enhancements
 is contained in *enum*.  Names of parameters have been retained
 for increased compatibility, e.g. *-p 2* works with *enum* as it
 does with jot:
@@ -204,8 +204,8 @@ To achieve jot's output with *enum* you could manually append a playholder:
     test_3
 
 
-COMPARISON TO SEQ
------------------
+COMPARISON TO GNU SEQ
+---------------------
 
 Simplified, *enum*'s usage is backwards-compatible to that of GNU seq.
 
@@ -228,7 +228,7 @@ from the set {4.0, 6.0, 8.0, 10.0}.
 
 Support for inverse ordering
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-In contrast to seq *enum* does support enumerating decreasing values:
+In contrast to GNU seq *enum* does support enumerating decreasing values:
 
     # seq 3 1
 
@@ -258,7 +258,7 @@ the trailing newline.
 DIFFERENCES
 ~~~~~~~~~~~
 
-*enum* does not (yet?) support seq's parameter *--equal-width*.
+*enum* does not (yet?) support GNU seq's parameter *--equal-width*.
 On a side note the related shortcut *-w* conflicts with jot's *-w word*.
 
 
