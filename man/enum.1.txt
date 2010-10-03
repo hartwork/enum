@@ -121,6 +121,27 @@ under a BSD license and written in C89 for maximum portability.
 COMPARISON TO JOT
 -----------------
 
+Using *enum* instead of jot offers two main advantages:
+
+- improved usability and
+- uniform behavior accross distribitions and operating systems.
+
+jot implementations differ subtly among DragonFlyBSD, FreeBSD,
+MirOS BSD, NetBSD, OpenBSD and OS X.
+For instance the command 'jot - 0 5' produces
+
+- 6 integers from 0 to 5 on FreeBSD and OS X,
+
+    0 1 2 3 4 5
+
+- 100 integers from 0 to 99 on NetBSD, and
+
+    0 1 2 [..] 97 98 99
+
+- 100 integers from 0 to 5 (with consecutive duplicates) on DragonFlyBSD, MirOS BSD and OpenBSD.
+
+    0 0 0 0 0 0 0 0 0 0 1 1 [..] 4 4 5 5 5 5 5 5 5 5 5 5
+
 Simplified, the full feature space of jot plus a few enhancements
 is contained in *enum*.  Names of parameters have been retained
 for increased compatibility, e.g. *-p 2* works with *enum* as it
