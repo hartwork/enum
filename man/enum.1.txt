@@ -82,13 +82,13 @@ FORMATTING
 
 *-p, --precision*='COUNT'::
     Overrides automatic selection of precision to print 'COUNT'
-    digits atfer the dot, e.g. "0.100" for 'COUNT' = 3.
+    decimal places, e.g. "0.100" for 'COUNT' = 3.
     By default the number of digits to print is computed from the
     arguments given and the potentially computed step size.
 
 *-s, --separator*='TEXT'::
-    Overrides the separator being printed between values.
-    By default values are separated by a newline.
+    Overrides the separator that is printed between values.
+    By default, values are separated by a newline.
 
 *-w, --word*='FORMAT'::
     Alias for --format
@@ -107,7 +107,7 @@ OTHER
 HISTORY
 -------
 
-*enum* is a unifaction of GNU seq and jot.  At the core both
+*enum* is a fusion of GNU seq and jot, feature-wise  At the core both
 tools print sequences of numbers.  GNU seq has a clean interface
 but very limited functionality.  In contrast, jot offers more
 advanced features like random numbers and custom formatting at
@@ -126,7 +126,7 @@ Using *enum* instead of jot offers two main advantages:
 - improved usability and
 - uniform behavior accross distribitions and operating systems.
 
-jot implementations differ subtly among DragonFlyBSD, FreeBSD,
+Still (as of 2010-10-03) jot implementations differ subtly among DragonFlyBSD, FreeBSD,
 MirOS BSD, NetBSD, OpenBSD and OS X.
 For instance the command 'jot - 0 5' produces
 
@@ -201,7 +201,7 @@ jot on NetBSD:
 DIFFERENCES
 ~~~~~~~~~~~
 
-In contrast to jot enum does not append the current value
+In contrast to jot, *enum* does not append the current value,
 if the formatting string does not contain a placeholder.
 Behavior of jot:
 
@@ -249,7 +249,7 @@ from the set {4.0, 6.0, 8.0, 10.0}.
 
 Support for inverse ordering
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-In contrast to GNU seq *enum* does support enumerating decreasing values:
+In contrast to GNU seq, *enum* does support enumerating decreasing values:
 
     # seq 3 1
 
@@ -272,7 +272,7 @@ Support for several placeholders in format strings
 
 Omitting final newline
 ^^^^^^^^^^^^^^^^^^^^^^
-By specifying *-n* as a parameter you can make *enum* omit
+By specifying *-n* as a parameter, you can make *enum* omit
 the trailing newline.
 
 
