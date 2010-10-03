@@ -118,6 +118,150 @@ and a usuable, easily memorable interface.  Enum is licensed
 under a BSD license and written in C89 for maximum portability.
 
 
+COMPARISON TO JOT
+-----------------
+
+Simplified, the full feature space of BSD jot plus a few enhancements
+is contained in *enum*.  Names of parameters have been retained
+for increased compatibility, e.g. *-p 2* works with *enum* as it
+does with jot:
+
+    # jot -p 2 3
+    1.00
+    2.00
+    3.00
+
+    # enum -p 2 3
+    1.00
+    2.00
+    3.00
+
+Please see OPTIONS above for further details.
+
+
+ADDITIONAL FEATURES
+~~~~~~~~~~~~~~~~~~~
+
+The features that *enum* offers over jot include:
+
+
+More memorable command line usage
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+To produce 3 random numbers from between 1 and 10 inclusively you would run
+
+    # jot -r 3 1 10
+
+with jot.  We find these alternative calls to *enum* more intuitive:
+
+    # enum -r 1 .. 3x .. 10
+    # enum -r 1 3x 10
+
+
+Support for several placeholders in format strings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+jot on DragonFlyBSD, FreeBSD, MirOS BSD, OpenBSD and OS X:
+
+    # jot -w %g%g 3
+    jot: too many conversions
+
+jot on NetBSD:
+
+    # jot -w %g%g 3
+    jot: unknown or invalid format `%g%g'
+
+*enum* anywhere:
+
+    # enum -f %g%g 3
+    11
+    22
+    33
+
+
+DIFFERENCES
+~~~~~~~~~~~
+
+In contrast to jot enum does not append the current value
+if the formatting string does not contain a placeholder.
+Behavior of jot:
+
+    # jot 3 -w test_
+    test_1
+    test_2
+    test_3
+
+Behavior of *enum*:
+
+    # enum -w test_ 3
+    test_
+    test_
+    test_
+
+To achieve jot's output with *enum* you could manually append a playholder:
+
+    # enum -w test_%d 3
+    test_1
+    test_2
+    test_3
+
+
+COMPARISON TO SEQ
+-----------------
+
+Simplified, *enum*'s usage is backwards-compatible to that of GNU seq.
+
+
+ADDITIONAL FEATURES
+~~~~~~~~~~~~~~~~~~~
+
+The features *enum* offers over jot include:
+
+
+Random number mode
+^^^^^^^^^^^^^^^^^^
+*enum* supports output of constrained random numbers, e.g.
+
+    # enum -r 4 .. 3x 2.0 .. 11
+
+produces three (possibly duplicate) random numbers
+from the set {4.0, 6.0, 8.0, 10.0}.
+
+
+Support for inverse ordering
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In contrast to seq *enum* does support enumerating decreasing values:
+
+    # seq 3 1
+
+    # enum 3 1
+    3
+    2
+    1
+
+
+Support for several placeholders in format strings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    # seq -f %g%g 3
+    seq: format `%g%g' has too many % directives
+
+    # enum -f %g%g 3
+    11
+    22
+    33
+
+
+Omitting final newline
+^^^^^^^^^^^^^^^^^^^^^^
+By specifying *-n* as a parameter you can make *enum* omit
+the trailing newline.
+
+
+DIFFERENCES
+~~~~~~~~~~~
+
+*enum* does not (yet?) support seq's parameter *--equal-width*.
+On a side note the related shortcut *-w* conflicts with jot's *-w word*.
+
+
 AUTHORS
 -------
 
