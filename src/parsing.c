@@ -658,7 +658,7 @@ int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest
 	unsigned int m;
 	use_case const *valid_case = NULL;
 
-	token_details const use_case_0[]  = {RIGHT};
+	token_details const use_case_0[]  = {RIGHT}; /* seq compatibility #1 */
 	token_details const use_case_1[]  = {LEFT, DOTDOT, COUNT, STEP, DOTDOT, RIGHT};
 	token_details const use_case_2[]  = {DOTDOT, COUNT, STEP, DOTDOT, RIGHT};
 	token_details const use_case_3[]  = {LEFT, DOTDOT, COUNT, STEP, DOTDOT};
@@ -672,8 +672,8 @@ int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest
 	token_details const use_case_11[] = {DOTDOT, STEP, DOTDOT};
 	token_details const use_case_12[] = {DOTDOT, COUNT, DOTDOT};
 	token_details const use_case_13[] = {LEFT, DOTDOT, RIGHT};
-	token_details const use_case_14[] = {LEFT, STEP, RIGHT};
-	token_details const use_case_15[] = {LEFT, RIGHT};
+	token_details const use_case_14[] = {LEFT, STEP, RIGHT}; /* seq compatibility #3 */
+	token_details const use_case_15[] = {LEFT, RIGHT}; /* seq compatibility #2 */
 	token_details const use_case_16[] = {LEFT, DOTDOT};
 	token_details const use_case_17[] = {DOTDOT, RIGHT};
 	token_details const use_case_18[] = {COUNT};
