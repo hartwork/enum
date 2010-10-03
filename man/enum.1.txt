@@ -261,6 +261,9 @@ DIFFERENCES
 *enum* does not (yet?) support GNU seq's parameter *--equal-width*.
 On a side note the related shortcut *-w* conflicts with jot's *-w word*.
 
+Also, while GNU seq is licensed under GPL v3 or later, *enum* is
+licensed under the New BSD license.
+
 
 AUTHORS
 -------
