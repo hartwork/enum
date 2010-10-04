@@ -41,6 +41,7 @@
 #include "../src/assertion.h"
 
 #include <stdio.h>
+#include <math.h> /* for fabs */
 
 #define ARRAY(numbers...)  { numbers }
 
