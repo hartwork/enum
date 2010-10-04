@@ -135,7 +135,7 @@ very limited functionality.  jot on the other hand offers more
 advanced features, like random numbers and custom formatting, at the
 cost of a rather unfriendly interface.
 
-With *enum* we try to offer a tool with the power of jot and and a
+With *enum* we try to offer a tool with the power of jot and a
 usable, easily memorable interface.  Enum is licensed under a BSD
 license and written in C89 for maximum portability.
 
