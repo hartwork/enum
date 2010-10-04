@@ -44,7 +44,29 @@ details on controlling the formatter or 'EXAMPLES' for use cases.
 EXAMPLES
 --------
 
-*TODO*
+Use in for-loops
+~~~~~~~~~~~~~~~~
+
+    for i in $(enum 1 3); do
+        touch file_${i}
+    done
+
+
+Use for random numbers
+~~~~~~~~~~~~~~~~~~~~~~
+
+    number=$(enum --random 3 .. 10)
+
+instead of native Bash like
+
+    f() { min=$1; max=$2; echo $((RANDOM * (max - min + 1) / 32767 + min)); }
+    number=$(f 3 10)
+
+
+Showing an ASCII table
+~~~~~~~~~~~~~~~~~~~~~~
+
+    enum -f '[%3i] "%c"' 0 127
 
 
 OPTIONS
