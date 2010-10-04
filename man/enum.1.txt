@@ -200,6 +200,23 @@ with jot.  We find these alternative calls to *enum* more intuitive:
     # enum -r 1 3x 10
 
 
+Custom resolution of random
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+With *enum* you can specify the gap between posible random values.
+These two cases illustrate the difference between a gap of 2 and 3:
+
+    # enum -r 4 .. 100x 2 .. 10 | sort -u -n
+    4
+    6
+    8
+    10
+
+    # enum -r 4 .. 100x 3 .. 10 | sort -u -n
+    4
+    7
+    10
+
+
 Support for several placeholders in format strings
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 jot on DragonFlyBSD, FreeBSD, MirOS BSD, OpenBSD and OS X:
