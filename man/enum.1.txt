@@ -94,10 +94,10 @@ FORMATTING
 *-f, --format*='FORMAT'::
     Overrides the default output format with 'FORMAT'.
     For details on allowed formats please see printf(3). +
-    If 'FORMAT' does not contain any placeholders, enum will error out
+    If 'FORMAT' does not contain any placeholders, *enum* will error out
     with code 1.  In contrast, jot would have appended the number's
     value instead.  To make numbers appear at the end, please adjust
-    'FORMAT' accordingly with enum.
+    'FORMAT' accordingly with *enum*.
 
 *-n, --omit-newline*::
     Omits the trailing newline from printing.
@@ -136,7 +136,7 @@ advanced features, like random numbers and custom formatting, at the
 cost of a rather unfriendly interface.
 
 With *enum* we try to offer a tool with the power of jot and a
-usable, easily memorable interface.  Enum is licensed under a BSD
+usable, easily memorable interface.  *enum* is licensed under a BSD
 license and written in C89 for maximum portability.
 
 
