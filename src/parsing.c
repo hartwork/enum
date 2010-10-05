@@ -728,6 +728,7 @@ int preparse_args(unsigned int reduced_argc, char ** reduced_argv,
 				/* string ended but rest unusable */
 				if (! save_new_token(new_argc, *new_argv, p))
 					return 0;
+				break;
 			}
 			p += j;
 		}
