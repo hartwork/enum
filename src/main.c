@@ -78,13 +78,16 @@ int main(int argc, char **argv) {
 
 	if (! preparse_args(argc - argpos, argv + argpos, &newargc, &newargv)) {
 		free(dest.separator);
+		free(newargv);
 		return 1;
 	}
 
 	if (! parse_args(newargc, newargv, &dest)) {
 		free(dest.separator);
+		free(newargv);
 		return 1;
 	}
+	free(newargv);
 
 	complete_scaffold(&dest);
 

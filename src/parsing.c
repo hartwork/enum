@@ -714,12 +714,17 @@ int preparse_args(unsigned int reduced_argc, char ** reduced_argv,
 
 				if (! IS_TOKEN_ERROR(newtype)) {
 					/* Don't allow N. */
-					if (newtype == TOKEN_FLOAT && str[j - 1] == '.')
+					if (newtype == TOKEN_FLOAT && str[j - 1] == '.') {
+						free(str);
 						continue;
+					}
 
 					/* found a token */
-					if (! save_new_token(new_argc, *new_argv, str))
+					if (! save_new_token(new_argc, *new_argv, str)) {
+						free(str);
 						return 0;
+					}
+					free(str);
 					break;
 				}
 				free(str);
