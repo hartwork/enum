@@ -714,7 +714,7 @@ int preparse_args(unsigned int reduced_argc, char ** reduced_argv,
 
 				if (! IS_TOKEN_ERROR(newtype)) {
 					/* Don't allow N. */
-					if (newtype == TOKEN_FLOAT && str[j - 1] == '.') {
+					if (newtype == TOKEN_FLOAT && str[j - 1] == '.' && j != strlen(p)) {
 						free(str);
 						continue;
 					}
