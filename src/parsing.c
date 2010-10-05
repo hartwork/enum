@@ -292,8 +292,10 @@ static int escape_strdup(const char *str, const char esc, char **dest) {
 		}
 	}
 	newstr = (char *)realloc(newstr, strlen(newstr));
-	if (newstr == NULL)
+	if (newstr == NULL) {
+		free(newstr);
 		return 0;
+	}
 
 	*dest = newstr;
 	return 1;
