@@ -41,7 +41,7 @@
 #define UTILS_H 1
 
 char * enum_strdup(const char * text);
-
+char * enum_strndup(const char * text, unsigned int length);
 int enum_is_nan_float(float value);
 
 #endif /* UTILS_H */
