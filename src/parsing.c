@@ -725,8 +725,8 @@ int preparse_args(unsigned int reduced_argc, char ** reduced_argv,
 				free(str);
 			}
 			if (j == 0) {
-				/* string ended but rest unusable */
-				if (! save_new_token(new_argc, *new_argv, p))
+				/* string ended but rest unusable, let's declare complete string unusable */
+				if (! save_new_token(new_argc, *new_argv, reduced_argv[i]))
 					return 0;
 				break;
 			}
