@@ -42,6 +42,8 @@
 
 #include "generator.h"
 
+int preparse_args(unsigned int reduced_argc, char ** reduced_argv,
+		unsigned int * new_argc, char *** new_argv);
 int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest);
 int parse_parameters(unsigned int original_argc, char **original_argv, scaffolding *dest);
 int make_default_format_string(scaffolding *dest, unsigned int precision);

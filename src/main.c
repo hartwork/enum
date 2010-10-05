@@ -53,6 +53,8 @@ int main(int argc, char **argv) {
 	float out;
 	int ret;
 	int i = 0;
+	unsigned int newargc;
+	char ** newargv;
 
 	initialize_scaffold(&dest);
 	dest.flags |= FLAG_NEWLINE;
@@ -74,7 +76,12 @@ int main(int argc, char **argv) {
 		break;
 	}
 
-	if (! parse_args(argc - argpos, argv + argpos, &dest)) {
+	if (! preparse_args(argc - argpos, argv + argpos, &newargc, &newargv)) {
+		free(dest.separator);
+		return 1;
+	}
+
+	if (! parse_args(newargc, newargv, &dest)) {
 		free(dest.separator);
 		return 1;
 	}
