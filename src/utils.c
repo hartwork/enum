@@ -65,7 +65,7 @@ typedef union _float_int {
  */
 char * enum_strdup(const char * text) {
 	const size_t len = strlen(text);
-	char * const dup = malloc(len + 1);
+	char * const dup = (char *)malloc(len + 1);
 	if (!dup)
 		return NULL;
 	strncpy(dup, text, len);

@@ -125,7 +125,7 @@ typedef enum _format_parse_state {
  */
 static custom_printf_return single_cast_printf(const char *start, const char *after_last, char specifier, float value, int pretend) {
 	const int len = after_last - start;
-	char * const subformat = malloc(len + 1);
+	char * const subformat = (char *)malloc(len + 1);
 	static const char * const safety_pointer = "Should never be printed";
 	int res;
 	FILE * file = stdout;
