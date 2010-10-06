@@ -692,6 +692,9 @@ int preparse_args(unsigned int reduced_argc, char ** reduced_argv,
 	for (i = 0; i < reduced_argc; i++) {
 		char * p = reduced_argv[i];
 
+		token_type prev_type = TOKEN_ERROR;
+		char * prev_str = NULL;
+
 		while (*p != '\0') {
 			unsigned int j;
 
@@ -706,7 +709,6 @@ int preparse_args(unsigned int reduced_argc, char ** reduced_argv,
 				}
 			}
 
-
 			for (j = strlen(p); j > 0; j--) {
 				setter_value value;
 				char * str = enum_strndup(p, j);
@@ -720,15 +722,36 @@ int preparse_args(unsigned int reduced_argc, char ** reduced_argv,
 					}
 
 					/* found a token */
-					if (! save_new_token(new_argc, *new_argv, str)) {
+					if ((newtype == TOKEN_FLOAT) && (prev_type == TOKEN_FLOAT)) {
+						j = 0;
 						free(str);
-						return 0;
+						break;
 					}
-					free(str);
+
+					if ((prev_type != TOKEN_ERROR) && (prev_str != NULL)) {
+						if (! save_new_token(new_argc, *new_argv, prev_str)) {
+							free(prev_str);
+							free(str);
+							return 0;
+						}
+						free(prev_str);
+					}
+
+					prev_type = newtype;
+					prev_str = str;
 					break;
 				}
-				free(str);
 			}
+
+			if ((prev_type != TOKEN_ERROR) && (prev_str != NULL)) {
+				if (! save_new_token(new_argc, *new_argv, prev_str)) {
+					free(prev_str);
+					return 0;
+				}
+				free(prev_str);
+				prev_str = NULL;
+			}
+
 			if (j == 0) {
 				/* string ended but rest unusable, let's declare complete string unusable */
 				if (! save_new_token(new_argc, *new_argv, reduced_argv[i]))
