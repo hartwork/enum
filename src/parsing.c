@@ -695,6 +695,13 @@ int preparse_args(unsigned int reduced_argc, char ** reduced_argv,
 		token_type prev_type = TOKEN_ERROR;
 		char * prev_str = NULL;
 
+		/* Deny ambiguous cases like "enum 1...4" */
+		if (strstr(p, "...")) {
+			if (! save_new_token(new_argc, *new_argv, p))
+				return 0;
+			break;
+		}
+
 		while (*p != '\0') {
 			unsigned int j;
 
