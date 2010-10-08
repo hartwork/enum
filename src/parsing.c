@@ -627,6 +627,10 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 		case 's':
 			/* address of optarg in argv */
 			dest->separator = enum_strdup(optarg);
+			if (dest->separator == NULL) {
+				report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+				success = 0;
+			}
 			break;
 
 		case 'V':

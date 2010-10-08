@@ -77,6 +77,10 @@ int main(int argc, char **argv) {
 	dest.flags |= FLAG_NEWLINE;
 
 	dest.separator = enum_strdup("\n");
+	if (dest.separator == NULL) {
+		fprintf(stderr, "System too low on memory to continue.\n");
+		return 1;
+	}
 
 	argpos = parse_parameters(argc, argv, &dest);
 	switch (argpos) {
