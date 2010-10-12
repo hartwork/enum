@@ -99,6 +99,10 @@ FORMATTING
     value instead.  To make numbers appear at the end, please adjust
     'FORMAT' accordingly with *enum*.
 
+*-l, --one-line*::
+    Shortcut for "*-s ' '*" which means having a white space as separator
+    instead of a new line.
+
 *-n, --omit-newline*::
     Omits the trailing newline from printing.
 
