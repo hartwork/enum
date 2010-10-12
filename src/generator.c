@@ -275,6 +275,28 @@ static float discrete_random_closed(float min, float max, float step_width) {
 	return min + zero_to_almost_distance - fmod(zero_to_almost_distance, step_width);
 }
 
+/** Calculate a candidate for output.
+ *
+ * Based on known values, calculate a possible candidate for yield to place
+ * into scaffold or check if there will be another valid one.
+ *
+ * @param[in] scaffold
+ *
+ * @return A calculated candidate for yield to place into scaffold
+ *
+ * @since 0.5
+ */
+static float calc_candidate(scaffolding const * scaffold) {
+	if (! CHECK_FLAG(scaffold->flags, FLAG_USER_STEP)
+			&& HAS_RIGHT(scaffold) && HAS_COUNT(scaffold)) {
+		return  scaffold->left + (scaffold->right - scaffold->left)
+			/ (scaffold->count - 1) * scaffold->position;
+	} else {
+		return scaffold->left + scaffold->step * scaffold->position;
+	}
+	/* TODO check for float overflow, float imprecision */
+}
+
 /** Main output function.
  *
  * Calculate next value based on given scaffold and write it to dest. Assuming
@@ -341,14 +363,7 @@ yield_status yield(scaffolding * scaffold, float * dest) {
 		return YIELD_LAST;
 	}
 
-	if (! CHECK_FLAG(scaffold->flags, FLAG_USER_STEP)
-			&& HAS_RIGHT(scaffold) && HAS_COUNT(scaffold)) {
-		candidate = scaffold->left + (scaffold->right - scaffold->left)
-			/ (scaffold->count - 1) * scaffold->position;
-	} else {
-		candidate = scaffold->left + scaffold->step * scaffold->position;
-	}
-	/* TODO check for float overflow, float imprecision */
+	candidate = calc_candidate(scaffold);
 
 	/* Gone too far now? */
 	if (HAS_RIGHT(scaffold)
