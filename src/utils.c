@@ -76,7 +76,7 @@ char * enum_strdup(const char * text) {
  *
  * @return Pointer to copy of string or NULL if malloc failed
  *
- * @since 0.3
+ * @since 0.5
  */
 char * enum_strndup(const char * text, unsigned int n) {
 	unsigned int len = n;
