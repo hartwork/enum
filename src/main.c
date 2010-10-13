@@ -76,21 +76,14 @@ int main(int argc, char **argv) {
 	initialize_scaffold(&dest);
 	dest.flags |= FLAG_NEWLINE;
 
-	dest.separator = enum_strdup("\n");
-	if (dest.separator == NULL) {
-		fprintf(stderr, "System too low on memory to continue.\n");
-		return 1;
-	}
 
 	argpos = parse_parameters(argc, argv, &dest);
 	switch (argpos) {
 	case 0:
 		/* usage or version shown, no numbers wanted */
-		free(dest.separator);
 		return 0;
 	case -1:
 		/* errors reported already */
-		free(dest.separator);
 		return 1;
 	default:
 		/* normal run with numbers */
@@ -98,13 +91,11 @@ int main(int argc, char **argv) {
 	}
 
 	if (! preparse_args(argc - argpos, argv + argpos, &newargc, &newargv)) {
-		free(dest.separator);
 		free_malloced_argv(newargc, &newargv);
 		return 1;
 	}
 
 	if (! parse_args(newargc, newargv, &dest)) {
-		free(dest.separator);
 		free_malloced_argv(newargc, &newargv);
 		return 1;
 	}
@@ -114,6 +105,14 @@ int main(int argc, char **argv) {
 
 	if (!dest.format) {
 		make_default_format_string(&dest, dest.precision);
+	}
+
+	if (! dest.separator) {
+		dest.separator = enum_strdup("\n");
+		if (! dest.separator) {
+			fprintf(stderr, "System too low on memory to continue.\n");
+			return 1;
+		}
 	}
 
 	if (CHECK_FLAG(dest.flags, FLAG_RANDOM))
