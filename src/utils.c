@@ -64,8 +64,28 @@ typedef union _float_int {
  * @since 0.3
  */
 char * enum_strdup(const char * text) {
-	const size_t len = strlen(text);
-	char * const dup = (char *)malloc(len + 1);
+	return enum_strndup(text, 0);
+}
+
+/** Custom strndup function.
+ *
+ * Copies first n characters of given string to newly allocated memory and adds
+ * trailing \\0 to string. If n == 0, copy complete string (strdup).
+ *
+ * @param[in] text
+ *
+ * @return Pointer to copy of string or NULL if malloc failed
+ *
+ * @since 0.5
+ */
+char * enum_strndup(const char * text, unsigned int n) {
+	unsigned int len = n;
+	char * dup;
+
+	if (n == 0)
+		len = strlen(text);
+
+	dup = (char *)malloc(len + 1);
 	if (!dup)
 		return NULL;
 	strncpy(dup, text, len);

@@ -475,6 +475,29 @@ int make_default_format_string(scaffolding * dest, unsigned int precision) {
 	return 0;
 }
 
+/** Append a string to an array of strings.
+ *
+ * The array is expected to have enough memory available.
+ *
+ * @param[out] new_argc
+ * @param[out] new_argv
+ * @param[in] token
+ *
+ * @return boolean meaning of 1 or 0
+ *
+ * @since 0.5
+ */
+static int save_new_token(unsigned int * new_argc, char ** new_argv, char * token) {
+	char * newstr = enum_strdup(token);
+
+	if (newstr == NULL)
+		return 0;
+
+	new_argv[*new_argc] = newstr;
+	*new_argc += 1;
+	return 1;
+}
+
 /** @name Command line parsing */
 
 /*@{*/
@@ -637,6 +660,115 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 			? 0
 			: optind)
 		: -1;
+}
+
+/** Preparsing of command line arguments to identify tokens that are not white
+ *  space separated.
+ *
+ * In order to allow tokens not separated from each other by white space, we
+ * need to preparse argv, separate them, and build a new argc and argv.
+ *
+ * @param[in] reduced_argc
+ * @param[in] reduced_argv
+ * @param[out] new_argc
+ * @param[out] new_argv
+ *
+ * @return zero in case of failure, non-zero otherwise
+ *
+ * @since 0.5
+ */
+int preparse_args(unsigned int reduced_argc, char ** reduced_argv,
+		unsigned int * new_argc, char *** new_argv) {
+	unsigned int i;
+	size_t argv_mem; /* How much memory we already allocated */
+
+	/* Currently we support use cases with max 6 tokens. To avoid a few
+	 * reallocs, allocate enough memory up front.
+	 */
+	argv_mem = 6 * sizeof(char *);
+	*new_argc = 0;
+	*new_argv = (char **)malloc(argv_mem);
+
+	for (i = 0; i < reduced_argc; i++) {
+		char * p = reduced_argv[i];
+
+		token_type prev_type = TOKEN_ERROR;
+		char * prev_str = NULL;
+
+		/* Deny ambiguous cases like "enum 1...4" */
+		if (strstr(p, "...")) {
+			if (! save_new_token(new_argc, *new_argv, p))
+				return 0;
+			break;
+		}
+
+		while (*p != '\0') {
+			unsigned int j;
+
+			/* make sure to have enough memory */
+			assert((*new_argc * sizeof(char *)) <= argv_mem);
+			if ((*new_argc * sizeof(char *)) == argv_mem) {
+				argv_mem = (*new_argc + 1) * sizeof(char *);
+				*new_argv = realloc(*new_argv, argv_mem);
+				if (*new_argv == NULL) {
+					free(*new_argv);
+					return 0;
+				}
+			}
+
+			for (j = strlen(p); j > 0; j--) {
+				setter_value value;
+				char * str = enum_strndup(p, j);
+				token_type newtype = identify_token(str, &value);
+
+				if (! IS_TOKEN_ERROR(newtype)) {
+					/* Don't allow N. */
+					if (newtype == TOKEN_FLOAT && str[j - 1] == '.' && j != strlen(p)) {
+						free(str);
+						continue;
+					}
+
+					/* found a token */
+					if ((newtype == TOKEN_FLOAT) && (prev_type == TOKEN_FLOAT)) {
+						j = 0;
+						free(str);
+						break;
+					}
+
+					if ((prev_type != TOKEN_ERROR) && (prev_str != NULL)) {
+						if (! save_new_token(new_argc, *new_argv, prev_str)) {
+							free(prev_str);
+							free(str);
+							return 0;
+						}
+						free(prev_str);
+					}
+
+					prev_type = newtype;
+					prev_str = str;
+					break;
+				}
+			}
+
+			if ((prev_type != TOKEN_ERROR) && (prev_str != NULL)) {
+				if (! save_new_token(new_argc, *new_argv, prev_str)) {
+					free(prev_str);
+					return 0;
+				}
+				free(prev_str);
+				prev_str = NULL;
+			}
+
+			if (j == 0) {
+				/* string ended but rest unusable, let's declare complete string unusable */
+				if (! save_new_token(new_argc, *new_argv, reduced_argv[i]))
+					return 0;
+				break;
+			}
+			p += j;
+		}
+	}
+	return 1;
 }
 
 /** Parsing of command line arguments that are not considered parameters.

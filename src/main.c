@@ -47,12 +47,31 @@
 #include <time.h>  /* for time */
 #include <unistd.h>  /* for getpid */
 
+/** Deep-frees memory behind a self-allocated argv-like structure
+ *
+ * @param[in] argc Number of entries in argv
+ * @param[in,out] pargv Reference to argv-like structure to free
+ *
+ * @since 0.5
+ */
+void free_malloced_argv(int argc, char *** pargv) {
+	size_t i = 0;
+	for (; i < argc; i++) {
+		free((*pargv)[i]);
+		(*pargv)[i] = NULL;
+	}
+	free(*pargv);
+	pargv = NULL;
+}
+
 int main(int argc, char **argv) {
 	int argpos;
 	scaffolding dest;
 	float out;
 	int ret;
 	int i = 0;
+	unsigned int newargc;
+	char ** newargv;
 
 	initialize_scaffold(&dest);
 	dest.flags |= FLAG_NEWLINE;
@@ -74,10 +93,18 @@ int main(int argc, char **argv) {
 		break;
 	}
 
-	if (! parse_args(argc - argpos, argv + argpos, &dest)) {
+	if (! preparse_args(argc - argpos, argv + argpos, &newargc, &newargv)) {
 		free(dest.separator);
+		free_malloced_argv(newargc, &newargv);
 		return 1;
 	}
+
+	if (! parse_args(newargc, newargv, &dest)) {
+		free(dest.separator);
+		free_malloced_argv(newargc, &newargv);
+		return 1;
+	}
+	free_malloced_argv(newargc, &newargv);
 
 	complete_scaffold(&dest);
 
