@@ -87,11 +87,11 @@ int main(int argc, char **argv) {
 	case 0:
 		/* usage or version shown, no numbers wanted */
 		free(dest.separator);
-		exit(0);
+		return 0;
 	case -1:
 		/* errors reported already */
 		free(dest.separator);
-		exit(1);
+		return 1;
 	default:
 		/* normal run with numbers */
 		break;
