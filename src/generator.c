@@ -297,6 +297,23 @@ static float calc_candidate(scaffolding const * scaffold) {
 	/* TODO check for float overflow, float imprecision */
 }
 
+/** Checks a candidate for validity.
+ *
+ * @param[in] scaffold Settings to apply
+ *
+ * @return Validity bool (1 means valid, 0 mean invalid)
+ *
+ * @since 0.5
+ */
+static int check_candidate(scaffolding const * scaffold, float candidate) {
+	if (HAS_RIGHT(scaffold)
+			&& (((scaffold->left <= scaffold->right) && ((candidate - scaffold->right) > FLOAT_EQUAL_DELTA))
+				|| ((scaffold->left >= scaffold->right) && (scaffold->right - candidate) > FLOAT_EQUAL_DELTA))) {
+		return 0;
+	}
+	return 1;
+}
+
 /** Main output function.
  *
  * Calculate next value based on given scaffold and write it to dest. Assuming
@@ -358,9 +375,7 @@ yield_status yield(scaffolding * scaffold, float * dest) {
 	candidate = calc_candidate(scaffold);
 
 	/* Gone too far now? */
-	if (HAS_RIGHT(scaffold)
-			&& (((scaffold->left <= scaffold->right) && ((candidate - scaffold->right) > FLOAT_EQUAL_DELTA))
-				|| ((scaffold->left >= scaffold->right) && (scaffold->right - candidate) > FLOAT_EQUAL_DELTA))) {
+	if (! check_candidate(scaffold, candidate)) {
 		*dest = 0.123456f;  /* Arbitrary magic value */
 		return YIELD_NONE;
 	}
