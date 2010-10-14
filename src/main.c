@@ -124,8 +124,7 @@ int main(int argc, char **argv) {
 		if (i != 0)
 			printf("%s", dest.separator);
 
-		if (ret != YIELD_NONE)
-			multi_printf(dest.format, out);
+		multi_printf(dest.format, out);
 
 		if (ret != YIELD_MORE)
 			break;

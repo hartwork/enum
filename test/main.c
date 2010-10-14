@@ -128,11 +128,6 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 
 		printf(TEST_CASE_INDENT "%2d) %8.1f  %8.1f\n", i + 1, dest, expected[i]);
 
-		if (status == YIELD_NONE) {
-			puts(TEST_CASE_INDENT "FAILURE (none too early, generator?)");
-			ret = 0;
-		}
-
 		if (status == YIELD_LAST) {
 			if (i < (exp_len - 1)) {
 				puts(TEST_CASE_INDENT "FAILURE (last too early, generator?)");
