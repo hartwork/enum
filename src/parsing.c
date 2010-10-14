@@ -475,6 +475,35 @@ int make_default_format_string(scaffolding * dest, unsigned int precision) {
 	return 0;
 }
 
+/** Save given separator to scaffold.
+ *
+ * Save a given separator to scaffold, error out if malloc fails, warn if a
+ * separator was already set (except the default separator '\n' which was set
+ * in main.c already).
+ *
+ * @param[in,out] scaffold
+ * @param[in] string
+ *
+ * @return boolean meaing of 1 or 0
+ *
+ * @since 0.5
+ */
+static int set_separator(scaffolding * scaffold, const char * string) {
+	if (scaffold->separator) {
+		fprintf(stderr,
+			"WARNING: Discarding previous separator "
+			"\"%s\" in favor of \"%s\"!\n",
+			scaffold->separator, string
+			);
+		free(scaffold->separator);
+	}
+	
+	scaffold->separator = enum_strdup(string);
+	if (! scaffold->separator)
+		return 0;
+	return 1;
+}
+
 /** Append a string to an array of strings.
  *
  * The array is expected to have enough memory available.
@@ -626,8 +655,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 
 		case 's':
 			/* address of optarg in argv */
-			dest->separator = enum_strdup(optarg);
-			if (dest->separator == NULL) {
+			if (! set_separator(dest, optarg)) {
 				report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 				success = 0;
 			}
