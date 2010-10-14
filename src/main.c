@@ -55,7 +55,7 @@
  * @since 0.5
  */
 void free_malloced_argv(int argc, char *** pargv) {
-	size_t i = 0;
+	int i = 0;
 	for (; i < argc; i++) {
 		free((*pargv)[i]);
 		(*pargv)[i] = NULL;
