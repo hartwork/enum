@@ -788,6 +788,7 @@ int preparse_args(unsigned int reduced_argc, char ** reduced_argv,
 					prev_str = str;
 					break;
 				}
+				free(str);
 			}
 
 			if ((prev_type != TOKEN_ERROR) && (prev_str != NULL)) {
