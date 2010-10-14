@@ -337,10 +337,7 @@ yield_status yield(scaffolding * scaffold, float * dest) {
 	assert(CHECK_FLAG(scaffold->flags, FLAG_READY));
 
 	if (CHECK_FLAG(scaffold->flags, FLAG_RANDOM)) {
-		if (HAS_COUNT(scaffold) && (scaffold->position >= scaffold->count)) {
-			*dest = 0.123456f;  /* Arbitrary magic value */
-			return YIELD_NONE;
-		}
+		assert(HAS_COUNT(scaffold) && (scaffold->position < scaffold->count));
 
 		assert(HAS_RIGHT(scaffold));
 
@@ -349,7 +346,6 @@ yield_status yield(scaffolding * scaffold, float * dest) {
 			ENUM_MAX(scaffold->left, scaffold->right),
 			fabs(scaffold->step));
 		scaffold->position++;
-		assert(HAS_COUNT(scaffold));
 		if (scaffold->position == scaffold->count) {
 			return YIELD_LAST;
 		} else {
@@ -361,10 +357,8 @@ yield_status yield(scaffolding * scaffold, float * dest) {
 	assert(! HAS_COUNT(scaffold) || (HAS_COUNT(scaffold) && (scaffold->count > 0)));
 
 	/* Gone too far already? */
-	if (HAS_COUNT(scaffold) && (scaffold->position >= scaffold->count)) {
-		*dest = 0.123456f;  /* Arbitrary magic value */
-		return YIELD_NONE;
-	}
+	if (HAS_COUNT(scaffold))
+		assert(scaffold->position < scaffold->count);
 
 	/* One value only? */
 	if (HAS_COUNT(scaffold) && (scaffold->count == 1)) {
@@ -375,10 +369,7 @@ yield_status yield(scaffolding * scaffold, float * dest) {
 	candidate = calc_candidate(scaffold);
 
 	/* Gone too far now? */
-	if (! check_candidate(scaffold, candidate)) {
-		*dest = 0.123456f;  /* Arbitrary magic value */
-		return YIELD_NONE;
-	}
+	assert(check_candidate(scaffold, candidate));
 
 	*dest = candidate;
 	scaffold->position++;
