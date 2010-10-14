@@ -327,14 +327,6 @@ yield_status yield(scaffolding * scaffold, float * dest) {
 
 		assert(HAS_RIGHT(scaffold));
 
-		if (((scaffold->left < scaffold->right)
-					&& (scaffold->left + scaffold->step > scaffold->right))
-				|| ((scaffold->left > scaffold->right)
-					&& (scaffold->left + scaffold->step < scaffold->right))) {
-			*dest = 0.123456f;  /* Arbitrary magic value */
-			return YIELD_NONE;
-		}
-
 		*dest = discrete_random_closed(
 			ENUM_MIN(scaffold->left, scaffold->right),
 			ENUM_MAX(scaffold->left, scaffold->right),
