@@ -562,6 +562,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 			{"random",       no_argument,       0, 'r'},
 			{"characters",   no_argument,       0, 'c'},
 			{"omit-newline", no_argument,       0, 'n'},
+			{"one-line",     no_argument,       0, 'l'},
 			{"seed",         required_argument, 0, 'i'},
 			{"format",       required_argument, 0, 'f'},
 			{"word",         required_argument, 0, 'w'},
@@ -571,7 +572,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 			{0, 0, 0, 0}
 		};
 
-		c = getopt_long(original_argc, original_argv, "+b:cf:hi:np:rs:Vw:", long_options, &option_index);
+		c = getopt_long(original_argc, original_argv, "+b:cf:hi:lnp:rs:Vw:", long_options, &option_index);
 
 		if (c == -1) {
 			/* TODO Move outside while loop */
@@ -628,6 +629,13 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 			break;
 
 		case 'i':
+			break;
+
+		case 'l':
+			if (! set_separator(dest, " ")) {
+				report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+				success = 0;
+			}
 			break;
 
 		case 'n':
