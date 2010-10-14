@@ -379,6 +379,11 @@ yield_status yield(scaffolding * scaffold, float * dest) {
 			|| (HAS_RIGHT(scaffold) && (*dest == scaffold->right))) {
 		return YIELD_LAST;
 	} else {
+		/* Going too far next time? (position has already been increased) */
+		const float future_candidate = calc_candidate(scaffold);
+		if (! check_candidate(scaffold, future_candidate)) {
+			return YIELD_LAST;
+		}
 		return YIELD_MORE;
 	}
 }
