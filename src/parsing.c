@@ -546,7 +546,6 @@ static int save_new_token(unsigned int * new_argc, char ** new_argv, char * toke
 int parse_parameters(unsigned int original_argc, char **original_argv, scaffolding *dest) {
 	int c;
 	int option_index = 0;
-	unsigned int precision = 0;
 
 	int success = 1;
 	int usage_needed = 0;
@@ -645,15 +644,16 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 
 		case 'p':
 			{
+				unsigned int precision_candidate;
 				char * end;
 
-				precision = strtoul(optarg, &end, 10);
+				precision_candidate = strtoul(optarg, &end, 10);
 				if (end - optarg != (int)strlen(optarg) || (strchr(optarg, '-') != NULL)) {
 					report_parameter_error(PARAMETER_ERROR_INVALID_PRECISION);
 					success = 0;
 					break;
 				}
-				make_default_format_string(dest, precision);
+				make_default_format_string(dest, precision_candidate);
 			}
 			break;
 
