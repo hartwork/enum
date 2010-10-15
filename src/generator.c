@@ -238,7 +238,9 @@ void complete_scaffold(scaffolding * scaffold) {
  * @since 0.3
  */
 static float discrete_random_closed(float min, float max, float step_width) {
-	const float distance = fabs(max - min) + step_width;
+	const float original_distance = fabs(max - min);
+	const float distance = original_distance
+		- fmod(original_distance, step_width) + step_width;
 	double zero_to_almost_one = 0;
 	double zero_to_almost_distance;
 	unsigned int depth;
