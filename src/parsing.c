@@ -657,7 +657,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 			{"dumb",         required_argument, 0, 'b'},
 			{"separator",    required_argument, 0, 's'},
 			{"precision",    required_argument, 0, 'p'},
-			{"equal-width",  required_argument, 0, 'e'},
+			{"equal-width",  no_argument,       0, 'e'},
 			{0, 0, 0, 0}
 		};
 
