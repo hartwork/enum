@@ -40,6 +40,8 @@ implied.  No more than 'COUNT' values are printed.  Before printing,
 values are passed through a formatter.  Please see 'OPTIONS' for
 details on controlling the formatter or 'EXAMPLES' for use cases.
 
+Further details on usage of *enum* are covered in 'USAGE IN DETAIL'.
+
 
 EXAMPLES
 --------
@@ -152,6 +154,170 @@ OTHER
 
 *-V, --version*::
     Displays version information and exits with code 0 (success).
+
+
+USAGE IN DETAIL
+---------------
+
+INVOLVED ARGUMENTS
+~~~~~~~~~~~~~~~~~~
+Basically, the command line API looks like this:
+
+*enum* [ 'OPTIONS' ]  'LEFT' ".." 'COUNT'"x" 'STEP' ".." 'RIGHT'
+
+Four arguments are involved:
+
+- 'LEFT', the value to start enumeration with
+- 'COUNT', the number of values to produce (in some cases less)
+- 'STEP', the gap from one value to another
+- 'RIGHT', the value to stop enumeration at (in some cases before)
+
+Not all four arguments are needed, though specifying all four is possible.
+For a list of all valid combinations see 'VALID COMBINATIONS' below.
+Details on derivation of defaults are addressed in 'DERIVATION OF DEFAULTS'.
+
+
+VALID COMBINATIONS
+~~~~~~~~~~~~~~~~~~
+With four arguments:
+
+- enum 'LEFT' ".." 'COUNT'"x" 'STEP' ".." 'RIGHT'
+
+With three arguments:
+
+- enum 'LEFT' 'COUNT'"x" 'RIGHT'
+- enum 'LEFT' ".." 'COUNT'"x" 'STEP' ".."
+- enum ".." 'COUNT'"x" 'STEP' ".." 'RIGHT'
+- enum 'LEFT' ".." 'COUNT'"x" ".." 'RIGHT'
+- enum 'LEFT' ".." 'STEP' ".." 'RIGHT'
+- enum 'LEFT' 'STEP' 'RIGHT' (for GNU seq compatibility)
+
+With two arguments:
+
+- enum ".." 'COUNT'"x" 'STEP' ".."
+- enum ".." 'COUNT'"x" ".." 'RIGHT'
+- enum ".." 'STEP' ".." 'RIGHT'
+- enum 'LEFT' ".." 'COUNT'"x" ".."
+- enum 'LEFT' ".." 'STEP' ".."
+- enum 'LEFT' ".." 'RIGHT'
+- enum 'LEFT' 'RIGHT' (for GNU seq compatibility)
+
+With one argument:
+
+- enum ".." 'STEP' ".."
+- enum ".." 'COUNT'"x" ".."
+- enum ".." 'RIGHT'
+- enum 'RIGHT' (for GNU seq compatibility)
+- enum 'LEFT' ".."
+- enum 'COUNT'"x"
+
+With less then three arguments, defaults apply.
+Details are described in 'DERIVATION OF DEFAULTS' below.
+
+
+DERIVATION OF DEFAULTS
+~~~~~~~~~~~~~~~~~~~~~~
+
+AUTO-SELECTION OF PRECISION
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+*enum* distincts between "2", "2.0", "2.00" and so on:
+
+    # enum 1 2
+    1
+    2
+
+    # enum 1 2.0
+    1.0
+    1.1
+    [..]
+    1.9
+    2.0
+
+Also, if the derived step has more decimal places than the
+specified values for 'LEFT' and 'RIGHT', the output precision
+will be raised to that of step
+
+    # enum 1 .. 3x .. 2
+    1.0
+    1.5
+    2.0
+
+A specified precision always takes precedence:
+
+    # enum -p 2 1 .. 3x .. 2
+    1.00
+    1.50
+    2.00
+
+
+ARGUMENT DEFAULTS
+^^^^^^^^^^^^^^^^^
+In general, any three arguments are needed; three lead to the fourth.
+This equation brings them together:
+
+'LEFT' + ('COUNT' - 1) * 'STEP' = 'RIGHT'
+
+If you specify less than three of them (see 'VALID COMBINATIONS'), the unspecifyied
+ones are derived or set to their defaults:
+
+- 'LEFT' defaults to 1 (unless 'STEP' and 'RIGHT' are specified, see 'DERIVATION OF LEFT' below)
+- 'COUNT' is infinity, unless it can be derived from the other three values.
+- 'STEP' defaults to 1, unless it can be derived.
+- 'RIGHT' is +/-infinity, unless it can be derived from the other three values.
+
+
+DERIVATION OF LEFT
+^^^^^^^^^^^^^^^^^^
+In general, 'LEFT' defaults to 1:
+
+--------------------------------------
+# enum .. 3
+1
+2
+3
+--------------------------------------
+
+If 'STEP' and 'RIGHT' is given, it is derived as
+
+'LEFT' = 'RIGHT' - 'STEP' * floor('RIGHT' / 'STEP')
+
+--------------------------------------
+# enum .. 4 .. 10
+2
+6
+10
+--------------------------------------
+
+If, in addition to 'STEP' and 'RIGHT', 'COUNT' is given, it is derived as:
+
+'LEFT' = 'RIGHT' - ('COUNT' - 1) * 'STEP'
+
+--------------------------------------
+# enum .. 2x 4 .. 10
+6
+10
+--------------------------------------
+
+
+GENERATION OF VALUES
+~~~~~~~~~~~~~~~~~~~~
+When a custom step is requested, values are produced as following:
+
+    value[0] = LEFT + 0 * STEP
+    value[1] = LEFT + 1 * STEP
+    ..
+    value[i] = LEFT + i * STEP
+
+Else, to avoid imprecision adding up, values are produced as following:
+
+    value[0] = LEFT + (RIGHT - LEFT) / (COUNT - 1) * 0
+    value[1] = LEFT + (RIGHT - LEFT) / (COUNT - 1) * 1
+    ..
+    value[i] = LEFT + (RIGHT - LEFT) / (COUNT - 1) * i
+
+Production stops when either 'COUNT' values have been produced or 'RIGHT'
+has been reached, whichever hits first.  When all 4 values are given in perfect
+match they hit at the same time.
 
 
 RANDOM MODE
