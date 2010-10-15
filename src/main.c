@@ -104,7 +104,10 @@ int main(int argc, char **argv) {
 	complete_scaffold(&dest);
 
 	if (!dest.format) {
-		make_default_format_string(&dest, dest.precision);
+		unsigned int precision = CHECK_FLAG(dest.flags, FLAG_USER_PRECISION)
+			? dest.output_precision
+			: dest.precision;
+		make_default_format_string(&dest, precision);
 	}
 
 	if (! dest.separator) {
