@@ -557,7 +557,10 @@ void prepare_setting_format(scaffolding * scaffold, format_change expected_forma
 		&& (scaffold->format != NULL)));
 
 	/* Detect causes for warnings and make warning message as-needed */
-	if ((CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION) || CHECK_FLAG(scaffold->flags, FLAG_EQUAL_WIDTH))
+	if (CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION)
+			&& (expected_format_change == SAVE_PRECISION)
+		|| (CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION)
+				|| CHECK_FLAG(scaffold->flags, FLAG_EQUAL_WIDTH))
 			&& (expected_format_change == APPLY_FORMAT)) {
 		char const * format;
 
@@ -580,7 +583,7 @@ void prepare_setting_format(scaffolding * scaffold, format_change expected_forma
 		if (warning_message) {
 			sprintf(warning_message, format, scaffold->output_precision);
 		}
-	} else if (scaffold->format && (expected_format_change != APPLY_FORMAT)) {
+	} else if (scaffold->format) {
 		const char format[] = "Discarding previous format \"%s\".";
 
 		warning_needed = 1;
