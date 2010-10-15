@@ -598,6 +598,9 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 					}
 					free(newformat);
 				}
+
+				/* remove user precision flag */
+				dest->flags &= ~FLAG_USER_PRECISION;
 			}
 			break;
 
@@ -606,6 +609,9 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 				success = 0;
 			}
+
+			/* remove user precision flag */
+			dest->flags &= ~FLAG_USER_PRECISION;
 			break;
 
 		case 'f':
@@ -614,6 +620,10 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 				success = 0;
 			}
+
+			/* remove user precision flag */
+			dest->flags &= ~FLAG_USER_PRECISION;
+
 			/* TODO look for %f or similar and error out unless found */
 			break;
 
@@ -654,6 +664,9 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 					break;
 				}
 				make_default_format_string(dest, precision_candidate);
+
+				dest->flags |= FLAG_USER_PRECISION;
+				dest->output_precision = precision_candidate;
 			}
 			break;
 

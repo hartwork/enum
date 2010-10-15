@@ -146,7 +146,8 @@ enum scaffolding_flags {
 
 	FLAG_RANDOM = 1 << 5,
 	FLAG_USER_STEP = 1 << 6,
-	FLAG_NEWLINE = 1 << 7
+	FLAG_NEWLINE = 1 << 7,
+	FLAG_USER_PRECISION = 1 << 8
 };
 
 /** Enumeration of possible return states of yield() */
@@ -167,7 +168,8 @@ typedef struct _scaffolding {
 	float step;             /**< step between values */
 	unsigned int count;     /**< number of values to return */
 	unsigned int position;  /**< current position while walking through values */
-	unsigned int precision; /**< number of decimal places */
+	unsigned int precision; /**< number of decimal places applied internally */
+	unsigned int output_precision; /**< number of decimal places for future output format */
 	char * format;          /**< output format string */
 	char * separator;       /**< separation string between output values (default: \n) */
 } scaffolding;
