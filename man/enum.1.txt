@@ -156,6 +156,8 @@ With *enum* we try to offer a tool with the power of jot and a
 usable, easily memorable interface.  *enum* is licensed under a BSD
 license and written in C89 for maximum portability.
 
+In the following sections we will take a look at differences, in detail.
+
 
 COMPARISON TO JOT
 -----------------
