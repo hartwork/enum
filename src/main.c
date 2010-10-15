@@ -126,7 +126,7 @@ int main(int argc, char **argv) {
 	if (CHECK_FLAG(dest.flags, FLAG_RANDOM)) {
 		unsigned int const seed = CHECK_FLAG(dest.flags, FLAG_USER_SEED)
 			? dest.seed
-			: time(NULL) + getpid();
+			: (unsigned int)(time(NULL) + getpid());
 		srand(seed);
 	}
 
