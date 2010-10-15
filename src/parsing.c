@@ -488,6 +488,11 @@ int make_default_format_string(scaffolding * dest, unsigned int precision) {
 	return 1;
 }
 
+typedef enum _separator_change {
+	APPLY_SEPARATOR = 1 << 0,
+	APPLY_NULL_BYTES = 1 << 1
+} separator_change;
+
 /** Save given separator to scaffold.
  *
  * Save a given separator to scaffold, error out if malloc fails, warn if a
@@ -496,24 +501,62 @@ int make_default_format_string(scaffolding * dest, unsigned int precision) {
  *
  * @param[in,out] scaffold
  * @param[in] string
+ * @param[in] action_to_take
  *
  * @return boolean meaing of 1 or 0
  *
  * @since 0.5
  */
-static int set_separator(scaffolding * scaffold, const char * string) {
-	if (scaffold->separator) {
-		fprintf(stderr,
-			"WARNING: Discarding previous separator "
-			"\"%s\" in favor of \"%s\"!\n",
-			scaffold->separator, string
-			);
-		free(scaffold->separator);
+static int set_separator(scaffolding * scaffold, const char * string,
+		separator_change action_to_take) {
+	if (CHECK_FLAG(scaffold->flags, FLAG_NULL_BYTES)) {
+		if (action_to_take == APPLY_SEPARATOR) {
+			fprintf(stderr,
+				"WARNING: Discarding null byte separator "
+				"in favor of \"%s\".\n", string);
+		} else {
+			assert(action_to_take == APPLY_NULL_BYTES);
+			fprintf(stderr,
+				"WARNING: Duplicate -z|--zero|--null detected.\n");
+		}
 	}
 
-	scaffold->separator = enum_strdup(string);
-	if (! scaffold->separator)
-		return 0;
+	if (scaffold->separator) {
+		if (action_to_take == APPLY_SEPARATOR) {
+			fprintf(stderr,
+				"WARNING: Discarding previous separator "
+				"\"%s\" in favor of \"%s\".\n",
+				scaffold->separator, string
+				);
+		} else {
+			assert(action_to_take == APPLY_NULL_BYTES);
+			fprintf(stderr,
+				"WARNING: Discarding previous separator "
+				"\"%s\" in favor of null bytes.\n",
+				scaffold->separator);
+		}
+		free(scaffold->separator);
+		scaffold->separator = NULL;
+	}
+
+	switch (action_to_take) {
+	case APPLY_SEPARATOR:
+		scaffold->separator = enum_strdup(string);
+		if (! scaffold->separator)
+			return 0;
+
+		/* remove null bytes flag */
+		scaffold->flags &= ~FLAG_NULL_BYTES;
+		break;
+
+	case APPLY_NULL_BYTES:
+		scaffold->flags |= FLAG_NULL_BYTES;
+		break;
+
+	default:
+		assert(0);
+	}
+
 	return 1;
 }
 
@@ -658,10 +701,12 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 			{"separator",    required_argument, 0, 's'},
 			{"precision",    required_argument, 0, 'p'},
 			{"equal-width",  no_argument,       0, 'e'},
+			{"null",         no_argument,       0, 'z'},
+			{"zero",         no_argument,       0, 'z'},
 			{0, 0, 0, 0}
 		};
 
-		c = getopt_long(original_argc, original_argv, "+b:cef:hi:lnp:rs:Vw:", long_options, &option_index);
+		c = getopt_long(original_argc, original_argv, "+b:cef:hi:lnp:rs:Vw:z", long_options, &option_index);
 
 		if (c == -1) {
 			/* TODO Move outside while loop */
@@ -753,7 +798,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 			break;
 
 		case 'l':
-			if (! set_separator(dest, " ")) {
+			if (! set_separator(dest, " ", APPLY_SEPARATOR)) {
 				report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 				success = 0;
 			}
@@ -797,7 +842,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 
 		case 's':
 			/* address of optarg in argv */
-			if (! set_separator(dest, optarg)) {
+			if (! set_separator(dest, optarg, APPLY_SEPARATOR)) {
 				report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 				success = 0;
 			}
@@ -811,6 +856,10 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				dump_version();
 				quit = 1;
 			}
+			break;
+
+		case 'z':
+			set_separator(dest, NULL, APPLY_NULL_BYTES);
 			break;
 
 		case '?':

@@ -132,6 +132,9 @@ FORMATTING
     Alias for --format, copied from jot.
     For GNU seq's *--equal-width* shortcut *-w* please see *-e*, instead.
 
+*-z, --zero, --null*::
+    Print null bytes as separator, not a newline.
+
 
 OTHER
 ~~~~~
@@ -328,6 +331,28 @@ jot on NetBSD:
     11
     22
     33
+
+
+Null bytes as separator
+^^^^^^^^^^^^^^^^^^^^^^^
+
+When using format strings containing spaces you may run into
+trouble in contexts like for loops or xargs: Spaces are treated
+as separators, which breaks up your strings in pieces:
+
+    # enum -f 'sheep number %d' 2 | xargs -n 1 echo
+    sheep
+    number
+    1
+    sheep
+    number
+    2
+
+To prevent this, you could pass *--null* to both *enum* and xargs:
+
+    # enum --null -f 'sheep number %d' 2 | xargs --null -n 1 echo
+    sheep number 1
+    sheep number 2
 
 
 DIFFERENCES

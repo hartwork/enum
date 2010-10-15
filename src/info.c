@@ -69,7 +69,9 @@ void dump_usage(FILE * file) {
 		"  -p, --precision=COUNT adjust the number of decimal places printed\n"
 		"  -e, --equal-width     equalize width by padding with leading zeroes.\n"
 		"  -l, --one-line        use a space as separator, not a new line.\n"
-		"\n"
+		"  -z, --zero, --null    use null byte as separator, not a new line.\n"
+		"\n");
+	fprintf(file,
 		"  -r, --random          output random numbers, not sequential ones\n"
 		"  -i, --seed=NUMBER     specify seed for random number generator\n"
 		"\n"
