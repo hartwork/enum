@@ -596,9 +596,6 @@ typedef enum _format_change {
  * @since 0.5
  */
 void prepare_setting_format(scaffolding * scaffold, format_change expected_format_change) {
-	int warning_needed = 0;
-	char * warning_message = NULL;
-
 	assert(! ((CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION)
 			|| CHECK_FLAG(scaffold->flags, FLAG_EQUAL_WIDTH))
 		&& (scaffold->format != NULL)));
@@ -611,34 +608,22 @@ void prepare_setting_format(scaffolding * scaffold, format_change expected_forma
 			&& (expected_format_change == APPLY_FORMAT))) {
 		char const * format;
 
-		warning_needed = 1;
-
 		if (CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION)) {
-			const size_t precision_bytes_needed = log10(scaffold->output_precision) + 1;
 			if (CHECK_FLAG(scaffold->flags, FLAG_EQUAL_WIDTH)) {
-				format = "Discarding format previously set by -e|--equal-width and -p|--precision %d.";
+				format = "WARNING: Discarding format previously "
+				    "set by -e|--equal-width and -p|--precision %d.\n";
 			} else {
-				format = "Discarding format previously set by -p|--precision %d.";
+				format = "WARNING: Discarding format previously "
+				    "set by -p|--precision %d.\n";
 			}
-			warning_message = malloc(strlen(format) - sizeof("%d") + precision_bytes_needed + 1);
 		} else {
 			assert(CHECK_FLAG(scaffold->flags, FLAG_EQUAL_WIDTH));
-			format = "Discarding format previously set by -e|--equal-width.";
-			warning_message = malloc(strlen(format) + 1);
+			format = "WARNING: Discarding format previously "
+			    "set by -e|--equal-width.\n";
 		}
-
-		if (warning_message) {
-			sprintf(warning_message, format, scaffold->output_precision);
-		}
+		fprintf(stderr, format, scaffold->output_precision);
 	} else if (scaffold->format) {
-		const char format[] = "Discarding previous format \"%s\".";
-
-		warning_needed = 1;
-
-		warning_message = malloc(sizeof(format) + strlen(scaffold->format) + 1);
-		if (warning_message) {
-			sprintf(warning_message, format, scaffold->format);
-		}
+		fprintf(stderr, "WARNING: Discarding previous format \"%s\".\n", scaffold->format);
 	}
 
 	/* Remove previous format */
@@ -653,10 +638,6 @@ void prepare_setting_format(scaffolding * scaffold, format_change expected_forma
 		scaffold->flags &= ~FLAG_USER_PRECISION;
 		scaffold->flags &= ~FLAG_EQUAL_WIDTH;
 	}
-
-	if (warning_needed && warning_message)
-		fprintf(stderr, "WARNING: %s\n", warning_message);
-	free(warning_message);
 }
 
 /** @name Command line parsing */
