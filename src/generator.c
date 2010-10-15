@@ -148,9 +148,13 @@ void complete_scaffold(scaffolding * scaffold) {
 		} else {
 			if (HAS_RIGHT(scaffold)) {
 				assert(HAS_STEP(scaffold));
-				SET_LEFT(*scaffold, scaffold->right
-					- scaffold->step * floor(
-					scaffold->right / scaffold->step));
+				if (CHECK_FLAG(scaffold->flags, FLAG_RANDOM)) {
+					SET_LEFT(*scaffold, 1.0);
+				} else {
+					SET_LEFT(*scaffold, scaffold->right
+						- scaffold->step * floor(
+						scaffold->right / scaffold->step));
+				}
 			} else {
 				SET_LEFT(*scaffold, 1.0f);
 			}
