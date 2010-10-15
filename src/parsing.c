@@ -317,7 +317,8 @@ typedef enum _parameter_error {
 	PARAMETER_ERROR_OUT_OF_MEMORY,
 	PARAMETER_ERROR_INVALID_PRECISION,
 	PARAMETER_ERROR_VERSION_NOT_ALONE,
-	PARAMETER_ERROR_HELP_NOT_ALONE
+	PARAMETER_ERROR_HELP_NOT_ALONE,
+	PARAMETER_ERROR_INVALID_SEED
 } parameter_error;
 
 /** Errors during parsing of arguments.
@@ -364,6 +365,9 @@ static void report_parameter_error(int code) {
 		break;
 	case PARAMETER_ERROR_HELP_NOT_ALONE:
 		fatal("-h and --help must come alone.");
+		break;
+	case PARAMETER_ERROR_INVALID_SEED:
+		fatal("Seed must be a non-negative integer.");
 		break;
 	default:
 		assert(0);
@@ -726,6 +730,26 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 			break;
 
 		case 'i':
+			{
+				unsigned int seed_candidate;
+				char * end;
+
+				if (CHECK_FLAG(dest->flags, FLAG_USER_SEED)) {
+					fprintf(stderr,
+						"WARNING: Discarding previously specified seed of %d.\n",
+						dest->seed);
+				}
+
+				seed_candidate = strtoul(optarg, &end, 10);
+				if (end - optarg != (int)strlen(optarg) || (strchr(optarg, '-') != NULL)) {
+					report_parameter_error(PARAMETER_ERROR_INVALID_SEED);
+					success = 0;
+					break;
+				}
+
+				dest->flags |= FLAG_USER_SEED;
+				dest->seed = seed_candidate;
+			}
 			break;
 
 		case 'l':

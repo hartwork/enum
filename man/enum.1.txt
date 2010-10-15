@@ -72,12 +72,18 @@ Showing an ASCII table
 OPTIONS
 -------
 
-MODES
-~~~~~
+RANDOM MODE
+~~~~~~~~~~~
 
 *-r, --random*::
     Produces random numbers instead of monotone sequences,
     potentially with duplicates.
+
+*-i, --seed*='NUMBER'::
+    Pass 'NUMBER' as initializer to the random number generator.
+    By default, the RNG is initialized from the current time and
+    the process ID of the running instance of *enum*.
+
 
 FORMATTING
 ~~~~~~~~~~

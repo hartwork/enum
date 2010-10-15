@@ -148,7 +148,8 @@ enum scaffolding_flags {
 	FLAG_USER_STEP = 1 << 6,
 	FLAG_NEWLINE = 1 << 7,
 	FLAG_USER_PRECISION = 1 << 8,
-	FLAG_EQUAL_WIDTH = 1 << 9
+	FLAG_EQUAL_WIDTH = 1 << 9,
+	FLAG_USER_SEED = 1 << 10
 };
 
 /** Enumeration of possible return states of yield() */
@@ -173,6 +174,7 @@ typedef struct _scaffolding {
 	unsigned int output_precision; /**< number of decimal places for future output format */
 	char * format;          /**< output format string */
 	char * separator;       /**< separation string between output values (default: \n) */
+	unsigned int seed;      /**< seed used to init random number generator */
 } scaffolding;
 
 void complete_scaffold(scaffolding * scaffold);

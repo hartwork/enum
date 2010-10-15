@@ -123,8 +123,12 @@ int main(int argc, char **argv) {
 		}
 	}
 
-	if (CHECK_FLAG(dest.flags, FLAG_RANDOM))
-		srand(time(NULL) + getpid());
+	if (CHECK_FLAG(dest.flags, FLAG_RANDOM)) {
+		unsigned int const seed = CHECK_FLAG(dest.flags, FLAG_USER_SEED)
+			? dest.seed
+			: time(NULL) + getpid();
+		srand(seed);
+	}
 
 	while (1) {
 		ret = yield(&dest, &out);

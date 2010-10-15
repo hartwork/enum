@@ -71,6 +71,7 @@ void dump_usage(FILE * file) {
 		"  -l, --one-line        use a space as separator, not a new line.\n"
 		"\n"
 		"  -r, --random          output random numbers, not sequential ones\n"
+		"  -i, --seed=NUMBER     specify seed for random number generator\n"
 		"\n"
 		"  -w, --word=FORMAT     alias for --format\n"
 		"  -b, --dumb=TEXT       use verbatim text for values"
