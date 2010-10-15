@@ -411,8 +411,7 @@ static void report_parse_error(int code, int myargc, char **myargv) {
 
 /** Set new format string.
  *
- * Copying the new string to destination pointer, issuing a warning to stderr
- * if an earlier format string thereby is overwritten.
+ * Copying the new string to destination pointer.
  *
  * @param[in,out] dest
  * @param[in] new
@@ -422,18 +421,12 @@ static void report_parse_error(int code, int myargc, char **myargv) {
  * @since 0.3
  */
 static int set_format_strdup(char ** dest, const char * new) {
-	char * newformat;
+	assert(dest);
+	assert(! *dest);
 
-	if (*dest) {
-		newformat = enum_strdup(new);
-		if (newformat == NULL)
-			return 0;
-		*dest = newformat;
-	} else {
-		*dest = enum_strdup(new);
-		if (*dest == NULL)
-			return 0;
-	}
+	*dest = enum_strdup(new);
+	if (*dest == NULL)
+		return 0;
 	return 1;
 }
 
@@ -549,16 +542,21 @@ typedef enum _format_change {
 	SAVE_EQUAL_WIDTH = 1 << 2
 } format_change;
 
-/** Check for existing formatting settings and produce related warning strings as needed.
+/** Erase formatting settings conflicting to upcoming changes and produce warnings as needed.
  *
  * @param[in] scaffold Settings to scan
  *
  * @since 0.5
  */
-void check_for_previous_format(scaffolding const * scaffold, format_change expected_format_change) {
+void prepare_setting_format(scaffolding * scaffold, format_change expected_format_change) {
 	int warning_needed = 0;
 	char * warning_message = NULL;
 
+	assert(! ((CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION)
+			|| CHECK_FLAG(scaffold->flags, FLAG_EQUAL_WIDTH))
+		&& (scaffold->format != NULL)));
+
+	/* Detect causes for warnings and make warning message as-needed */
 	if ((CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION) || CHECK_FLAG(scaffold->flags, FLAG_EQUAL_WIDTH))
 			&& (expected_format_change == APPLY_FORMAT)) {
 		char const * format;
@@ -591,6 +589,19 @@ void check_for_previous_format(scaffolding const * scaffold, format_change expec
 		if (warning_message) {
 			sprintf(warning_message, format, scaffold->format);
 		}
+	}
+
+	/* Remove previous format */
+	if (scaffold->format) {
+		free(scaffold->format);
+		scaffold->format = NULL;
+	}
+
+	/* Remove settings conflicting to upcoming changes */
+	if (expected_format_change == APPLY_FORMAT) {
+		/* remove user precision and equal width flags */
+		scaffold->flags &= ~FLAG_USER_PRECISION;
+		scaffold->flags &= ~FLAG_EQUAL_WIDTH;
 	}
 
 	if (warning_needed && warning_message)
@@ -660,7 +671,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 			{
 				char * newformat;
 
-				check_for_previous_format(dest, APPLY_FORMAT);
+				prepare_setting_format(dest, APPLY_FORMAT);
 
 				escape_strdup(optarg, '%', &newformat);
 				if (newformat == NULL) {
@@ -673,39 +684,30 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 					}
 					free(newformat);
 				}
-
-				/* remove user precision flag */
-				dest->flags &= ~FLAG_USER_PRECISION;
 			}
 			break;
 
 		case 'c':
 			{
-				check_for_previous_format(dest, APPLY_FORMAT);
+				prepare_setting_format(dest, APPLY_FORMAT);
 
 				if (! set_format_strdup(&(dest->format), "%c")) {
 					report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 					success = 0;
 				}
 			}
-
-			/* remove user precision flag */
-			dest->flags &= ~FLAG_USER_PRECISION;
 			break;
 
 		case 'f':
 		case 'w':
 			{
-				check_for_previous_format(dest, APPLY_FORMAT);
+				prepare_setting_format(dest, APPLY_FORMAT);
 
 				if (! set_format_strdup(&(dest->format), optarg)) {
 					report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 					success = 0;
 				}
 			}
-
-			/* remove user precision flag */
-			dest->flags &= ~FLAG_USER_PRECISION;
 
 			/* TODO look for %f or similar and error out unless found */
 			break;
@@ -737,7 +739,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 
 		case 'e':
 			{
-				check_for_previous_format(dest, SAVE_EQUAL_WIDTH);
+				prepare_setting_format(dest, SAVE_EQUAL_WIDTH);
 
 				dest->flags |= FLAG_EQUAL_WIDTH;
 			}
@@ -748,7 +750,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				unsigned int precision_candidate;
 				char * end;
 
-				check_for_previous_format(dest, SAVE_PRECISION);
+				prepare_setting_format(dest, SAVE_PRECISION);
 
 				precision_candidate = strtoul(optarg, &end, 10);
 				if (end - optarg != (int)strlen(optarg) || (strchr(optarg, '-') != NULL)) {
