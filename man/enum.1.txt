@@ -91,6 +91,12 @@ FORMATTING
     Overrides the output format to `%c` producing characters.
     For example, *enum -c 65 67* produces the letters "A", "B" and "C".
 
+*-e, --equal-width*::
+    Equalize width by padding with leading zeroes.
+    NOTE: In case of mixed negative and non-negative numbers
+    (e.g. with *enum -e -- -10 1*), non-negative values will compensate
+    the lack of a leading minus with an extra zero to be of equal width.
+
 *-f, --format*='FORMAT'::
     Overrides the default output format with 'FORMAT'.
     For details on allowed formats please see printf(3). +
@@ -117,7 +123,8 @@ FORMATTING
     By default, values are separated by a newline.
 
 *-w, --word*='FORMAT'::
-    Alias for --format.
+    Alias for --format, copied from jot.
+    For GNU seq's *--equal-width* shortcut *-w* please see *-e*, instead.
 
 
 OTHER
@@ -325,9 +332,8 @@ trailing newline.
 DIFFERENCES
 ~~~~~~~~~~~
 
-*enum* does not (yet?) support GNU seq's parameter *--equal-width*.
-On a side note, the related shortcut *-w* conflicts with jot's *-w
-word*.
+GNU seq's *--equal-width* shortcut *-w* conflicts with jot's *-w word*.
+We chose to make *-e* the shortcut for *--equal-width* in *enum*, instead.
 
 Also, while GNU seq is licensed under GPL v3 or later, *enum* is
 licensed under the New BSD license.

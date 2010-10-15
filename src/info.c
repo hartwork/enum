@@ -67,6 +67,7 @@ void dump_usage(FILE * file) {
 	fprintf(file,
 		"  -c, --characters      print characters, not numbers\n"
 		"  -p, --precision=COUNT adjust the number of decimal places printed\n"
+		"  -e, --equal-width     equalize width by padding with leading zeroes.\n"
 		"\n"
 		"  -r, --random          output random numbers, not sequential ones\n"
 		"\n"

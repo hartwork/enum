@@ -451,23 +451,44 @@ static int set_format_strdup(char ** dest, const char * new) {
  * @since 0.4
  */
 int make_default_format_string(scaffolding * dest, unsigned int precision) {
-	const char base[] = "%%.%uf";
-	const size_t min_length = sizeof(base) - 2;
+	char * newformat = NULL;
+	const size_t post_dot_bytes_needed = ((precision == 0) ? 0 : (size_t)log10(precision)) + 1;
 
-	const size_t precision_digits = ((precision == 0) ? 0 : (size_t)log10(precision)) + 1;
-
-	char * const newformat = (char *)malloc(min_length + precision_digits + 1);
-
-	if (newformat != NULL) {
-		sprintf(newformat, base, precision);
-		if (! set_format_strdup(&(dest->format), newformat)) {
-			free(newformat);
-			return 0;
-		}
-		free(newformat);
-		return 1;
+	if (HAS_RIGHT(dest) && CHECK_FLAG(dest->flags, FLAG_EQUAL_WIDTH)) {
+		const char equal_width_base[] = "%%0%u.%uf";
+		const int left_len = (dest->left < 0) + (size_t)log10(fabs(dest->left)) + 1;
+		const int right_len = (dest->right < 0) + (size_t)log10(fabs(dest->right)) + 1;
+		const size_t pre_dot_digits_wanted = ENUM_MAX(left_len, right_len);
+		const size_t total_chars_wanted = pre_dot_digits_wanted + (precision ? 1 + precision : 0);
+		const size_t pre_dot_bytes_needed = (size_t)log10(total_chars_wanted) + 1;
+		const size_t base_bytes = sizeof(equal_width_base)
+			- sizeof("%")
+			- sizeof("%u") + pre_dot_bytes_needed
+			- sizeof("%u") + post_dot_bytes_needed
+			+ 1;
+		newformat = (char *)malloc(base_bytes);
+		if (! newformat)
+		    return 0;
+		sprintf(newformat, equal_width_base, total_chars_wanted, precision);
+	} else {
+		const char default_base[] = "%%.%uf";
+		const size_t base_bytes = sizeof(default_base)
+			- sizeof("%")
+			- sizeof("%u") + post_dot_bytes_needed
+			+ 1;
+		newformat = (char *)malloc(base_bytes);
+		if (! newformat)
+		    return 0;
+		sprintf(newformat, default_base, precision);
 	}
-	return 0;
+
+	if (! set_format_strdup(&(dest->format), newformat)) {
+		free(newformat);
+		return 0;
+	}
+
+	free(newformat);
+	return 1;
 }
 
 /** Save given separator to scaffold.
@@ -522,6 +543,12 @@ static int save_new_token(unsigned int * new_argc, char ** new_argv, char * toke
 	return 1;
 }
 
+typedef enum _format_change {
+	APPLY_FORMAT = 1 << 0,
+	SAVE_PRECISION = 1 << 1,
+	SAVE_EQUAL_WIDTH = 1 << 2
+} format_change;
+
 /** Check for existing formatting settings and produce related warning strings as needed.
  *
  * @param[in] scaffold Settings to scan
@@ -530,23 +557,36 @@ static int save_new_token(unsigned int * new_argc, char ** new_argv, char * toke
  *
  * @since 0.5
  */
-void check_for_previous_format(scaffolding const * scaffold, int * p_warning_needed, char ** p_warning_message) {
+void check_for_previous_format(scaffolding const * scaffold, int * p_warning_needed, char ** p_warning_message, format_change expected_format_change) {
 	if (p_warning_needed)
 		*p_warning_needed = 0;
 	*p_warning_message = NULL;
 
-	if (CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION)) {
-		const char format[] = "Discarding format previously set by -p|--precision %d.";
-		const size_t precision_bytes_needed = log10(scaffold->output_precision) + 1;
+	if ((CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION) || CHECK_FLAG(scaffold->flags, FLAG_EQUAL_WIDTH))
+			&& (expected_format_change == APPLY_FORMAT)) {
+		char const * format;
 
 		if (p_warning_needed)
 			*p_warning_needed = 1;
 
-		*p_warning_message = malloc(sizeof(format) - sizeof("%d") + precision_bytes_needed + 1);
+		if (CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION)) {
+			const size_t precision_bytes_needed = log10(scaffold->output_precision) + 1;
+			if (CHECK_FLAG(scaffold->flags, FLAG_EQUAL_WIDTH)) {
+				format = "Discarding format previously set by -e|--equal-width and -p|--precision %d.";
+			} else {
+				format = "Discarding format previously set by -p|--precision %d.";
+			}
+			*p_warning_message = malloc(strlen(format) - sizeof("%d") + precision_bytes_needed + 1);
+		} else {
+			assert(CHECK_FLAG(scaffold->flags, FLAG_EQUAL_WIDTH));
+			format = "Discarding format previously set by -e|--equal-width.";
+			*p_warning_message = malloc(strlen(format) + 1);
+		}
+
 		if (*p_warning_message) {
 			sprintf(*p_warning_message, format, scaffold->output_precision);
 		}
-	} else if (scaffold->format) {
+	} else if (scaffold->format && (expected_format_change != APPLY_FORMAT)) {
 		const char format[] = "Discarding previous format \"%s\".";
 
 		if (p_warning_needed)
@@ -600,10 +640,11 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 			{"dumb",         required_argument, 0, 'b'},
 			{"separator",    required_argument, 0, 's'},
 			{"precision",    required_argument, 0, 'p'},
+			{"equal-width",  required_argument, 0, 'e'},
 			{0, 0, 0, 0}
 		};
 
-		c = getopt_long(original_argc, original_argv, "+b:cf:hi:lnp:rs:Vw:", long_options, &option_index);
+		c = getopt_long(original_argc, original_argv, "+b:cef:hi:lnp:rs:Vw:", long_options, &option_index);
 
 		if (c == -1) {
 			/* TODO Move outside while loop */
@@ -622,7 +663,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				char * warning_message;
 				char * newformat;
 
-				check_for_previous_format(dest, &warning_needed, &warning_message);
+				check_for_previous_format(dest, &warning_needed, &warning_message, APPLY_FORMAT);
 
 				if (warning_needed && warning_message)
 					fprintf(stderr, "WARNING: %s\n", warning_message);
@@ -650,7 +691,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				int warning_needed;
 				char * warning_message;
 
-				check_for_previous_format(dest, &warning_needed, &warning_message);
+				check_for_previous_format(dest, &warning_needed, &warning_message, APPLY_FORMAT);
 
 				if (warning_needed && warning_message)
 					fprintf(stderr, "WARNING: %s\n", warning_message);
@@ -672,7 +713,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				int warning_needed;
 				char * warning_message;
 
-				check_for_previous_format(dest, &warning_needed, &warning_message);
+				check_for_previous_format(dest, &warning_needed, &warning_message, APPLY_FORMAT);
 
 				if (warning_needed && warning_message)
 					fprintf(stderr, "WARNING: %s\n", warning_message);
@@ -715,6 +756,21 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 			dest->flags &= ~FLAG_NEWLINE;
 			break;
 
+		case 'e':
+			{
+				int warning_needed;
+				char * warning_message;
+
+				check_for_previous_format(dest, &warning_needed, &warning_message, SAVE_EQUAL_WIDTH);
+
+				if (warning_needed && warning_message)
+					fprintf(stderr, "WARNING: %s\n", warning_message);
+				free(warning_message);
+
+				dest->flags |= FLAG_EQUAL_WIDTH;
+			}
+			break;
+
 		case 'p':
 			{
 				int warning_needed;
@@ -722,7 +778,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				unsigned int precision_candidate;
 				char * end;
 
-				check_for_previous_format(dest, &warning_needed, &warning_message);
+				check_for_previous_format(dest, &warning_needed, &warning_message, SAVE_PRECISION);
 
 				if (warning_needed && warning_message)
 					fprintf(stderr, "WARNING: %s\n", warning_message);

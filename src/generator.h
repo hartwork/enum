@@ -147,7 +147,8 @@ enum scaffolding_flags {
 	FLAG_RANDOM = 1 << 5,
 	FLAG_USER_STEP = 1 << 6,
 	FLAG_NEWLINE = 1 << 7,
-	FLAG_USER_PRECISION = 1 << 8
+	FLAG_USER_PRECISION = 1 << 8,
+	FLAG_EQUAL_WIDTH = 1 << 9
 };
 
 /** Enumeration of possible return states of yield() */
