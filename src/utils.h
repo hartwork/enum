@@ -40,6 +40,22 @@
 #ifndef UTILS_H
 #define UTILS_H 1
 
+/** @name Min/Max macros
+ * Macros to find the smaller/larger number.
+ *
+ * @param[in] a
+ * @param[in] b
+ *
+ * @return a or b respectively, depending on which is smaller
+ *
+ * @since 0.3
+ */
+
+/*@{*/
+#define ENUM_MIN(a, b)  (((a) <= (b)) ? (a) : (b))
+#define ENUM_MAX(a, b)  (((a) >= (b)) ? (a) : (b))
+/*@}*/
+
 char * enum_strdup(const char * text);
 char * enum_strndup(const char * text, unsigned int length);
 int enum_is_nan_float(float value);

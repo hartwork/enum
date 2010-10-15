@@ -39,25 +39,10 @@
 
 #include "generator.h"
 #include "assertion.h"
+#include "utils.h"
 #include <stdlib.h>  /* for rand */
 #include <math.h>  /* for fabs, ceil, floor, fmod, log, pow, rand */
 #include <float.h>  /* for FLT_MAX */
-
-/** @name Min/Max macros
- * Macros to find the smaller/larger number.
- *
- * @param[in] a
- * @param[in] b
- *
- * @return a or b respectively, depending on which is smaller
- *
- * @since 0.3
- */
-
-/*@{*/
-#define ENUM_MIN(a, b)  (((a) <= (b)) ? (a) : (b))
-#define ENUM_MAX(a, b)  (((a) >= (b)) ? (a) : (b))
-/*@}*/
 
 /** Calculate precision of float.
  *
