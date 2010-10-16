@@ -44,7 +44,7 @@ details on controlling the formatter or 'EXAMPLES' for use cases.
 EXAMPLES
 --------
 
-Use in for-loops
+USE IN FOR-LOOPS
 ~~~~~~~~~~~~~~~~
 
 --------------------------------------
@@ -54,7 +54,7 @@ done
 --------------------------------------
 
 
-Use for random numbers
+USE FOR RANDOM NUMBERS
 ~~~~~~~~~~~~~~~~~~~~~~
 
 --------------------------------------
@@ -69,7 +69,7 @@ number=$(f 3 10)
 --------------------------------------
 
 
-Showing an ASCII table
+SHOWING AN ASCII TABLE
 ~~~~~~~~~~~~~~~~~~~~~~
 
 --------------------------------------
@@ -167,7 +167,7 @@ Basically, random mode differs in these regards:
 We will now cover these differences in detail.
 
 
-COUNT defaults to 1 (one)
+COUNT DEFAULTS TO 1 (ONE)
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In random mode only one value is produced, by default:
@@ -193,7 +193,7 @@ By specifying count you can produce more values at a time:
 --------------------------------------
 
 
-LEFT always defaults to 1 (one)
+LEFT ALWAYS DEFAULTS TO 1 (ONE)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When you need increasing numbers up to a certain maxmimum (say 10),
@@ -219,7 +219,7 @@ In random mode 'LEFT' is never calculated and defaults to 1 (one):
 --------------------------------------
 
 
-Random does not mix with infinity
+RANDOM DOES NOT MIX WITH INFINITY
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In general, *enum* supports running towards infinity:
@@ -303,7 +303,7 @@ ADDITIONAL FEATURES
 The features that *enum* offers over jot include:
 
 
-More memorable command line usage
+MORE MEMORABLE COMMAND LINE USAGE
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 In order to produce 3 random numbers between 1 and 10 inclusively, you
 would run
@@ -320,7 +320,7 @@ enum -r 1 3x 10
 --------------------------------------
 
 
-Custom resolution of random
+CUSTOM RESOLUTION OF RANDOM
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 With *enum* you can specify the gap between possible random values.
 These two cases illustrate the difference between a gap of 2 and 3:
@@ -339,7 +339,7 @@ These two cases illustrate the difference between a gap of 2 and 3:
 --------------------------------------
 
 
-Support for several placeholders in format strings
+SUPPORT FOR SEVERAL PLACEHOLDERS IN FORMAT STRINGS
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 jot on DragonFlyBSD, FreeBSD, MirOS BSD, OpenBSD and OS X:
 
@@ -365,7 +365,7 @@ jot: unknown or invalid format `%g%g'
 --------------------------------------
 
 
-Null bytes as separator
+NULL BYTES AS SEPARATOR
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 When using format strings containing spaces you may run into
@@ -394,7 +394,7 @@ sheep number 2
 DIFFERENCES
 ~~~~~~~~~~~
 
-Handling of formats without placeholders
+HANDLING OF FORMATS WITHOUT PLACEHOLDERS
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 In contrast to jot, *enum* does not append the current value, if the
 formatting string does not contain a placeholder.
@@ -427,7 +427,7 @@ test_3
 --------------------------------------
 
 
-Non-number values for LEFT and RIGHT
+NON-NUMBER VALUES FOR LEFT AND RIGHT
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 *enum* does not support using ASCII characters instead of their
 numerical values (e.g. "A" for 65) for 'LEFT' and 'RIGHT'.
@@ -465,7 +465,7 @@ ADDITIONAL FEATURES
 The features *enum* offers over GNU seq include:
 
 
-Random number mode
+RANDOM NUMBER MODE
 ^^^^^^^^^^^^^^^^^^
 *enum* supports output of constrained random numbers, e.g.
 
@@ -477,7 +477,7 @@ produces three (possibly duplicate) random numbers
 from the set {4.0, 6.0, 8.0, 10.0}.
 
 
-Support for inverse ordering
+SUPPORT FOR INVERSE ORDERING
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 In contrast to GNU seq, *enum* supports enumerating decreasing values:
 
@@ -491,7 +491,7 @@ In contrast to GNU seq, *enum* supports enumerating decreasing values:
 --------------------------------------
 
 
-Support for several placeholders in format strings
+SUPPORT FOR SEVERAL PLACEHOLDERS IN FORMAT STRINGS
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 --------------------------------------
@@ -505,7 +505,7 @@ seq: format `%g%g' has too many % directives
 --------------------------------------
 
 
-Omitting final newline
+OMITTING FINAL NEWLINE
 ^^^^^^^^^^^^^^^^^^^^^^
 By specifying *-n* as a parameter, you can make *enum* omit the
 trailing newline.
