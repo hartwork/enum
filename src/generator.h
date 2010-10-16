@@ -46,7 +46,7 @@
  * @since 0.3
  */
 /*@{*/
-#define MAX_PD_DIGITS  5
+#define MAX_POST_DOT_DIGITS  5
 #define FLOAT_EQUAL_DELTA  0.0001f
 /*@}*/
 

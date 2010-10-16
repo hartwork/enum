@@ -60,12 +60,12 @@ static unsigned int calc_precision(float element) {
 	unsigned int ptemp;
 	unsigned int i;
 
-	ptemp = (element - (int)element) * pow(10, MAX_PD_DIGITS);
+	ptemp = (element - (int)element) * pow(10, MAX_POST_DOT_DIGITS);
 	if (ptemp != 0) {
-		precision = MAX_PD_DIGITS;
-		for (i = MAX_PD_DIGITS; i > 0; i--) {
+		precision = MAX_POST_DOT_DIGITS;
+		for (i = MAX_POST_DOT_DIGITS; i > 0; i--) {
 			if (ptemp % (int)pow(10, i) != 0) {
-				precision = MAX_PD_DIGITS - i + 1;
+				precision = MAX_POST_DOT_DIGITS - i + 1;
 			}
 		}
 	}
