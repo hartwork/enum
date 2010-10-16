@@ -222,32 +222,38 @@ AUTO-SELECTION OF PRECISION
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 *enum* distincts between "2", "2.0", "2.00" and so on:
 
-    # enum 1 2
-    1
-    2
+--------------------------------------
+# enum 1 2
+1
+2
 
-    # enum 1 2.0
-    1.0
-    1.1
-    [..]
-    1.9
-    2.0
+# enum 1 2.0
+1.0
+1.1
+[..]
+1.9
+2.0
+--------------------------------------
 
 Also, if the derived step has more decimal places than the
 specified values for 'LEFT' and 'RIGHT', the output precision
 will be raised to that of step
 
-    # enum 1 .. 3x .. 2
-    1.0
-    1.5
-    2.0
+--------------------------------------
+# enum 1 .. 3x .. 2
+1.0
+1.5
+2.0
+--------------------------------------
 
 A specified precision always takes precedence:
 
-    # enum -p 2 1 .. 3x .. 2
-    1.00
-    1.50
-    2.00
+--------------------------------------
+# enum -p 2 1 .. 3x .. 2
+1.00
+1.50
+2.00
+--------------------------------------
 
 
 ARGUMENT DEFAULTS
