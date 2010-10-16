@@ -1042,6 +1042,12 @@ int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest
 	INSTALL_USE_CASE(18, 0)
 	INSTALL_USE_CASE(19, 1)
 
+	/* Any arguments given? */
+	if (reduced_argc == 0) {
+		fatal("No arguments given");
+		return 0;
+	}
+
 	for (i = 0; i < reduced_argc; i++) {
 		setter_value value;
 		token_type type = identify_token(reduced_argv[i], &value);
