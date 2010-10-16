@@ -736,7 +736,6 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				}
 			}
 
-			/* TODO look for %f or similar and error out unless found */
 			break;
 
 		case 'h':
