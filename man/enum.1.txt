@@ -358,6 +358,8 @@ To prevent this, you could pass *--null* to both *enum* and xargs:
 DIFFERENCES
 ~~~~~~~~~~~
 
+Handling of formats without placeholders
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 In contrast to jot, *enum* does not append the current value, if the
 formatting string does not contain a placeholder.
 Behavior of jot:
@@ -381,6 +383,28 @@ append a placeholder:
     test_1
     test_2
     test_3
+
+
+Non-number values for LEFT and RIGHT
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+*enum* does not support using ASCII characters instead of their
+numerical values (e.g. "A" for 65) for 'LEFT' and 'RIGHT'.
+With jot you can do:
+
+    # jot 3 A
+    65
+    66
+    67
+
+Inconsistently,
+
+    # jot 3 0
+    0
+    1
+    2
+
+jot does not interpret "0" as ASCII character with code 48.
+We have no intention duplicating this mix, at the moment.
 
 
 COMPARISON TO GNU SEQ
