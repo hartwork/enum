@@ -621,7 +621,7 @@ void prepare_setting_format(scaffolding * scaffold, format_change expected_forma
 			format = "WARNING: Discarding format previously "
 			    "set by -e|--equal-width.\n";
 		}
-		fprintf(stderr, format, scaffold->output_precision);
+		fprintf(stderr, format, scaffold->user_precision);
 	} else if (scaffold->format) {
 		fprintf(stderr, "WARNING: Discarding previous format \"%s\".\n", scaffold->format);
 	}
@@ -813,7 +813,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				}
 
 				dest->flags |= FLAG_USER_PRECISION;
-				dest->output_precision = precision_candidate;
+				dest->user_precision = precision_candidate;
 			}
 			break;
 

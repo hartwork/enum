@@ -100,8 +100,8 @@
  * @since 0.3
  */
 #define INCREASE_PRECISION(scaffold, _precision)  \
-	if (_precision > (scaffold).precision) { \
-		(scaffold).precision = _precision; \
+	if (_precision > (scaffold).auto_precision) { \
+		(scaffold).auto_precision = _precision; \
 	}
 
 /** @name Scaffold flag checkers
@@ -171,8 +171,8 @@ typedef struct _scaffolding {
 	float step;             /**< step between values */
 	unsigned int count;     /**< number of values to return */
 	unsigned int position;  /**< current position while walking through values */
-	unsigned int precision; /**< number of decimal places applied internally */
-	unsigned int output_precision; /**< number of decimal places for future output format */
+	unsigned int auto_precision; /**< derived number of decimal places for future output format */
+	unsigned int user_precision; /**< number of decimal places for future output format specified by user */
 	char * format;          /**< output format string */
 	char * separator;       /**< separation string between output values (default: \n) */
 	unsigned int seed;      /**< seed used to init random number generator */

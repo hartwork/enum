@@ -141,7 +141,7 @@ void complete_scaffold(scaffolding * scaffold) {
 		if (! HAS_STEP(scaffold)) {
 			if (HAS_LEFT(scaffold) && HAS_RIGHT(scaffold)) {
 				/* Special case for decimal place precision */
-				SET_STEP(*scaffold, precision_to_step(scaffold->precision));
+				SET_STEP(*scaffold, precision_to_step(scaffold->auto_precision));
 			} else {
 				SET_STEP(*scaffold, 1.0f);
 			}
@@ -202,7 +202,7 @@ void complete_scaffold(scaffolding * scaffold) {
 			}
 		} else if (! HAS_STEP(scaffold)) {
 			if (CHECK_FLAG(scaffold->flags, FLAG_RANDOM)) {
-				SET_STEP(*scaffold, precision_to_step(scaffold->precision));
+				SET_STEP(*scaffold, precision_to_step(scaffold->auto_precision));
 			} else {
 				if (scaffold->count == 1) {
 					SET_STEP(*scaffold, 0.0);
@@ -395,7 +395,7 @@ yield_status yield(scaffolding * scaffold, float * dest) {
 void initialize_scaffold(scaffolding * dest) {
 	dest->flags = 0;
 	dest->position = 0;
-	dest->precision = 0;
+	dest->auto_precision = 0;
 	dest->format = NULL;
 	dest->separator = NULL;
 }

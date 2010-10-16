@@ -110,8 +110,8 @@ int main(int argc, char **argv) {
 
 	if (!dest.format) {
 		unsigned int precision = CHECK_FLAG(dest.flags, FLAG_USER_PRECISION)
-			? dest.output_precision
-			: dest.precision;
+			? dest.user_precision
+			: dest.auto_precision;
 		make_default_format_string(&dest, precision);
 	}
 
