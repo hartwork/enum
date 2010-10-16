@@ -715,27 +715,22 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 			break;
 
 		case 'c':
-			{
-				prepare_setting_format(dest, APPLY_FORMAT);
+			prepare_setting_format(dest, APPLY_FORMAT);
 
-				if (! set_format_strdup(&(dest->format), "%c")) {
-					report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
-					success = 0;
-				}
+			if (! set_format_strdup(&(dest->format), "%c")) {
+				report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+				success = 0;
 			}
 			break;
 
 		case 'f':
 		case 'w':
-			{
-				prepare_setting_format(dest, APPLY_FORMAT);
+			prepare_setting_format(dest, APPLY_FORMAT);
 
-				if (! set_format_strdup(&(dest->format), optarg)) {
-					report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
-					success = 0;
-				}
+			if (! set_format_strdup(&(dest->format), optarg)) {
+				report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+				success = 0;
 			}
-
 			break;
 
 		case 'h':
@@ -784,11 +779,9 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 			break;
 
 		case 'e':
-			{
-				prepare_setting_format(dest, SAVE_EQUAL_WIDTH);
+			prepare_setting_format(dest, SAVE_EQUAL_WIDTH);
 
-				dest->flags |= FLAG_EQUAL_WIDTH;
-			}
+			dest->flags |= FLAG_EQUAL_WIDTH;
 			break;
 
 		case 'p':
