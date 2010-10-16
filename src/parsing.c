@@ -690,12 +690,6 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 		c = getopt_long(original_argc, original_argv, "+b:cef:hi:lnp:rs:Vw:z", long_options, &option_index);
 
 		if (c == -1) {
-			/* TODO Move outside while loop */
-			if (original_argc == 1) {
-				fatal("No arguments given");
-				success = 0;
-				usage_needed = 1;
-			}
 			break;
 		}
 
@@ -852,6 +846,13 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 		default:
 			assert(0);
 		}
+	}
+
+	/* Any paramaters or arguments given? */
+	if (original_argc == 1) {
+		fatal("No arguments given");
+		success = 0;
+		usage_needed = 1;
 	}
 
 	if (! success && usage_needed) {
