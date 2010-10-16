@@ -309,14 +309,14 @@ In order to produce 3 random numbers between 1 and 10 inclusively, you
 would run
 
 --------------------------------------
-# jot -r 3 1 10
+jot -r 3 1 10
 --------------------------------------
 
 with jot.  We find these alternative calls to *enum* more intuitive:
 
 --------------------------------------
-# enum -r 1 .. 3x .. 10
-# enum -r 1 3x 10
+enum -r 1 .. 3x .. 10
+enum -r 1 3x 10
 --------------------------------------
 
 
@@ -470,7 +470,7 @@ Random number mode
 *enum* supports output of constrained random numbers, e.g.
 
 --------------------------------------
-# enum -r 4 .. 3x 2.0 .. 11
+enum -r 4 .. 3x 2.0 .. 11
 --------------------------------------
 
 produces three (possibly duplicate) random numbers
