@@ -215,6 +215,13 @@ int main() {
 	TEST_CASE(successes, failures, 1, XX, 2, 5, ARRAY(1, 3, 5))
 
 
+        /* implicit step == 0 */
+	TEST_CASE(successes, failures, 1, XX, XX, 1, ARRAY(1))
+
+        /* explicit count == 1 */
+	TEST_CASE(successes, failures, 1,  1, XX, 3, ARRAY(1))
+
+
 	assert(successes + failures > 0);
 	printf(
 		"Successes:   %2u  (%6.2f%%)\n"
