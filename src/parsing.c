@@ -908,12 +908,14 @@ int preparse_args(unsigned int reduced_argc, char ** reduced_argv,
 			/* make sure to have enough memory */
 			assert((*new_argc * sizeof(char *)) <= argv_mem);
 			if ((*new_argc * sizeof(char *)) == argv_mem) {
+				char ** tmp;
 				argv_mem = (*new_argc + 1) * sizeof(char *);
-				*new_argv = realloc(*new_argv, argv_mem);
-				if (*new_argv == NULL) {
+				tmp = (char **)realloc(*new_argv, argv_mem);
+				if (tmp == NULL) {
 					free(*new_argv);
 					return 0;
 				}
+				*new_argv = tmp;
 			}
 
 			for (j = strlen(p); j > 0; j--) {
