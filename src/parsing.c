@@ -453,10 +453,10 @@ int make_default_format_string(scaffolding * dest, unsigned int precision) {
 		const size_t pre_dot_digits_wanted = ENUM_MAX(left_len, right_len);
 		const size_t total_chars_wanted = pre_dot_digits_wanted + (precision ? 1 + precision : 0);
 		const size_t pre_dot_bytes_needed = (size_t)log10(total_chars_wanted) + 1;
-		const size_t base_bytes = sizeof(equal_width_base)
-			- sizeof("%")
-			- sizeof("%u") + pre_dot_bytes_needed
-			- sizeof("%u") + post_dot_bytes_needed
+		const size_t base_bytes = strlen(equal_width_base)
+			- strlen("%")
+			- strlen("%u") + pre_dot_bytes_needed
+			- strlen("%u") + post_dot_bytes_needed
 			+ 1;
 		newformat = (char *)malloc(base_bytes);
 		if (! newformat)
@@ -464,9 +464,9 @@ int make_default_format_string(scaffolding * dest, unsigned int precision) {
 		sprintf(newformat, equal_width_base, total_chars_wanted, precision);
 	} else {
 		const char default_base[] = "%%.%uf";
-		const size_t base_bytes = sizeof(default_base)
-			- sizeof("%")
-			- sizeof("%u") + post_dot_bytes_needed
+		const size_t base_bytes = strlen(default_base)
+			- strlen("%")
+			- strlen("%u") + post_dot_bytes_needed
 			+ 1;
 		newformat = (char *)malloc(base_bytes);
 		if (! newformat)
