@@ -590,7 +590,7 @@ typedef enum _format_change {
  *
  * @since 0.5
  */
-void prepare_setting_format(scaffolding * scaffold, format_change expected_format_change) {
+static void prepare_setting_format(scaffolding * scaffold, format_change expected_format_change) {
 	assert(! ((CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION)
 			|| CHECK_FLAG(scaffold->flags, FLAG_EQUAL_WIDTH))
 		&& (scaffold->format != NULL)));
