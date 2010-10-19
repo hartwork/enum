@@ -11,8 +11,21 @@ EXTRA_DIST = \
 PACKAGE_VERSION = `fgrep AC_INIT configure.ac | sed 's|^.\+, \[\(.\+\)\],.\+$$|\1|'`
 SNAPSHOT_VERSION = `git describe --tags | sed -e 's|^\([0-9]\+\.[0-9]\+\)-|\1.0-|' -e 's|-\([0-9]\+\)-g[0-9a-f]\+$$|.\1|'`
 
+
+if ENABLE_DOC
+
 man/enum.1: man/enum.1.txt configure.ac Makefile.am
 	a2x --attribute="enumversion=$(PACKAGE_VERSION)" --format=manpage "$<"
+
+clean-local:
+	rm -f man/enum.1
+
+else
+
+man/enum.1:
+
+endif
+
 
 snapshot:
 	git diff --quiet || { echo 'STOP, you have uncommitted changes in the working directory' ; false ; }
