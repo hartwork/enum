@@ -207,7 +207,6 @@ void complete_scaffold(scaffolding * scaffold) {
 				if (scaffold->count == 1) {
 					SET_STEP(*scaffold, 0.0);
 				} else {
-					assert(scaffold->count != 1);
 					SET_STEP(*scaffold, (scaffold->right - scaffold->left)
 						    / (scaffold->count - 1));
 					/* correct precision */
