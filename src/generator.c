@@ -271,12 +271,12 @@ static float discrete_random_closed(float min, float max, float step_width) {
 
 /** Calculate a candidate for output.
  *
- * Based on known values, calculate a possible candidate for yield to place
- * into scaffold or check if there will be another valid one.
+ * Based on known values, calculate a possible candidate for enum_yield to
+ * place into scaffold or check if there will be another valid one.
  *
  * @param[in] scaffold
  *
- * @return A calculated candidate for yield to place into scaffold
+ * @return A calculated candidate for enum_yield to place into scaffold
  *
  * @since 0.5
  */
@@ -311,12 +311,12 @@ static int check_candidate(scaffolding const * scaffold, float candidate) {
 /** Main output function.
  *
  * Calculate next value based on given scaffold and write it to dest. Assuming
- * scaffold was filled correctly and not altered inbetween calls, yield will
- * find the next value to be printed.
+ * scaffold was filled correctly and not altered inbetween calls, enum_yield
+ * will find the next value to be printed.
  *
- * In order to determine its success, yield returns a yield_status indicating
- * whether a value has been written to dest or not, and even if this might be
- * the last one yield would be able to offer.
+ * In order to determine its success, enum_yield returns a yield_status
+ * indicating whether a value has been written to dest or not, and even if this
+ * might be the last one enum_yield would be able to offer.
  *
  * @param[in] scaffold
  * @param[out] dest
