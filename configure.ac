@@ -22,7 +22,7 @@ AC_PROG_SED  # for check against asciidoc
 ASCIIDOC_ERROR='asciidoc 8.4.5 or later required'  # see bug #44
 
 AC_MSG_CHECKING([for presence of asciidoc])
-	if asciidoc --version >/dev/null ; then
+	if asciidoc --version >/dev/null 2>/dev/null ; then
 		AC_MSG_RESULT([found])
 	else
 		AC_MSG_RESULT([missing])
