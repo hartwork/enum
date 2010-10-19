@@ -18,11 +18,11 @@ AC_PROG_CC
 AC_PROG_SED  # for check against asciidoc
 
 
-AC_ARG_ENABLE(doc, [
+AC_ARG_ENABLE(doc-rebuild, [
 ===========================================================================
 
 Extra options:
-AS_HELP_STRING([--disable-doc], [do not re-build man page using asciidoc])
+AS_HELP_STRING([--disable-doc-rebuild], [do not re-build shipped documentation])
 
 ===========================================================================
 ], [
@@ -34,7 +34,10 @@ AS_HELP_STRING([--disable-doc], [do not re-build man page using asciidoc])
 
 # Check for asciidoc
 if test ${ENABLE_DOC} = yes ; then
-	ASCIIDOC_ERROR='asciidoc 8.4.5 or later required'  # see bug #44
+	ASCIIDOC_ERROR='
+
+!!! Please install asciidoc 8.4.5 or later.
+!!! Alternatively, you could run ./configure with option --disable-doc-rebuild.'  # see bug #44
 
 	AC_MSG_CHECKING([for presence of asciidoc])
 		if asciidoc --version >/dev/null 2>/dev/null ; then
