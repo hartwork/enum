@@ -291,11 +291,6 @@ static int escape_strdup(const char *str, const char esc, char **dest) {
 			newstr[wpos] = esc;
 		}
 	}
-	newstr = (char *)realloc(newstr, strlen(newstr));
-	if (newstr == NULL) {
-		free(newstr);
-		return 0;
-	}
 
 	*dest = newstr;
 	return 1;
