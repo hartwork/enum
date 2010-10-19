@@ -847,6 +847,14 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 		usage_needed = 1;
 	}
 
+	/* Seed given without random flag? */
+	if (CHECK_FLAG(dest->flags, FLAG_USER_SEED)
+			&& ! CHECK_FLAG(dest->flags, FLAG_RANDOM)) {
+		fprintf(stderr, "ERROR: Parameter -i|--seed %u requires -r|--random.\n", dest->seed);
+		success = 0;
+		usage_needed = 1;
+	}
+
 	if (! success && usage_needed) {
 		fprintf(stderr, "\n");
 		dump_usage(stderr);
