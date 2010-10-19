@@ -447,7 +447,7 @@ int make_default_format_string(scaffolding * dest, unsigned int precision) {
 	const size_t post_dot_bytes_needed = ((precision == 0) ? 0 : (size_t)log10(precision)) + 1;
 
 	if (HAS_RIGHT(dest) && CHECK_FLAG(dest->flags, FLAG_EQUAL_WIDTH)) {
-		const char equal_width_base[] = "%%0%u.%uf";
+		const char * const equal_width_base = "%%0%u.%uf";
 		const int left_len = (dest->left < 0) + (size_t)log10(fabs(dest->left)) + 1;
 		const int right_len = (dest->right < 0) + (size_t)log10(fabs(dest->right)) + 1;
 		const size_t pre_dot_digits_wanted = ENUM_MAX(left_len, right_len);
@@ -463,7 +463,7 @@ int make_default_format_string(scaffolding * dest, unsigned int precision) {
 		    return 0;
 		sprintf(newformat, equal_width_base, total_chars_wanted, precision);
 	} else {
-		const char default_base[] = "%%.%uf";
+		const char * const default_base = "%%.%uf";
 		const size_t base_bytes = strlen(default_base)
 			- strlen("%")
 			- strlen("%u") + post_dot_bytes_needed
