@@ -131,7 +131,7 @@ int main(int argc, char **argv) {
 	}
 
 	while (1) {
-		ret = yield(&dest, &out);
+		ret = enum_yield(&dest, &out);
 
 		if (i != 0) {
 			if (CHECK_FLAG(dest.flags, FLAG_NULL_BYTES)) {

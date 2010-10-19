@@ -326,7 +326,7 @@ static int check_candidate(scaffolding const * scaffold, float candidate) {
  *
  * @since 0.3
  */
-yield_status yield(scaffolding * scaffold, float * dest) {
+yield_status enum_yield(scaffolding * scaffold, float * dest) {
 	float candidate;
 
 	assert(CHECK_FLAG(scaffold->flags, FLAG_READY));

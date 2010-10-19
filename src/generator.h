@@ -153,7 +153,7 @@ enum scaffolding_flags {
 	FLAG_NULL_BYTES = 1 << 11
 };
 
-/** Enumeration of possible return states of yield() */
+/** Enumeration of possible return states of enum_yield() */
 typedef enum _yield_status {
 	YIELD_MORE, /**< value calculated, more available */
 	YIELD_LAST  /**< value calculated, no more available */
@@ -179,7 +179,7 @@ typedef struct _scaffolding {
 } scaffolding;
 
 void complete_scaffold(scaffolding * scaffold);
-yield_status yield(scaffolding * scaffold, float * dest);
+yield_status enum_yield(scaffolding * scaffold, float * dest);
 void initialize_scaffold(scaffolding * dest);
 
 #endif /* GENERATOR_H */
