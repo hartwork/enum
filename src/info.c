@@ -80,6 +80,7 @@ void dump_usage(FILE * file) {
 		"  -p, --precision=COUNT adjust the number of decimal places printed\n"
 		"  -e, --equal-width     equalize width by padding with leading zeroes.\n"
 		"  -l, --line            use a space as separator, not a new line.\n"
+		"  -x, --exclude=RANGE   exlude RANGE (one out of l, left, r, right) from output\n"
 		"  -z, --zero, --null    use null byte as separator, not a new line.\n"
 		"\n");
 	fprintf(file,
