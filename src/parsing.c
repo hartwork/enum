@@ -980,6 +980,13 @@ int parse_parameters(int original_argc, char **original_argv, scaffolding *dest)
 		success = 0;
 	}
 
+	/* ranges cannot be excluded in random mode */
+	if ((CHECK_FLAG(dest->flags, FLAG_EXCLUDE_LEFT) || CHECK_FLAG(dest->flags, FLAG_EXCLUDE_RIGHT))
+			&& CHECK_FLAG(dest->flags, FLAG_RANDOM)) {
+		print_problem(USER_ERROR, "Ranges cannot be exluded in random mode.");
+		success = 0;
+	}
+
 	return success
 		? (quit
 			? 0
