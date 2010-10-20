@@ -35,8 +35,8 @@ DESCRIPTION
 -----------
 
 *enum* enumerates values (numbers) from 'LEFT' to 'RIGHT'
-adding/subtracting 'STEP' each time.  If 'STEP' is not provided it is
-implied.  No more than 'COUNT' values are printed.  Before printing,
+adding/subtracting 'STEP' each time.  If 'STEP' is not provided a value
+is implied.  No more than 'COUNT' values are printed.  Before printing,
 values are passed through a formatter.  Please see 'OPTIONS' for
 details on controlling the formatter or 'EXAMPLES' for use cases.
 
