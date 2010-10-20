@@ -181,35 +181,35 @@ VALID COMBINATIONS
 ~~~~~~~~~~~~~~~~~~
 With four arguments:
 
-- enum 'LEFT' *..* 'COUNT'*x* 'STEP' *..* 'RIGHT'
+- *enum* 'LEFT' *..* 'COUNT'*x* 'STEP' *..* 'RIGHT'
 
 With three arguments:
 
-- enum 'LEFT' 'COUNT'*x* 'RIGHT'
-- enum 'LEFT' *..* 'COUNT'*x* 'STEP' *..*
-- enum *..* 'COUNT'*x* 'STEP' *..* 'RIGHT'
-- enum 'LEFT' *..* 'COUNT'*x* *..* 'RIGHT'
-- enum 'LEFT' *..* 'STEP' *..* 'RIGHT'
-- enum 'LEFT' 'STEP' 'RIGHT' (for GNU seq compatibility)
+- *enum* 'LEFT' 'COUNT'*x* 'RIGHT'
+- *enum* 'LEFT' *..* 'COUNT'*x* 'STEP' *..*
+- *enum* *..* 'COUNT'*x* 'STEP' *..* 'RIGHT'
+- *enum* 'LEFT' *..* 'COUNT'*x* *..* 'RIGHT'
+- *enum* 'LEFT' *..* 'STEP' *..* 'RIGHT'
+- *enum* 'LEFT' 'STEP' 'RIGHT' (for GNU seq compatibility)
 
 With two arguments:
 
-- enum *..* 'COUNT'*x* 'STEP' *..*
-- enum *..* 'COUNT'*x* *..* 'RIGHT'
-- enum *..* 'STEP' *..* 'RIGHT'
-- enum 'LEFT' *..* 'COUNT'*x* *..*
-- enum 'LEFT' *..* 'STEP' *..*
-- enum 'LEFT' *..* 'RIGHT'
-- enum 'LEFT' 'RIGHT' (for GNU seq compatibility)
+- *enum* *..* 'COUNT'*x* 'STEP' *..*
+- *enum* *..* 'COUNT'*x* *..* 'RIGHT'
+- *enum* *..* 'STEP' *..* 'RIGHT'
+- *enum* 'LEFT' *..* 'COUNT'*x* *..*
+- *enum* 'LEFT' *..* 'STEP' *..*
+- *enum* 'LEFT' *..* 'RIGHT'
+- *enum* 'LEFT' 'RIGHT' (for GNU seq compatibility)
 
 With one argument:
 
-- enum *..* 'STEP' *..*
-- enum *..* 'COUNT'*x* *..*
-- enum *..* 'RIGHT'
-- enum 'RIGHT' (for GNU seq compatibility)
-- enum 'LEFT' *..*
-- enum 'COUNT'*x*
+- *enum* *..* 'STEP' *..*
+- *enum* *..* 'COUNT'*x* *..*
+- *enum* *..* 'RIGHT'
+- *enum* 'RIGHT' (for GNU seq compatibility)
+- *enum* 'LEFT' *..*
+- *enum* 'COUNT'*x*
 
 With less than three arguments, defaults apply.
 Details are described in 'DERIVATION OF DEFAULTS' below.
