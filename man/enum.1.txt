@@ -37,10 +37,10 @@ DESCRIPTION
 *enum* enumerates values (numbers) from 'LEFT' to 'RIGHT'
 adding/subtracting 'STEP' each time.  If 'STEP' is not provided a value
 is implied.  No more than 'COUNT' values are printed.  Before printing,
-values are passed through a formatter.  Please see 'OPTIONS' for
-details on controlling the formatter or 'EXAMPLES' for use cases.
+values are passed through a formatter.  Please see *OPTIONS* for
+details on controlling the formatter or *EXAMPLES* for use cases.
 
-Further *enum* usage details are covered in 'USAGE IN DETAIL'.
+Further *enum* usage details are covered in *USAGE IN DETAIL*.
 
 
 EXAMPLES
@@ -173,8 +173,8 @@ Four arguments are involved:
 - 'RIGHT', the value to stop enumeration at (in some cases before)
 
 Not all four arguments are needed, though specifying all four is possible.
-For a list of all valid combinations see 'VALID COMBINATIONS' below.
-Details on derivation of defaults are addressed in 'DERIVATION OF DEFAULTS'.
+For a list of all valid combinations see *VALID COMBINATIONS* below.
+Details on derivation of defaults are addressed in *DERIVATION OF DEFAULTS*.
 
 
 VALID COMBINATIONS
@@ -212,7 +212,7 @@ With one argument:
 - *enum* 'COUNT'*x*
 
 With less than three arguments, defaults apply.
-Details are described in 'DERIVATION OF DEFAULTS' below.
+Details are described in *DERIVATION OF DEFAULTS* below.
 
 
 DERIVATION OF DEFAULTS
@@ -263,11 +263,11 @@ This equation brings them together:
 
 'LEFT' + ('COUNT' - 1) * 'STEP' = 'RIGHT'
 
-If you specify less than three of them (see 'VALID COMBINATIONS'), the
+If you specify less than three of them (see *VALID COMBINATIONS*), the
 unspecified ones are derived or set to their defaults:
 
 - 'LEFT' defaults to 1 (unless 'STEP' and 'RIGHT' are specified, see
-  'DERIVATION OF LEFT' below)
+  *DERIVATION OF LEFT* below)
 - 'COUNT' is infinity, unless it can be derived from the other three values.
 - 'STEP' defaults to 1, unless it can be derived.
 - 'RIGHT' is +/-infinity, unless it can be derived from the other three
