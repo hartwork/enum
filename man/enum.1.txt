@@ -695,6 +695,11 @@ Also, while GNU seq is licensed under GPL v3 or later, *enum* is
 licensed under the New BSD license.
 
 
+THANKS
+------
+Elias Pipping, Andreas Gunschl, Justin B. Rye
+
+
 AUTHORS
 -------
 
