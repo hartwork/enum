@@ -40,7 +40,7 @@ implied.  No more than 'COUNT' values are printed.  Before printing,
 values are passed through a formatter.  Please see 'OPTIONS' for
 details on controlling the formatter or 'EXAMPLES' for use cases.
 
-Further details on usage of *enum* are covered in 'USAGE IN DETAIL'.
+Further *enum* usage details are covered in 'USAGE IN DETAIL'.
 
 
 EXAMPLES
@@ -86,8 +86,8 @@ RANDOM MODE
 ~~~~~~~~~~~
 
 *-r, --random*::
-    Produces random numbers instead of monotone sequences,
-    potentially with duplicates.
+    Produces random numbers (potentially with duplicates)
+    instead of monotonic sequences.
 
 *-i, --seed*='NUMBER'::
     Pass 'NUMBER' as initializer to the random number generator.
@@ -109,8 +109,8 @@ FORMATTING
 
 *-e, --equal-width*::
     Equalize width by padding with leading zeroes.
-    NOTE: In case of mixed negative and non-negative numbers
-    (e.g. with *enum -e -- -10 1*), non-negative values will compensate
+    NOTE: In the case of mixed negative and non-negative numbers
+    (e.g. with *enum -e -- -10 1*), non-negative values will compensate for
     the lack of a leading minus with an extra zero to be of equal width.
 
 *-f, --format*='FORMAT'::
@@ -118,29 +118,29 @@ FORMATTING
     For details on allowed formats please see printf(3). +
     If 'FORMAT' does not contain any placeholders, *enum* will error out
     with code 1.  In contrast, jot would have appended the number's
-    value instead.  To make numbers appear at the end, please adjust
-    'FORMAT' accordingly with *enum*.
+    value instead.  To make numbers appear at the end with *enum*, adjust
+    'FORMAT' appropriately.
 
 *-l, --one-line*::
-    Shortcut for "*-s ' '*" which means having a white space as separator
-    instead of a new line.
+    Shortcut for "*-s ' '*" which means having a space instead of a newline as
+    separator.
 
 *-n, --omit-newline*::
-    Omits the trailing newline from printing.
+    Omits the trailing newline from output.
 
 *-p, --precision*='COUNT'::
     Overrides automatic selection of precision to print 'COUNT'
     decimal places, e.g. "0.100" for 'COUNT' = 3.
     By default, the number of digits to print is computed from the
-    arguments given and the potentially computed step size.
+    arguments given and the (given or computed) step size.
 
 *-s, --separator*='TEXT'::
     Overrides the separator that is printed between values.
     By default, values are separated by a newline.
 
 *-w, --word*='FORMAT'::
-    Alias for --format, copied from jot.
-    For GNU seq's *--equal-width* shortcut *-w* please see *-e*, instead.
+    Alias for --format, for compatibility with jot.
+    For GNU seq's *-w* meaning *--equal-width*, see *-e*.
 
 *-z, --zero, --null*::
     Print null bytes as separator, not a newline.
@@ -159,16 +159,16 @@ OTHER
 USAGE IN DETAIL
 ---------------
 
-INVOLVED ARGUMENTS
-~~~~~~~~~~~~~~~~~~
-Basically, the command line API looks like this:
+ARGUMENTS
+~~~~~~~~~
+The logic of *enum*'s command line parameters is:
 
 *enum* [ 'OPTIONS' ]  'LEFT' ".." 'COUNT'"x" 'STEP' ".." 'RIGHT'
 
 Four arguments are involved:
 
 - 'LEFT', the value to start enumeration with
-- 'COUNT', the number of values to produce (in some cases less)
+- 'COUNT', the (maximum) number of values to produce
 - 'STEP', the gap from one value to another
 - 'RIGHT', the value to stop enumeration at (in some cases before)
 
@@ -211,7 +211,7 @@ With one argument:
 - enum 'LEFT' ".."
 - enum 'COUNT'"x"
 
-With less then three arguments, defaults apply.
+With less than three arguments, defaults apply.
 Details are described in 'DERIVATION OF DEFAULTS' below.
 
 
@@ -237,7 +237,7 @@ AUTO-SELECTION OF PRECISION
 
 Also, if the derived step has more decimal places than the
 specified values for 'LEFT' and 'RIGHT', the output precision
-will be raised to that of step
+will be raised to that of the step value
 
 --------------------------------------
 # enum 1 .. 3x .. 2
@@ -258,7 +258,7 @@ A specified precision always takes precedence:
 
 ARGUMENT DEFAULTS
 ^^^^^^^^^^^^^^^^^
-In general, any three arguments are needed; three lead to the fourth.
+In general, three arguments are needed; any three imply the fourth.
 This equation brings them together:
 
 'LEFT' + ('COUNT' - 1) * 'STEP' = 'RIGHT'
@@ -309,14 +309,14 @@ If, in addition to 'STEP' and 'RIGHT', 'COUNT' is given, it is derived as:
 
 GENERATION OF VALUES
 ~~~~~~~~~~~~~~~~~~~~
-When a custom step is requested, values are produced as following:
+When a custom step is requested, values are produced as follows:
 
     value[0] = LEFT + 0 * STEP
     value[1] = LEFT + 1 * STEP
     ..
     value[i] = LEFT + i * STEP
 
-Else, to avoid imprecision adding up, values are produced as following:
+Otherwise, to avoid imprecision adding up, values are produced as follows:
 
     value[0] = LEFT + (RIGHT - LEFT) / (COUNT - 1) * 0
     value[1] = LEFT + (RIGHT - LEFT) / (COUNT - 1) * 1
@@ -324,7 +324,7 @@ Else, to avoid imprecision adding up, values are produced as following:
     value[i] = LEFT + (RIGHT - LEFT) / (COUNT - 1) * i
 
 Production stops when either 'COUNT' values have been produced or 'RIGHT'
-has been reached, whichever hits first.  When all 4 values are given in
+has been reached, whichever hits first.  When all four values are given in
 perfect match they hit at the same time.
 
 
@@ -338,7 +338,7 @@ Basically, random mode differs in these regards:
 - Argument 'LEFT' (always!) defaults to 1 (one).
 - Argument 'RIGHT' is required: Random does not mix with infinity.
 
-We will now cover these differences in detail.
+This section covers these differences in detail.
 
 
 COUNT DEFAULTS TO 1 (ONE)
@@ -370,9 +370,9 @@ By specifying count you can produce more values at a time:
 LEFT ALWAYS DEFAULTS TO 1 (ONE)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When you need increasing numbers up to a certain maximum (say 10),
-each apart by a certain step (say 4) you can let *enum* calculate
-the needed starting value for you:
+When you need increasing numbers up to a certain maximum (say 10), each
+separated by a certain step (say 4) you can let *enum* calculate the needed
+starting value for you:
 
 --------------------------------------
 # enum .. 4 .. 10
@@ -423,7 +423,7 @@ With *enum* we try to offer a tool with the power of jot and a usable,
 easily memorable interface.  *enum* is licensed under a BSD license and
 written in C89 for maximum portability.
 
-In the following sections we will take a look at differences in detail.
+The following sections take a look at the differences in detail.
 
 
 COMPARISON TO JOT
@@ -434,9 +434,9 @@ Using *enum* instead of jot offers two main advantages:
 - improved usability and
 - uniform behavior across distributions and operating systems.
 
-Still (as of 2010-10-03), jot implementations differ subtly among
-DragonFlyBSD, FreeBSD, MirOS BSD, NetBSD, OpenBSD and OS X.  For
-instance the command 'jot - 0 5' produces
+As of 2010-10-03, jot implementations still differ subtly between
+DragonFlyBSD, FreeBSD, MirOS BSD, NetBSD, OpenBSD, and OS X.  For instance the
+command 'jot - 0 5' produces
 
 - 6 integers from 0 to 5 on FreeBSD and OS X,
 
@@ -447,7 +447,7 @@ instance the command 'jot - 0 5' produces
     0 1 2 [..] 97 98 99
 
 - 100 integers from 0 to 5 (with consecutive duplicates) on
-  DragonFlyBSD, MirOS BSD and OpenBSD.
+  DragonFlyBSD, MirOS BSD, and OpenBSD.
 
     0 0 0 0 0 0 0 0 0 0 1 1 [..] 4 4 5 5 5 5 5 5 5 5 5 5
 
@@ -473,13 +473,13 @@ Please see OPTIONS above for further details.
 ADDITIONAL FEATURES
 ~~~~~~~~~~~~~~~~~~~
 
-The features that *enum* offers over jot include:
+The extra features that *enum* offers over jot include:
 
 
 MORE MEMORABLE COMMAND LINE USAGE
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-In order to produce 3 random numbers between 1 and 10 inclusively, you
-would run
+In order to produce 3 random numbers between 1 and 10 (inclusively),
+you would run
 
 --------------------------------------
 jot -r 3 1 10
@@ -495,8 +495,9 @@ enum -r 1 3x 10
 
 CUSTOM RESOLUTION OF RANDOM
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-With *enum* you can specify the gap between possible random values.
-These two cases illustrate the difference between a gap of 2 and 3:
+With *enum* you can specify that the possible values to be randomly selected
+from have a particular spacing.  These two cases illustrate the difference
+between a gap of 2 and 3:
 
 --------------------------------------
 # enum -r 4 .. 100x 2 .. 10 | sort -u -n
@@ -514,7 +515,7 @@ These two cases illustrate the difference between a gap of 2 and 3:
 
 SUPPORT FOR SEVERAL PLACEHOLDERS IN FORMAT STRINGS
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-jot on DragonFlyBSD, FreeBSD, MirOS BSD, OpenBSD and OS X:
+jot on DragonFlyBSD, FreeBSD, MirOS BSD, OpenBSD, and OS X:
 
 --------------------------------------
 # jot -w %g%g 3
@@ -542,7 +543,7 @@ NULL BYTES AS SEPARATOR
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 When using format strings containing spaces, you may run into trouble in
-contexts like for loops or xargs: Spaces are treated as separators which
+contexts like for loops or xargs: spaces are treated as separators which
 breaks up your strings in pieces:
 
 --------------------------------------
@@ -589,7 +590,7 @@ test_
 test_
 --------------------------------------
 
-In order to achieve jot's output with *enum*, you could manually
+In order to achieve jot's output with *enum*, you should manually
 append a placeholder:
 
 --------------------------------------
@@ -622,8 +623,8 @@ Inconsistently,
 2
 --------------------------------------
 
-jot does not interpret "0" as ASCII character with code 48.
-We have no intention duplicating this mix, at the moment.
+jot does not interpret "0" as the ASCII character with code 48.
+We have no intention of duplicating this mix, at the moment.
 
 
 COMPARISON TO GNU SEQ
@@ -635,7 +636,7 @@ Basically, *enum*'s usage is backwards-compatible to that of GNU seq.
 ADDITIONAL FEATURES
 ~~~~~~~~~~~~~~~~~~~
 
-The features *enum* offers over GNU seq include:
+The extra features *enum* offers over GNU seq include:
 
 
 RANDOM NUMBER MODE
@@ -711,4 +712,4 @@ Gitweb:  http://git.fedorahosted.org/git/?p=enum.git
 
 SEE ALSO
 --------
-jot(1), seq(1), printf(3), float.h(0p)
+jot(1), seq(1), printf(3)
