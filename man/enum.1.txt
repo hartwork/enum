@@ -266,10 +266,12 @@ This equation brings them together:
 If you specify less than three of them (see 'VALID COMBINATIONS'), the
 unspecified ones are derived or set to their defaults:
 
-- 'LEFT' defaults to 1 (unless 'STEP' and 'RIGHT' are specified, see 'DERIVATION OF LEFT' below)
+- 'LEFT' defaults to 1 (unless 'STEP' and 'RIGHT' are specified, see
+  'DERIVATION OF LEFT' below)
 - 'COUNT' is infinity, unless it can be derived from the other three values.
 - 'STEP' defaults to 1, unless it can be derived.
-- 'RIGHT' is +/-infinity, unless it can be derived from the other three values.
+- 'RIGHT' is +/-infinity, unless it can be derived from the other three
+  values.
 
 
 DERIVATION OF LEFT
@@ -322,8 +324,8 @@ Else, to avoid imprecision adding up, values are produced as following:
     value[i] = LEFT + (RIGHT - LEFT) / (COUNT - 1) * i
 
 Production stops when either 'COUNT' values have been produced or 'RIGHT'
-has been reached, whichever hits first.  When all 4 values are given in perfect
-match they hit at the same time.
+has been reached, whichever hits first.  When all 4 values are given in
+perfect match they hit at the same time.
 
 
 RANDOM MODE
@@ -404,22 +406,22 @@ In general, *enum* supports running towards infinity:
 [..]
 --------------------------------------
 
-However, in random mode *enum* would now produce random numbers from 1 to infinity
-(or a big number like 'FLT_MAX' from '<float.h>'), which we have decided against.
+However, in random mode *enum* would now produce random numbers from 1 to
+infinity (or a big number like 'FLT_MAX' from '<float.h>'), which we have
+decided against.
 
 
 HISTORY
 -------
 
-*enum* is a fusion of GNU seq and jot, feature-wise.  At the core both
-tools print sequences of numbers.  GNU seq has a clean interface but
-very limited functionality.  jot on the other hand offers more
-advanced features, like producing random numbers, at the
-cost of a rather unfriendly interface.
+*enum* is a fusion of GNU seq and jot, feature-wise.  At the core both tools
+print sequences of numbers.  GNU seq has a clean interface but very limited
+functionality.  jot on the other hand offers more advanced features, like
+producing random numbers, at the cost of a rather unfriendly interface.
 
-With *enum* we try to offer a tool with the power of jot and a
-usable, easily memorable interface.  *enum* is licensed under a BSD
-license and written in C89 for maximum portability.
+With *enum* we try to offer a tool with the power of jot and a usable,
+easily memorable interface.  *enum* is licensed under a BSD license and
+written in C89 for maximum portability.
 
 In the following sections we will take a look at differences in detail.
 
@@ -449,10 +451,9 @@ instance the command 'jot - 0 5' produces
 
     0 0 0 0 0 0 0 0 0 0 1 1 [..] 4 4 5 5 5 5 5 5 5 5 5 5
 
-Basically, the full feature set of jot plus a few enhancements is
-contained in *enum*.  Names of parameters have been retained for
-increased compatibility, e.g. *-p 2* works with *enum* as it does with
-jot:
+Basically, the full feature set of jot plus a few enhancements is contained
+in *enum*.  Names of parameters have been retained for increased
+compatibility, e.g. *-p 2* works with *enum* as it does with jot:
 
 --------------------------------------
 # jot -p 2 3
