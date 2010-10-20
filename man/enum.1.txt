@@ -220,7 +220,7 @@ DERIVATION OF DEFAULTS
 
 AUTO-SELECTION OF PRECISION
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-*enum* distincts between "2", "2.0", "2.00" and so on:
+*enum* distinguishes between "2", "2.0", "2.00" and so on:
 
 --------------------------------------
 # enum 1 2
@@ -263,8 +263,8 @@ This equation brings them together:
 
 'LEFT' + ('COUNT' - 1) * 'STEP' = 'RIGHT'
 
-If you specify less than three of them (see 'VALID COMBINATIONS'), the unspecifyied
-ones are derived or set to their defaults:
+If you specify less than three of them (see 'VALID COMBINATIONS'), the
+unspecified ones are derived or set to their defaults:
 
 - 'LEFT' defaults to 1 (unless 'STEP' and 'RIGHT' are specified, see 'DERIVATION OF LEFT' below)
 - 'COUNT' is infinity, unless it can be derived from the other three values.
@@ -368,8 +368,8 @@ By specifying count you can produce more values at a time:
 LEFT ALWAYS DEFAULTS TO 1 (ONE)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When you need increasing numbers up to a certain maxmimum (say 10),
-each apart by a certaion step (say 4) you can let *enum* calculate
+When you need increasing numbers up to a certain maximum (say 10),
+each apart by a certain step (say 4) you can let *enum* calculate
 the needed starting value for you:
 
 --------------------------------------
@@ -421,7 +421,7 @@ With *enum* we try to offer a tool with the power of jot and a
 usable, easily memorable interface.  *enum* is licensed under a BSD
 license and written in C89 for maximum portability.
 
-In the following sections we will take a look at differences, in detail.
+In the following sections we will take a look at differences in detail.
 
 
 COMPARISON TO JOT
@@ -540,9 +540,9 @@ jot: unknown or invalid format `%g%g'
 NULL BYTES AS SEPARATOR
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-When using format strings containing spaces you may run into
-trouble in contexts like for loops or xargs: Spaces are treated
-as separators, which breaks up your strings in pieces:
+When using format strings containing spaces, you may run into trouble in
+contexts like for loops or xargs: Spaces are treated as separators which
+breaks up your strings in pieces:
 
 --------------------------------------
 # enum -f 'sheep number %d' 2 | xargs -n 1 echo
