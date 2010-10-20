@@ -151,6 +151,10 @@ FORMATTING
     Alias for --format, for compatibility with jot.
     For GNU seq's *-w* meaning *--equal-width*, see *-e*.
 
+*-x*, *--exclude*='RANGE'::
+    Exclude 'RANGE' from output while 'RANGE' is either 'left' ('l') or
+    'right' ('r').
+
 *-z*, *--zero*, *--null*::
     Print null bytes as separator, not a newline.
 
