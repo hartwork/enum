@@ -41,6 +41,7 @@
 #include "generator.h"
 #include "assertion.h"
 #include "info.h"
+#include "printing.h"
 #include "utils.h"
 
 #include <stdlib.h>
@@ -635,6 +636,37 @@ static void prepare_setting_format(scaffolding * scaffold, format_change expecte
 	}
 }
 
+/** Wraps a call to is_valid_format and reports errors to stderr.
+ *
+ * @param[in] format Format to check
+ *
+ * @return 1 for valid, 0 for invalid
+ *
+ * @since 1.0
+ */
+static int analyze_format(const char * format) {
+	custom_printf_return const res = is_valid_format(format);
+
+	switch (res) {
+	case CUSTOM_PRINTF_SUCCESS:
+		return 1;
+
+	case CUSTOM_PRINTF_INVALID_FORMAT_ENUM:
+	case CUSTOM_PRINTF_INVALID_FORMAT_PRINTF:
+		fprintf(stderr, "ERROR: Invalid format \"%s\".\n", format);
+		return 0;
+
+	case CUSTOM_PRINTF_OUT_OF_MEMORY:
+		report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+		return 1;
+
+	default:
+		assert(0);
+	}
+
+	return 0;
+}
+
 /** @name Command line parsing */
 
 /*@{*/
@@ -721,6 +753,11 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 		case 'f':
 		case 'w':
 			prepare_setting_format(dest, APPLY_FORMAT);
+
+			if (! analyze_format(optarg)) {
+				success = 0;
+				break;
+			}
 
 			if (! set_format_strdup(&(dest->format), optarg)) {
 				report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
