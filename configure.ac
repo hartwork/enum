@@ -3,7 +3,7 @@
 
 AC_PREREQ([2.64])
 AC_INIT([enum], [0.5], [gitenum-members@fedoraproject.org])
-AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+AM_INIT_AUTOMAKE([-Wall -Werror foreign dist-bzip2 no-dist-gzip])
 AC_CONFIG_SRCDIR([src/main.c])
 # AC_CONFIG_HEADERS([config.h])
 
