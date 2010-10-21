@@ -701,7 +701,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 			{"random",       no_argument,       0, 'r'},
 			{"characters",   no_argument,       0, 'c'},
 			{"omit-newline", no_argument,       0, 'n'},
-			{"one-line",     no_argument,       0, 'l'},
+			{"line",         no_argument,       0, 'l'},
 			{"seed",         required_argument, 0, 'i'},
 			{"format",       required_argument, 0, 'f'},
 			{"word",         required_argument, 0, 'w'},

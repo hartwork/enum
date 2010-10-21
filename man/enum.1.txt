@@ -121,7 +121,7 @@ FORMATTING
     value instead.  To make numbers appear at the end with *enum*, adjust
     'FORMAT' appropriately.
 
-*-l*, *--one-line*::
+*-l*, *--line*::
     Shortcut for "*-s ' '*" which means having a space instead of a newline as
     separator.
 

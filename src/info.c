@@ -68,7 +68,7 @@ void dump_usage(FILE * file) {
 		"  -c, --characters      print characters, not numbers\n"
 		"  -p, --precision=COUNT adjust the number of decimal places printed\n"
 		"  -e, --equal-width     equalize width by padding with leading zeroes.\n"
-		"  -l, --one-line        use a space as separator, not a new line.\n"
+		"  -l, --line            use a space as separator, not a new line.\n"
 		"  -z, --zero, --null    use null byte as separator, not a new line.\n"
 		"\n");
 	fprintf(file,
