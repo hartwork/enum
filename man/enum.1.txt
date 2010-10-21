@@ -237,7 +237,7 @@ AUTO-SELECTION OF PRECISION
 
 Also, if the derived step has more decimal places than the
 specified values for 'LEFT' and 'RIGHT', the output precision
-will be raised to that of the step value
+will be raised to that of the step value:
 
 --------------------------------------
 # enum 1 .. 3x .. 2
@@ -246,7 +246,7 @@ will be raised to that of the step value
 2.0
 --------------------------------------
 
-A specified precision always takes precedence:
+A specified precision always takes precedence, though:
 
 --------------------------------------
 # enum -p 2 1 .. 3x .. 2
@@ -357,7 +357,7 @@ In random mode only one value is produced, by default:
 3
 --------------------------------------
 
-By specifying count you can produce more values at a time:
+By specifying 'COUNT' you can produce more values at a time:
 
 --------------------------------------
 # enum -r 1 .. 3x .. 4
@@ -467,7 +467,7 @@ compatibility, e.g. *-p 2* works with *enum* as it does with jot:
 3.00
 --------------------------------------
 
-Please see OPTIONS above for further details.
+Please see *OPTIONS* above for further details.
 
 
 ADDITIONAL FEATURES
@@ -570,7 +570,7 @@ DIFFERENCES
 
 HANDLING OF FORMATS WITHOUT PLACEHOLDERS
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-In contrast to jot, *enum* does not append the current value, if the
+In contrast to jot, *enum* does not append the current value if the
 formatting string does not contain a placeholder.
 Behavior of jot:
 
