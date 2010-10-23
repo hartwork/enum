@@ -4,6 +4,7 @@ man1_MANS = \
 	man/enum.1
 
 EXTRA_DIST = \
+	man/asciidoc.conf \
 	man/enum.1 \
 	man/enum.1.txt
 
@@ -14,9 +15,10 @@ SNAPSHOT_VERSION = `git describe --tags | sed -e 's|^\([0-9]\+\.[0-9]\+\)-|\1.0-
 
 if ENABLE_DOC
 
-$(builddir)/man/enum.1: man/enum.1.txt configure.ac Makefile.am
+$(builddir)/man/enum.1: man/enum.1.txt man/asciidoc.conf configure.ac Makefile.am
 	mkdir -p "$(builddir)"/man
-	a2x --attribute="enumversion=$(PACKAGE_VERSION)" --format=manpage -D "$(builddir)"/man "$<"
+	a2x --conf-file=man/asciidoc.conf --attribute="enumversion=$(PACKAGE_VERSION)" \
+		--format=manpage -D "$(builddir)"/man "$<"
 
 clean-local:
 	rm -f "$(builddir)"/man/enum.1
