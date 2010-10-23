@@ -107,6 +107,10 @@ FORMATTING
     Overrides the output format to `%c` producing characters.
     For example, *enum -c 65 67* produces the letters "A", "B" and "C".
 
+*-d*, *--decremental*::
+    Changes the order of numbers in output, i.e. 'LEFT' and 'RIGHT' are
+    switched right before the first value is calculated.
+
 *-e*, *--equal-width*::
     Equalize width by padding with leading zeroes.
     NOTE: In the case of mixed negative and non-negative numbers
