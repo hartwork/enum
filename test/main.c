@@ -180,7 +180,7 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 
 void unescape_test(const char * escaped, const char * expected, size_t sizeof_expected) {
 	char * const unescaped = enum_strdup(escaped);
-	size_t len = unescape(unescaped);
+	size_t len = unescape(unescaped, GUARD_PERCENT);
 
 	assert(len == sizeof_expected - 1);
 	assert(! strncmp(unescaped, expected, sizeof_expected - 1));
