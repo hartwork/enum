@@ -176,6 +176,7 @@ typedef struct _scaffolding {
 	char * format;          /**< output format string */
 	char * separator;       /**< separation string between output values (default: \n) */
 	unsigned int seed;      /**< seed used to init random number generator */
+	char * terminator;      /**< terminating string for output (default: \n) */
 } scaffolding;
 
 void complete_scaffold(scaffolding * scaffold);

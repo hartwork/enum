@@ -149,7 +149,9 @@ int main(int argc, char **argv) {
 		i++;
 	}
 
-	if (CHECK_FLAG(dest.flags, FLAG_NEWLINE))
+	if (dest.terminator)
+		printf(dest.terminator);
+	else
 		printf("\n");
 
 	free(dest.format);

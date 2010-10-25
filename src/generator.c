@@ -397,4 +397,5 @@ void initialize_scaffold(scaffolding * dest) {
 	dest->auto_precision = 0;
 	dest->format = NULL;
 	dest->separator = NULL;
+	dest->terminator = NULL;
 }

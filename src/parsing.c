@@ -556,6 +556,34 @@ static int set_separator(scaffolding * scaffold, const char * string,
 	return 1;
 }
 
+/** Save given terminator to scaffold.
+ *
+ * Save a given terminator to scaffold, error out if malloc fails, warn if a
+ * terminator was already set.
+ *
+ * @param[in,out] scaffold
+ * @param[in] string
+ *
+ * @return boolean meaing of 1 or 0
+ *
+ * @since 1.0
+ */
+static int set_terminator(scaffolding * scaffold, const char * string) {
+	if (scaffold->terminator) {
+		fprintf(stderr,
+			"WARNING: Discarding previous terminator "
+			"\"%s\" in favor of \"%s\".\n",
+			scaffold->terminator, string);
+		free(scaffold->terminator);
+	}
+
+	scaffold->terminator = enum_strdup(string);
+	if (! scaffold->terminator)
+		return 0;
+
+	return 1;
+}
+
 /** Append a string to an array of strings.
  *
  * The array is expected to have enough memory available.
