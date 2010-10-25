@@ -74,8 +74,6 @@ int main(int argc, char **argv) {
 	char ** newargv;
 
 	initialize_scaffold(&dest);
-	dest.flags |= FLAG_NEWLINE;
-
 
 	argpos = parse_parameters(argc, argv, &dest);
 	switch (argpos) {

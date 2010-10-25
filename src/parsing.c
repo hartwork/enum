@@ -835,8 +835,10 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 			break;
 
 		case 'n':
-			/* remove newline flag */
-			dest->flags &= ~FLAG_NEWLINE;
+			if (! set_terminator(dest, "")) {
+				report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+				success = 0;
+			}
 			break;
 
 		case 'e':
