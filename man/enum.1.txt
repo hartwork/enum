@@ -720,7 +720,7 @@ GNU seq does not support escape sequences, say '\n', in 'FORMAT':
 In contrast, some of the other seq implementations around do.
 These three behaviours can be observed (as of 2010-10-25):
 
-seq of Plan9, 9base, and GNU seq:
+seq of Plan 9, 9base, and GNU seq:
 
 --------------------------------------
 # seq -f '%g\x41' 3
