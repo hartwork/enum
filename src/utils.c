@@ -119,3 +119,131 @@ int enum_is_nan_float(float value) {
 
 	return fi_test.int_data == fi_nan.int_data;
 }
+
+
+static int hex_digit(char c) {
+	return (((c >= '0') && (c <= '9'))
+		|| ((c >= 'a') && (c <= 'f'))
+		|| ((c >= 'A') && (c <= 'F')));
+}
+
+
+static int hex_value(char c) {
+	if ((c >= '0') && (c <= '9')) {
+		return c - '0';
+	} else if ((c >= 'a') && (c <= 'f')) {
+		return c - 'a';
+	} else {
+		return c - 'A';
+	}
+}
+
+
+static int oct_digit(char c) {
+	return ((c >= '0') && (c <= '7'));
+}
+
+
+static int oct_value(char c) {
+	return (c == 'o') ? 0 : (c - '0');
+}
+
+
+size_t unescape(char * text) {
+	char const * read = text;
+	char * write = text;
+
+	char single[255] = { 0, };
+	single[(unsigned char)'a'] = '\a';
+	single[(unsigned char)'b'] = '\b';
+	single[(unsigned char)'f'] = '\f';
+	single[(unsigned char)'n'] = '\n';
+	single[(unsigned char)'r'] = '\r';
+	single[(unsigned char)'t'] = '\t';
+	single[(unsigned char)'v'] = '\v';
+	single[(unsigned char)'?'] = '\?';
+	single[(unsigned char)'\\'] = '\\';
+
+	while (read[0]) {
+		const char replacement = single[(unsigned char)read[1]];
+
+		if (read[0] != '\\') {
+			write[0] = read[0];
+			read++;
+			write++;
+			continue;
+		}
+		
+		assert(read[0] == '\\');
+		
+		if (replacement) {
+			write[0] = replacement;
+			read += 2;
+			write += 1;
+			continue;
+		}
+
+		switch (read[1]) {
+		case '\0':
+			write[0] = '\\';
+			write += 1;
+			read += 1;
+			break;
+
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case 'o':
+			if ((read[2] != '\0') && oct_digit(read[2])) {
+				if ((read[3] != '\0') && oct_digit(read[3])) {
+					write[0] = 64 * oct_value(read[1]) + 8 * oct_value(read[2]) + oct_value(read[3]);
+					write += 1;
+					read += 4;
+				} else {
+					write[0] = 8 * oct_value(read[1]) + oct_value(read[2]);
+					write += 1;
+					read += 3;
+				}
+			} else {
+				write[0] = oct_value(read[1]);
+				write += 1;
+				read += 2;
+			}
+			break;
+
+		case 'x':
+			if ((read[2] != '\0') && hex_digit(read[2])) {
+				if ((read[3] != '\0') && hex_digit(read[3])) {
+					write[0] = 16 * hex_value(read[2]) + hex_value(read[3]);
+					write += 1;
+					read += 4;
+				} else {
+					write[0] = hex_value(read[2]);
+					write += 1;
+					read += 3;
+				}
+			} else {
+				/* "\x" in C string gives GCC compile error. We make "x" from it. */
+				write[0] = 'x';
+				write += 1;
+				read += 2;
+			}
+			break;
+
+		default:
+			/* Drop backslash */
+			write[0] = read[1];
+			read += 2;
+			write += 1;
+		}
+	}
+
+	write[0] = '\0';
+
+	return (write - text);
+}

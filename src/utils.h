@@ -59,5 +59,6 @@
 char * enum_strdup(const char * text);
 char * enum_strndup(const char * text, unsigned int length);
 int enum_is_nan_float(float value);
+size_t unescape(char * text);
 
 #endif /* UTILS_H */
