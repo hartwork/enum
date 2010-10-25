@@ -1,34 +1,3 @@
-2010-05-28  Jan Hauke Rahm <jhr@debian.org>
+2010-10-25  Jan Hauke Rahm <jhr@debian.org>
 
-	* 0.3
-	* Bug fixing about pseudo numbers INF/NAN (bugs #20, #21, #24)
-	* Fixing a few weird outputs
-	* Fixing a few "random" issues (bugs #17, #18)
-	* Proper output for --version and --help
-
-2010-05-27  Sebastian Pipping <sping@gentoo.org>
-
-	* Build system: fix make distcheck (bug #22)
-
-2010-05-26  Jan Hauke Rahm <jhr@debian.org>
-
-	* 0.2: the still-not-ready-but-now-with-great-features release
-	* post-dot digit precision: For e.g. enum 0.1 .. 0.4 automatically
-	  detect a step of 0.1 instead of 1
-	* Formatting: enum now supports several options to change the output
-	  format using getopt_long, e.g. --precision, --format etc. which is
-	  supposed to be very jot like
-	* Random: enum can output the calculated values in a pseudo-random way
-	* man page: give it some real content
-
-2010-05-19  Sebastian Pipping <sping@gentoo.org>
-
-	* Install shipped man page (fixes bug #16)
-
-2010-05-19  Sebastian Pipping <sping@gentoo.org>
-
-	* Integrate assertion.h into build system (fixes bug #15)
-
-2010-05-18  Jan Hauke Rahm <jhr@debian.org>
-
-	* 0.1: first beta release
+	* First stable release: 1.0
