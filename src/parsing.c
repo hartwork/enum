@@ -788,9 +788,19 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				break;
 			}
 
-			if (! set_format_strdup(&(dest->format), optarg)) {
-				report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
-				success = 0;
+			{
+				char * const unescaped = enum_strdup(optarg);
+				if (! unescaped) {
+					report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+				}
+				unescape(unescaped, GUARD_PERCENT);
+
+				if (! set_format_strdup(&(dest->format), unescaped)) {
+					report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+					success = 0;
+				}
+
+				free(unescaped);
 			}
 			break;
 
@@ -872,9 +882,19 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 
 		case 's':
 			/* address of optarg in argv */
-			if (! set_separator(dest, optarg, APPLY_SEPARATOR)) {
-				report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
-				success = 0;
+			{
+				char * const unescaped = enum_strdup(optarg);
+				if (! unescaped) {
+					report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+				}
+				unescape(unescaped, GUARD_PERCENT);
+
+				if (! set_separator(dest, unescaped, APPLY_SEPARATOR)) {
+					report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+					success = 0;
+				}
+
+				free(unescaped);
 			}
 			break;
 

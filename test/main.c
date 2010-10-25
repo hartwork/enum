@@ -42,6 +42,8 @@
 
 #include <stdio.h>
 #include <math.h> /* for fabs */
+#include <string.h> /* for strncmp */
+#include "utils.h"
 
 #define ARRAY(numbers...)  { numbers }
 
@@ -172,6 +174,70 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 	return ret;
 }
 
+
+#define UNESCAPE_TEST(escaped, expected)  unescape_test(escaped, expected, sizeof(expected))
+
+
+void unescape_test(const char * escaped, const char * expected, size_t sizeof_expected) {
+	char * const unescaped = enum_strdup(escaped);
+	size_t len = unescape(unescaped);
+
+	assert(len == sizeof_expected - 1);
+	assert(! strncmp(unescaped, expected, sizeof_expected - 1));
+
+	free(unescaped);
+}
+
+
+void test_unescape() {
+	/* Pass-through */
+	UNESCAPE_TEST("abc", "abc");
+
+	/* Multiple replacements */
+	UNESCAPE_TEST("One\\ntwo\\nthree", "One\ntwo\nthree");
+
+	/* Valid single cases */
+	UNESCAPE_TEST("\\a", "\a");
+	UNESCAPE_TEST("\\b", "\b");
+	UNESCAPE_TEST("\\f", "\f");
+	UNESCAPE_TEST("\\n", "\n");
+	UNESCAPE_TEST("\\r", "\r");
+	UNESCAPE_TEST("\\t", "\t");
+	UNESCAPE_TEST("\\v", "\v");
+	UNESCAPE_TEST("\\?", "\?");
+	UNESCAPE_TEST("\\\\", "\\");
+
+	/* Invalid single cases */
+	UNESCAPE_TEST("\\z", "z");
+
+	/* Zero terminator */
+	UNESCAPE_TEST("\\0\\0\\n", "\0\0\n");
+
+	/* Valid \0oo and \ooo cases */
+	UNESCAPE_TEST("\\017X", "\017X");
+	UNESCAPE_TEST("\\o17X", "\017X");
+	UNESCAPE_TEST("\\700X", "\300X");
+
+	/* Invalid \0oo and \ooo cases */
+	UNESCAPE_TEST("\\018X", "\018X");
+	UNESCAPE_TEST("\\088X", "\088X");
+	UNESCAPE_TEST("\\800X", "800X");
+	UNESCAPE_TEST("\\02", "\02");
+	UNESCAPE_TEST("\\3", "\3");
+
+	/* Valid \xhh cases */
+	UNESCAPE_TEST("\\x41X", "\x41X");
+
+	/* Invalid \xhh cases */
+	UNESCAPE_TEST("\\x4GX", "\x4GX");
+	UNESCAPE_TEST("\\x4gX", "\x4gX");
+	UNESCAPE_TEST("\\xGGX", "xGGX");
+	UNESCAPE_TEST("\\xggX", "xggX");
+	UNESCAPE_TEST("\\x4", "\x04");
+	UNESCAPE_TEST("\\xG", "xG");
+	UNESCAPE_TEST("\\x", "x");
+}
+
 int main() {
 	unsigned int successes = 0;
 	unsigned int failures = 0;
@@ -235,5 +301,8 @@ int main() {
 		(float)failures * 100 / (successes + failures),
 		(successes + failures)
 	);
+	
+	test_unescape();
+	
 	return failures;
 }
