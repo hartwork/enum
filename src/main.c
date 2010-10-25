@@ -148,7 +148,7 @@ int main(int argc, char **argv) {
 	}
 
 	if (dest.terminator)
-		printf(dest.terminator);
+		printf("%s", dest.terminator);
 	else
 		printf("\n");
 
