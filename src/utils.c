@@ -149,7 +149,7 @@ static int oct_value(char c) {
 }
 
 
-size_t unescape(char * text) {
+size_t unescape(char * text, unescape_options options) {
 	char const * read = text;
 	char * write = text;
 
@@ -202,17 +202,21 @@ size_t unescape(char * text) {
 			if ((read[2] != '\0') && oct_digit(read[2])) {
 				if ((read[3] != '\0') && oct_digit(read[3])) {
 					write[0] = 64 * oct_value(read[1]) + 8 * oct_value(read[2]) + oct_value(read[3]);
-					write += 1;
 					read += 4;
 				} else {
 					write[0] = 8 * oct_value(read[1]) + oct_value(read[2]);
-					write += 1;
 					read += 3;
 				}
 			} else {
 				write[0] = oct_value(read[1]);
-				write += 1;
 				read += 2;
+			}
+
+			if ((write[0] == '%') && CHECK_FLAG(options, GUARD_PERCENT)) {
+				write[1] = '%';
+				write += 2;
+			} else {
+				write += 1;
 			}
 			break;
 
@@ -220,18 +224,22 @@ size_t unescape(char * text) {
 			if ((read[2] != '\0') && hex_digit(read[2])) {
 				if ((read[3] != '\0') && hex_digit(read[3])) {
 					write[0] = 16 * hex_value(read[2]) + hex_value(read[3]);
-					write += 1;
 					read += 4;
 				} else {
 					write[0] = hex_value(read[2]);
-					write += 1;
 					read += 3;
 				}
 			} else {
 				/* "\x" in C string gives GCC compile error. We make "x" from it. */
 				write[0] = 'x';
-				write += 1;
 				read += 2;
+			}
+
+			if ((write[0] == '%') && CHECK_FLAG(options, GUARD_PERCENT)) {
+				write[1] = '%';
+				write += 2;
+			} else {
+				write += 1;
 			}
 			break;
 

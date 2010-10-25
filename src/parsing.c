@@ -764,7 +764,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				if (! unescaped) {
 					report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 				}
-				unescape(unescaped);
+				unescape(unescaped, GUARD_PERCENT);
 
 				if (! set_format_strdup(&(dest->format), unescaped)) {
 					report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
@@ -856,7 +856,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				if (! unescaped) {
 					report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 				}
-				unescape(unescaped);
+				unescape(unescaped, GUARD_PERCENT);
 
 				if (! set_separator(dest, unescaped, APPLY_SEPARATOR)) {
 					report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);

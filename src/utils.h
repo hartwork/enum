@@ -40,6 +40,8 @@
 #ifndef UTILS_H
 #define UTILS_H 1
 
+#include <sys/types.h>  /* for size_t */
+
 
 /** Check whether a flag is set.
  *
@@ -69,9 +71,15 @@
 #define ENUM_MAX(a, b)  (((a) >= (b)) ? (a) : (b))
 /*@}*/
 
+
+typedef enum _unescape_options {
+	GUARD_PERCENT = 1 << 0
+} unescape_options;
+
+
 char * enum_strdup(const char * text);
 char * enum_strndup(const char * text, unsigned int length);
 int enum_is_nan_float(float value);
-size_t unescape(char * text);
+size_t unescape(char * text, unescape_options options);
 
 #endif /* UTILS_H */
