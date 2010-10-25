@@ -4,7 +4,7 @@ TESTS = enum_test
 
 enum_test_LDFLAGS = -lm
 
-enum_test_CPPFLAGS = -I../src/
+enum_test_CPPFLAGS = -I$(srcdir)/../src/
 
 enum_test_SOURCES = \
 	main.c \
