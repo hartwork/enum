@@ -569,6 +569,10 @@ static int set_separator(scaffolding * scaffold, const char * string,
  * @since 1.0
  */
 static int set_terminator(scaffolding * scaffold, const char * string) {
+	char * const unescaped = enum_strdup(string);
+	if (! unescaped)
+		return 0;
+
 	if (scaffold->terminator) {
 		fprintf(stderr,
 			"WARNING: Discarding previous terminator "
@@ -577,7 +581,8 @@ static int set_terminator(scaffolding * scaffold, const char * string) {
 		free(scaffold->terminator);
 	}
 
-	scaffold->terminator = enum_strdup(string);
+	unescape(unescaped, GUARD_PERCENT);
+	scaffold->terminator = unescaped;
 	if (! scaffold->terminator)
 		return 0;
 
