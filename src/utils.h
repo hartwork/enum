@@ -72,8 +72,15 @@
 /*@}*/
 
 
+/** Enumeration for unescape options.
+ *
+ * A group of flags to control the algorithm used to unescape
+ * escape seqences.
+ *
+ * @since 1.0
+ */
 typedef enum _unescape_options {
-	GUARD_PERCENT = 1 << 0
+	GUARD_PERCENT = 1 << 0   /**< convert '\x25' to "%%", not "%" */
 } unescape_options;
 
 

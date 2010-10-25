@@ -121,6 +121,14 @@ int enum_is_nan_float(float value) {
 }
 
 
+/** Checks for hexadecimal characters ('0' to '9', 'a' to 'f', 'A' to 'F')
+ *
+ * @param[in] c Character to analyze
+ *
+ * @return 1 for a hexadecimal character, 0 else.
+ *
+ * @since 1.0
+ */
 static int hex_digit(char c) {
 	return (((c >= '0') && (c <= '9'))
 		|| ((c >= 'a') && (c <= 'f'))
@@ -128,6 +136,14 @@ static int hex_digit(char c) {
 }
 
 
+/** Extracts hexadecimal value (e.g. 'F' is 15)
+ *
+ * @param[in] c Character to analyze
+ *
+ * @return A number from 0 to 15
+ *
+ * @since 1.0
+ */
 static int hex_value(char c) {
 	if ((c >= '0') && (c <= '9')) {
 		return c - '0';
@@ -139,16 +155,41 @@ static int hex_value(char c) {
 }
 
 
+/** Checks for octal characters ('0' to '7')
+ *
+ * @param[in] c Character to analyze
+ *
+ * @return 1 for an octal character, 0 else.
+ *
+ * @since 1.0
+ */
 static int oct_digit(char c) {
 	return ((c >= '0') && (c <= '7'));
 }
 
 
+/** Extracts hexadecimal value (e.g. '7' is 7)
+ *
+ * @param[in] c Character to analyze
+ *
+ * @return A number from 0 to 7
+ *
+ * @since 1.0
+ */
 static int oct_value(char c) {
 	return (c == 'o') ? 0 : (c - '0');
 }
 
 
+/** Resolve escape seqences
+ *
+ * @param[in,out] text String to process
+ * @param[in] options Options to apply
+ *
+ * @return Length of the new string (excluding terminator)
+ *
+ * @since 1.0
+ */
 size_t unescape(char * text, unescape_options options) {
 	char const * read = text;
 	char * write = text;
