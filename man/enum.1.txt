@@ -116,8 +116,9 @@ FORMATTING
 *-f*, *--format*='FORMAT'::
     Overrides the default output format with 'FORMAT'.
     For details on allowed formats please see printf(3). +
-    If 'FORMAT' does not contain any placeholders, *enum* will error out
-    with code 1.  In contrast, jot would have appended the number's
+    'FORMAT' is subject to processing of C escape sequences (e.g. "\n" makes a newline).
+    If 'FORMAT' does not contain any placeholders, *enum* will print 'FORMAT' repeatedly.
+    In contrast, jot would have appended the number's
     value instead.  To make numbers appear at the end with *enum*, adjust
     'FORMAT' appropriately.
 
@@ -138,6 +139,7 @@ FORMATTING
 *-s*, *--separator*='TEXT'::
     Overrides the separator that is printed between values.
     By default, values are separated by a newline.
+    'TEXT' is subject to processing of C escape sequences (e.g. "\n" makes a newline).
 
 *-t*, *--terminator*='TEXT'::
     Overrides the terminator that is printed in the very end. Default is a
@@ -544,6 +546,32 @@ jot: unknown or invalid format `%g%g'
 --------------------------------------
 
 
+SUPPORT FOR ESCAPE SEQUENCES
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+None of the jot implementations we tested
+(DragonFlyBSD, FreeBSD, MirOS BSD, NetBSD, OpenBSD, and OS X)
+supports escape sequences, say '\n', in 'FORMAT':
+
+--------------------------------------
+# jot -w '%g\x41' 1
+1\x41
+--------------------------------------
+
+*enum* is able to unescape "\x41" properly:
+
+--------------------------------------
+# enum -w '%g\x41' 1
+1A
+--------------------------------------
+
+On a side note, "\x25" produces a literal "%"; it does not make a placeholder:
+
+--------------------------------------
+# enum -w '%g \x25g' 1
+1 %g
+--------------------------------------
+
+
 NULL BYTES AS SEPARATOR
 ^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -681,6 +709,62 @@ seq: format `%g%g' has too many % directives
 11
 22
 33
+--------------------------------------
+
+
+SUPPORT FOR ESCAPE SEQUENCES
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+GNU seq does not support escape sequences, say '\n', in 'FORMAT':
+
+--------------------------------------
+# seq -f '%g\x41' 1
+1\x41
+--------------------------------------
+
+In contrast, some of the other seq implementations around do.
+These three behaviours can be observed (as of 2010-10-25):
+
+seq of Plan9, 9base, and GNU seq:
+
+--------------------------------------
+# seq -f '%g\x41' 3
+1\x41
+2\x41
+3\x41
+--------------------------------------
+
+seq on FreeBSD and NetBSD:
+
+--------------------------------------
+# seq -f '%g\x41' 1
+1A
+2A
+3A
+--------------------------------------
+
+seq on DragonFlyBSD:
+
+--------------------------------------
+# seq -f '%g\x41' 1
+1A3
+2A3
+3A3
+--------------------------------------
+
+*enum* unescape "\x41" to "A" as well:
+
+--------------------------------------
+# enum -f '%g\x41' 3
+1A
+2A
+3A
+--------------------------------------
+
+On a side note, "\x25" produces a literal "%"; it does not make a placeholder:
+
+--------------------------------------
+# enum -f '%g \x25g' 1
+1 %g
 --------------------------------------
 
 
