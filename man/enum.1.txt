@@ -552,7 +552,7 @@ SUPPORT FOR ESCAPE SEQUENCES
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 None of the jot implementations we tested
 (DragonFlyBSD, FreeBSD, MirOS BSD, NetBSD, OpenBSD, and OS X)
-supports escape sequences, say '\n', in 'FORMAT':
+supports escape sequences, say "\n", in 'FORMAT':
 
 --------------------------------------
 # jot -w '%g\x41' 1
@@ -716,7 +716,7 @@ seq: format `%g%g' has too many % directives
 
 SUPPORT FOR ESCAPE SEQUENCES
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-GNU seq does not support escape sequences, say '\n', in 'FORMAT':
+GNU seq does not support escape sequences, say "\n", in 'FORMAT':
 
 --------------------------------------
 # seq -f '%g\x41' 1
