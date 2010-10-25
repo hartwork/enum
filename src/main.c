@@ -147,10 +147,12 @@ int main(int argc, char **argv) {
 		i++;
 	}
 
-	if (dest.terminator)
+	if (dest.terminator) {
 		printf("%s", dest.terminator);
-	else
+		free(dest.terminator);
+	} else {
 		printf("\n");
+	}
 
 	free(dest.format);
 	free(dest.separator);
