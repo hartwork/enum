@@ -40,6 +40,8 @@
 #ifndef GENERATOR_H
 #define GENERATOR_H 1
 
+#include "utils.h" /* for CHECK_FLAG */
+
 /** @name Constants
  * Constants used by generator
  *
@@ -49,17 +51,6 @@
 #define MAX_POST_DOT_DIGITS  5
 #define FLOAT_EQUAL_DELTA  0.0001f
 /*@}*/
-
-/** Check whether a flag is set.
- *
- * @param[in] bitfield
- * @param[in] flag
- *
- * @return 1 or 0
- *
- * @since 0.3
- */
-#define CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
 
 /** @name Macros to set scaffold values
  *

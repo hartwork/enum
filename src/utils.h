@@ -40,6 +40,19 @@
 #ifndef UTILS_H
 #define UTILS_H 1
 
+
+/** Check whether a flag is set.
+ *
+ * @param[in] bitfield
+ * @param[in] flag
+ *
+ * @return 1 or 0
+ *
+ * @since 0.3
+ */
+#define CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
+
+
 /** @name Min/Max macros
  * Macros to find the smaller/larger number.
  *
