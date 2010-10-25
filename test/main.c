@@ -236,6 +236,10 @@ void test_unescape() {
 	UNESCAPE_TEST("\\x4", "\x04");
 	UNESCAPE_TEST("\\xG", "xG");
 	UNESCAPE_TEST("\\x", "x");
+
+	/* Single backslash at the end */
+	UNESCAPE_TEST("\\", "\\");
+	UNESCAPE_TEST("\\\\\\", "\\\\");
 }
 
 int main() {
