@@ -116,15 +116,15 @@ FORMATTING
 *-f*, *--format*='FORMAT'::
     Overrides the default output format with 'FORMAT'.
     For details on allowed formats please see printf(3). +
-    'FORMAT' is subject to processing of C escape sequences (e.g. "\n" makes a newline).
-    If 'FORMAT' does not contain any placeholders, *enum* will print 'FORMAT' repeatedly.
-    In contrast, jot would have appended the number's
-    value instead.  To make numbers appear at the end with *enum*, adjust
-    'FORMAT' appropriately.
+    'FORMAT' is subject to processing of C escape sequences (e.g. "\n" makes
+    a newline). If 'FORMAT' does not contain any placeholders, *enum* will
+    print 'FORMAT' repeatedly. In contrast, jot would have appended the
+    number's value instead.  To make numbers appear at the end with *enum*,
+    adjust 'FORMAT' appropriately.
 
 *-l*, *--line*::
-    Shortcut for "*-s ' '*" which means having a space instead of a newline as
-    separator.
+    Shortcut for "*-s ' '*" which means having a space instead of a newline
+    as separator.
 
 *-n*, *--omit-newline*::
     Omits the trailing newline from output.
@@ -138,7 +138,8 @@ FORMATTING
 *-s*, *--separator*='TEXT'::
     Overrides the separator that is printed between values.
     By default, values are separated by a newline.
-    'TEXT' is subject to processing of C escape sequences (e.g. "\n" makes a newline).
+    'TEXT' is subject to processing of C escape sequences (e.g. "\n" makes a
+    newline).
 
 *-w*, *--word*='FORMAT'::
     Alias for --format, for compatibility with jot.
