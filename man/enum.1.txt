@@ -117,8 +117,8 @@ FORMATTING
     Overrides the default output format with 'FORMAT'.
     For details on allowed formats please see printf(3). +
     'FORMAT' is subject to processing of C escape sequences (e.g. "\n" makes a newline).
-    If 'FORMAT' does not contain any placeholders, *enum* will error out
-    with code 1.  In contrast, jot would have appended the number's
+    If 'FORMAT' does not contain any placeholders, *enum* will print 'FORMAT' repeatedly.
+    In contrast, jot would have appended the number's
     value instead.  To make numbers appear at the end with *enum*, adjust
     'FORMAT' appropriately.
 
