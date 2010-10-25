@@ -736,13 +736,14 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 			{"dumb",         required_argument, 0, 'b'},
 			{"separator",    required_argument, 0, 's'},
 			{"precision",    required_argument, 0, 'p'},
+			{"terminator",   required_argument, 0, 't'},
 			{"equal-width",  no_argument,       0, 'e'},
 			{"null",         no_argument,       0, 'z'},
 			{"zero",         no_argument,       0, 'z'},
 			{0, 0, 0, 0}
 		};
 
-		c = getopt_long(original_argc, original_argv, "+b:cef:hi:lnp:rs:Vw:z", long_options, &option_index);
+		c = getopt_long(original_argc, original_argv, "+b:cef:hi:lnp:rs:t:Vw:z", long_options, &option_index);
 
 		if (c == -1) {
 			break;
@@ -870,6 +871,13 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 		case 's':
 			/* address of optarg in argv */
 			if (! set_separator(dest, optarg, APPLY_SEPARATOR)) {
+				report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+				success = 0;
+			}
+			break;
+
+		case 't':
+			if (! set_terminator(dest, optarg)) {
 				report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 				success = 0;
 			}
