@@ -143,7 +143,8 @@ FORMATTING
 
 *-t*, *--terminator*='TEXT'::
     Overrides the terminator that is printed in the very end. Default is a
-    newline.
+    newline. 'TEXT' is subject to processing of C escape sequences (e.g. "\n"
+    makes a newline).
 
 *-w*, *--word*='FORMAT'::
     Alias for --format, for compatibility with jot.
