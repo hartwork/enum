@@ -126,7 +126,8 @@ FORMATTING
     separator.
 
 *-n*, *--omit-newline*::
-    Omits the trailing newline from output.
+    Omits the terminating string (defaults to newline) from output, i.e. it's
+    a shortcut to "*-t ''*".
 
 *-p*, *--precision*='COUNT'::
     Overrides automatic selection of precision to print 'COUNT'
@@ -137,6 +138,10 @@ FORMATTING
 *-s*, *--separator*='TEXT'::
     Overrides the separator that is printed between values.
     By default, values are separated by a newline.
+
+*-t*, *--terminator*='TEXT'::
+    Overrides the terminator that is printed in the very end. Default is a
+    newline.
 
 *-w*, *--word*='FORMAT'::
     Alias for --format, for compatibility with jot.

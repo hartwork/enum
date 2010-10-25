@@ -62,7 +62,8 @@ void dump_usage(FILE * file) {
 		"\n"
 		"  -f, --format=FORMAT   adjust formatting of values\n"
 		"  -s, --separator=TEXT  adjust separator (printed between values)\n"
-		"  -n, --omit-newline    omit trailing newline\n"
+		"  -t, --terminator=TEXT adjust terminator (printed after last value)\n"
+		"  -n, --omit-newline    omit trailing terminator (default: newline)\n"
 		"\n");
 	fprintf(file,
 		"  -c, --characters      print characters, not numbers\n"
