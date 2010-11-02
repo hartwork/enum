@@ -7,22 +7,22 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign dist-bzip2 no-dist-gzip])
 AC_CONFIG_SRCDIR([src/main.c])
 # AC_CONFIG_HEADERS([config.h])
 
-AC_ARG_ENABLE([pedantic],
-  AS_HELP_STRING([--enable-pedantic], [be pedantic about warnings]), [
-    CFLAGS="${CFLAGS} -Wall -Wextra -Wwrite-strings -Wno-variadic-macros -std=c89 -pedantic"
-], [])
-
 
 # Checks for programs.
 AC_PROG_CC
 AC_PROG_SED  # for check against asciidoc
 
 
-AC_ARG_ENABLE(doc-rebuild, [
+AC_ARG_ENABLE([pedantic], [
 ===========================================================================
 
 Extra options:
-AS_HELP_STRING([--disable-doc-rebuild], [do not re-build shipped documentation])
+AS_HELP_STRING([--enable-pedantic], [be pedantic about warnings])], [
+    CFLAGS="${CFLAGS} -Wall -Wextra -Wwrite-strings -Wno-variadic-macros -std=c89 -pedantic"
+], [])
+
+AC_ARG_ENABLE([doc-rebuild],
+[AS_HELP_STRING([--disable-doc-rebuild], [do not re-build shipped documentation])
 
 ===========================================================================
 ], [
