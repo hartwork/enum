@@ -116,7 +116,7 @@ static void ensure_proper_step_sign(scaffolding * scaffold) {
  * @since 0.3
  */
 void complete_scaffold(scaffolding * scaffold) {
-	assert(KNOWN(scaffold) >= 0);
+	assert(KNOWN(scaffold) >= 1);
 
 	if (KNOWN(scaffold) == 1) {
 		if (! HAS_LEFT(scaffold)) {
