@@ -987,6 +987,8 @@ int preparse_args(unsigned int reduced_argc, char ** reduced_argv,
 	argv_mem = 6 * sizeof(char *);
 	*new_argc = 0;
 	*new_argv = (char **)malloc(argv_mem);
+	if (*new_argv == NULL)
+		return 0;
 
 	for (i = 0; i < reduced_argc; i++) {
 		char * p = reduced_argv[i];
