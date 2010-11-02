@@ -761,8 +761,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 
 				prepare_setting_format(dest, APPLY_FORMAT);
 
-				escape_strdup(optarg, '%', &newformat);
-				if (newformat == NULL) {
+				if (! escape_strdup(optarg, '%', &newformat)) {
 					report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 					success = 0;
 				} else {
