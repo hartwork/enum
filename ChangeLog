@@ -1,3 +1,8 @@
+2010-11-02  Sebastian Pipping  <sping@gentoo.org>
+
+	1.0.2
+	* Increase code robustness (thanks to Kamil Dudka)
+
 2010-10-26  Sebastian Pipping  <sping@gentoo.org>
 
 	1.0.1
