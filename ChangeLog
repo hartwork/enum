@@ -1,12 +1,12 @@
-2010-10-26  Sebastian Pipping <sping@gentoo.org>
+2010-10-26  Sebastian Pipping  <sping@gentoo.org>
 
 	1.0.1
 	* VPATH build compilation fixes
 
-2010-10-25  Jan Hauke Rahm <jhr@debian.org>
+2010-10-25  Jan Hauke Rahm  <jhr@debian.org>
 
 	* Fix compilation error in test suite during distcheck
 
-2010-10-25  Jan Hauke Rahm <jhr@debian.org>
+2010-10-25  Jan Hauke Rahm  <jhr@debian.org>
 
 	* First stable release: 1.0
