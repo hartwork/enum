@@ -18,8 +18,8 @@ AC_ARG_ENABLE([pedantic], [
 
 Extra options:
 AS_HELP_STRING([--enable-pedantic], [be pedantic about warnings])], [
+    CFLAGS="-O2 ${CFLAGS}"  # as we missed warnings in 1.0.1 with optimization disabled
     CFLAGS="${CFLAGS} -Wall -Wextra -Wwrite-strings -Wno-variadic-macros -std=c89 -pedantic"
-    CFLAGS="${CFLAGS} -O2"  # as we missed warnings in 1.0.1 with optimization disabled
 ], [])
 
 AC_ARG_ENABLE([doc-rebuild],
