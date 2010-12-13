@@ -2,7 +2,7 @@ check_PROGRAMS = enum_test
 
 TESTS = enum_test
 
-enum_test_LDFLAGS = -lm
+enum_test_LDADD = -lm
 
 enum_test_CPPFLAGS = -I$(srcdir)/../src/
 

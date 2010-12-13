@@ -1,6 +1,6 @@
 bin_PROGRAMS = enum
 
-enum_LDFLAGS = -lm
+enum_LDADD = -lm
 
 enum_SOURCES = \
 	assertion.h \
