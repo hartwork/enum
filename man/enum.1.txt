@@ -788,7 +788,8 @@ licensed under the New BSD license.
 
 THANKS
 ------
-Elias Pipping, Andreas Gunschl, Justin B. Rye, David Prevot, Kamil Dudka
+Elias Pipping, Andreas Gunschl, Justin B. Rye, David Prevot, Kamil Dudka,
+Michael Bienia
 
 
 AUTHORS

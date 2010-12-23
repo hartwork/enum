@@ -1,3 +1,8 @@
+2010-12-23  Sebastian Pipping  <sping@gentoo.org>
+
+	1.0.3
+	* Fix linking with --as-needed (thanks to Michael Bienia)
+
 2010-11-02  Sebastian Pipping  <sping@gentoo.org>
 
 	1.0.2
