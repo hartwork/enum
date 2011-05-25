@@ -4,11 +4,15 @@ ACLOCAL_AMFLAGS = -I m4
 
 man1_MANS = \
 	man/enum.1
+man3_MANS = \
+	man/enum.3
 
 EXTRA_DIST = \
 	man/asciidoc.conf \
 	man/enum.1 \
-	man/enum.1.txt
+	man/enum.1.txt \
+	man/enum.3 \
+	man/enum.3.txt
 
 
 PACKAGE_VERSION = `fgrep AC_INIT "$(abs_top_srcdir)"/configure.ac | sed 's|^.\+, \[\(.\+\)\],.\+$$|\1|'`
@@ -22,12 +26,19 @@ $(builddir)/man/enum.1: man/enum.1.txt man/asciidoc.conf configure.ac Makefile.a
 	a2x --conf-file=man/asciidoc.conf --attribute="enumversion=$(PACKAGE_VERSION)" \
 		--format=manpage -D "$(builddir)"/man "$<"
 
+$(builddir)/man/enum.3: man/enum.3.txt man/asciidoc.conf configure.ac Makefile.am
+	mkdir -p "$(builddir)"/man
+	a2x --conf-file=man/asciidoc.conf --attribute="enumversion=$(PACKAGE_VERSION)" \
+		--format=manpage -D "$(builddir)"/man "$<"
+
 clean-local:
 	rm -f "$(builddir)"/man/enum.1
+	rm -f "$(builddir)"/man/enum.3
 
 else
 
 $(builddir)/man/enum.1:
+$(builddir)/man/enum.3:
 
 endif
 
@@ -40,4 +51,4 @@ snapshot:
 	$(MAKE) distcheck
 	git checkout HEAD configure.ac
 
-dist-hook: man/enum.1
+dist-hook: man/enum.1 man/enum.3

@@ -1,0 +1,96 @@
+ENUM(3)
+=======
+:man source:   enum {enumversion}
+:man manual:   enum {enumversion}
+
+
+NAME
+----
+
+enum - number generator as used by enum
+
+
+DESCRIPTION
+-----------
+
+*libenum* provides the generator used to enumerate values (numbers) from 'left'
+to 'right' adding/subtracting 'step' each time.  If 'step' is not provided a
+value is implied.  No more than 'count' values are returned.
+
+HEADER FILES
+------------
+
+There is 'enum.h' which you can include to get all functionality you need. It's
+actually a wrapper for 'enum/generator.h' (the main file) which in turn include
+'enum/utils.h'. You should not use anything you find there that isn't
+documented here. The library is still subject to change.
+
+DATA STRUCTURES
+---------------
+
+scaffolding
+~~~~~~~~~~~
+
+That's the main structure. It contains 'flags' (see below), the 'left' and
+'right' borders, the 'step' between calculated values, and the 'count' of
+numbers to return all in all.
+
+Other values stored there are unused, used internally or subject to future
+change. Do not work with them.
+
+yield_status
+~~~~~~~~~~~~
+
+Enumeration of possible return values of the important enum_yield function. See
+below for expected return values.
+
+scaffolding_flags
+~~~~~~~~~~~~~~~~~
+
+Enumeration of flags used by the scaffolding structure. Don't mess with them.
+
+API FUNCTIONS
+-------------
+
+void 'enum_initialize_scaffold'(scaffolding *)::
+    Use this function to initialize your 'scaffolding'. It sets a few internals
+    needed by the library.
+
+void 'enum_complete_scaffold'(scaffolding *)::
+    After you've filled your 'scaffolding' with the values you know (by user
+    input or however), this function completes it in order to be able to
+    calculate the numbers. Everything that's not calcuable will be filled with
+    default values (usually 1).
+
+yield_status 'enum_yield'(scaffolding *, float *)::
+    This function is your friend when it comes to the actual values. Provided
+    with your scaffolding (after it's completed), 'yield_status' will fill the
+    given float pointer with the next value if there is any. In other words,
+    call this function as often as values are calculated.
+    The return values, as provided by above-said enumeration, are 'YIELD_MORE'
+    if another value is expected or 'YIELD_LAST' if not.
+
+THANKS
+------
+Elias Pipping, Andreas Gunschl, Justin B. Rye, David Prevot, Kamil Dudka,
+Michael Bienia
+
+
+AUTHORS
+-------
+
+Jan Hauke Rahm <jhr@debian.org>
+
+Sebastian Pipping <sping@gentoo.org>
+
+
+RESOURCES
+---------
+Main web site:  https://fedorahosted.org/enum/
+
+Gitweb:  http://git.fedorahosted.org/git/?p=enum.git
+
+
+SEE ALSO
+--------
+jot(1), seq(1), printf(3)
