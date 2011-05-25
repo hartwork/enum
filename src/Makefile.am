@@ -18,6 +18,7 @@ libenum_la_LDFLAGS = -version-info @soversion@ \
 ######## binary
 bin_PROGRAMS = enum
 
+enum_LDFLAGS = -z defs
 enum_LDADD = -lm
 
 enum_SOURCES = \
