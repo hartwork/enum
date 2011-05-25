@@ -73,7 +73,7 @@ int main(int argc, char **argv) {
 	unsigned int newargc;
 	char ** newargv;
 
-	initialize_scaffold(&dest);
+	enum_initialize_scaffold(&dest);
 
 	argpos = parse_parameters(argc, argv, &dest);
 	switch (argpos) {
@@ -99,7 +99,7 @@ int main(int argc, char **argv) {
 	}
 	free_malloced_argv(newargc, &newargv);
 
-	complete_scaffold(&dest);
+	enum_complete_scaffold(&dest);
 
 	if (ENUM_CHECK_FLAG(dest.flags, FLAG_EQUAL_WIDTH) && ! HAS_RIGHT((&dest))) {
 		fprintf(stderr, "Combining -e|--equal-width and infinity not supported.\n");

@@ -115,7 +115,7 @@ static void ensure_proper_step_sign(scaffolding * scaffold) {
  *
  * @since 0.3
  */
-void complete_scaffold(scaffolding * scaffold) {
+void enum_complete_scaffold(scaffolding * scaffold) {
 	assert(KNOWN(scaffold) >= 1);
 
 	if (KNOWN(scaffold) == 1) {
@@ -391,7 +391,7 @@ yield_status enum_yield(scaffolding * scaffold, float * dest) {
  *
  * @since 0.3
  */
-void initialize_scaffold(scaffolding * dest) {
+void enum_initialize_scaffold(scaffolding * dest) {
 	dest->flags = 0;
 	dest->position = 0;
 	dest->auto_precision = 0;

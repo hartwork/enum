@@ -169,8 +169,8 @@ typedef struct _scaffolding {
 	char * terminator;      /**< terminating string for output (default: \n) */
 } scaffolding;
 
-void complete_scaffold(scaffolding * scaffold);
+void enum_complete_scaffold(scaffolding * scaffold);
 yield_status enum_yield(scaffolding * scaffold, float * dest);
-void initialize_scaffold(scaffolding * dest);
+void enum_initialize_scaffold(scaffolding * dest);
 
 #endif /* ENUM_GENERATOR_H */

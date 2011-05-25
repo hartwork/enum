@@ -102,7 +102,7 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 
 	pseudo_call(left, count, step, right);
 
-	initialize_scaffold(&scaffold);
+	enum_initialize_scaffold(&scaffold);
 
 	if (left != XX) {
 		SET_LEFT(scaffold, left);
@@ -121,7 +121,7 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 		SET_RIGHT(scaffold, right);
 	}
 
-	complete_scaffold(&scaffold);
+	enum_complete_scaffold(&scaffold);
 
 	puts(TEST_CASE_INDENT "    Received  Expected");
 	puts(TEST_CASE_INDENT "----------------------");
