@@ -101,13 +101,13 @@ int main(int argc, char **argv) {
 
 	complete_scaffold(&dest);
 
-	if (CHECK_FLAG(dest.flags, FLAG_EQUAL_WIDTH) && ! HAS_RIGHT((&dest))) {
+	if (ENUM_CHECK_FLAG(dest.flags, FLAG_EQUAL_WIDTH) && ! HAS_RIGHT((&dest))) {
 		fprintf(stderr, "Combining -e|--equal-width and infinity not supported.\n");
 		return 1;
 	}
 
 	if (!dest.format) {
-		unsigned int precision = CHECK_FLAG(dest.flags, FLAG_USER_PRECISION)
+		unsigned int precision = ENUM_CHECK_FLAG(dest.flags, FLAG_USER_PRECISION)
 			? dest.user_precision
 			: dest.auto_precision;
 		make_default_format_string(&dest, precision);
@@ -121,8 +121,8 @@ int main(int argc, char **argv) {
 		}
 	}
 
-	if (CHECK_FLAG(dest.flags, FLAG_RANDOM)) {
-		unsigned int const seed = CHECK_FLAG(dest.flags, FLAG_USER_SEED)
+	if (ENUM_CHECK_FLAG(dest.flags, FLAG_RANDOM)) {
+		unsigned int const seed = ENUM_CHECK_FLAG(dest.flags, FLAG_USER_SEED)
 			? dest.seed
 			: (unsigned int)(time(NULL) + getpid());
 		srand(seed);
@@ -132,7 +132,7 @@ int main(int argc, char **argv) {
 		ret = enum_yield(&dest, &out);
 
 		if (i != 0) {
-			if (CHECK_FLAG(dest.flags, FLAG_NULL_BYTES)) {
+			if (ENUM_CHECK_FLAG(dest.flags, FLAG_NULL_BYTES)) {
 				fputc('\0', stdout);
 			} else {
 				printf("%s", dest.separator);

@@ -253,7 +253,7 @@ size_t unescape(char * text, unescape_options options) {
 				read += 2;
 			}
 
-			if ((write[0] == '%') && CHECK_FLAG(options, GUARD_PERCENT)) {
+			if ((write[0] == '%') && ENUM_CHECK_FLAG(options, GUARD_PERCENT)) {
 				write[1] = '%';
 				write += 2;
 			} else {
@@ -276,7 +276,7 @@ size_t unescape(char * text, unescape_options options) {
 				read += 2;
 			}
 
-			if ((write[0] == '%') && CHECK_FLAG(options, GUARD_PERCENT)) {
+			if ((write[0] == '%') && ENUM_CHECK_FLAG(options, GUARD_PERCENT)) {
 				write[1] = '%';
 				write += 2;
 			} else {

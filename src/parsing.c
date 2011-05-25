@@ -447,7 +447,7 @@ int make_default_format_string(scaffolding * dest, unsigned int precision) {
 	char * newformat = NULL;
 	const size_t post_dot_bytes_needed = ((precision == 0) ? 0 : (size_t)log10(precision)) + 1;
 
-	if (HAS_RIGHT(dest) && CHECK_FLAG(dest->flags, FLAG_EQUAL_WIDTH)) {
+	if (HAS_RIGHT(dest) && ENUM_CHECK_FLAG(dest->flags, FLAG_EQUAL_WIDTH)) {
 		const char * const equal_width_base = "%%0%u.%uf";
 		const int left_len = (dest->left < 0) + (size_t)log10(fabs(dest->left)) + 1;
 		const int right_len = (dest->right < 0) + (size_t)log10(fabs(dest->right)) + 1;
@@ -505,7 +505,7 @@ typedef enum _separator_change {
  */
 static int set_separator(scaffolding * scaffold, const char * string,
 		separator_change action_to_take) {
-	if (CHECK_FLAG(scaffold->flags, FLAG_NULL_BYTES)) {
+	if (ENUM_CHECK_FLAG(scaffold->flags, FLAG_NULL_BYTES)) {
 		if (action_to_take == APPLY_SEPARATOR) {
 			fprintf(stderr,
 				"WARNING: Discarding null byte separator "
@@ -625,20 +625,20 @@ typedef enum _format_change {
  * @since 0.5
  */
 static void prepare_setting_format(scaffolding * scaffold, format_change expected_format_change) {
-	assert(! ((CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION)
-			|| CHECK_FLAG(scaffold->flags, FLAG_EQUAL_WIDTH))
+	assert(! ((ENUM_CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION)
+			|| ENUM_CHECK_FLAG(scaffold->flags, FLAG_EQUAL_WIDTH))
 		&& (scaffold->format != NULL)));
 
 	/* Detect causes for warnings and make warning message as-needed */
-	if ((CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION)
+	if ((ENUM_CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION)
 			&& (expected_format_change == SAVE_PRECISION))
-		|| ((CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION)
-				|| CHECK_FLAG(scaffold->flags, FLAG_EQUAL_WIDTH))
+		|| ((ENUM_CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION)
+				|| ENUM_CHECK_FLAG(scaffold->flags, FLAG_EQUAL_WIDTH))
 			&& (expected_format_change == APPLY_FORMAT))) {
 		char const * format;
 
-		if (CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION)) {
-			if (CHECK_FLAG(scaffold->flags, FLAG_EQUAL_WIDTH)) {
+		if (ENUM_CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION)) {
+			if (ENUM_CHECK_FLAG(scaffold->flags, FLAG_EQUAL_WIDTH)) {
 				format = "WARNING: Discarding format previously "
 				    "set by -e|--equal-width and -p|--precision %d.\n";
 			} else {
@@ -646,7 +646,7 @@ static void prepare_setting_format(scaffolding * scaffold, format_change expecte
 				    "set by -p|--precision %d.\n";
 			}
 		} else {
-			assert(CHECK_FLAG(scaffold->flags, FLAG_EQUAL_WIDTH));
+			assert(ENUM_CHECK_FLAG(scaffold->flags, FLAG_EQUAL_WIDTH));
 			format = "WARNING: Discarding format previously "
 			    "set by -e|--equal-width.\n";
 		}
@@ -823,7 +823,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				unsigned int seed_candidate;
 				char * end;
 
-				if (CHECK_FLAG(dest->flags, FLAG_USER_SEED)) {
+				if (ENUM_CHECK_FLAG(dest->flags, FLAG_USER_SEED)) {
 					fprintf(stderr,
 						"WARNING: Discarding previously specified seed of %d.\n",
 						dest->seed);
@@ -942,8 +942,8 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 	}
 
 	/* Seed given without random flag? */
-	if (CHECK_FLAG(dest->flags, FLAG_USER_SEED)
-			&& ! CHECK_FLAG(dest->flags, FLAG_RANDOM)) {
+	if (ENUM_CHECK_FLAG(dest->flags, FLAG_USER_SEED)
+			&& ! ENUM_CHECK_FLAG(dest->flags, FLAG_RANDOM)) {
 		fprintf(stderr, "ERROR: Parameter -i|--seed %u requires -r|--random.\n", dest->seed);
 		success = 0;
 		usage_needed = 1;
@@ -1179,7 +1179,7 @@ int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest
 		if (table[k].length != reduced_argc)
 			continue;
 
-		if (CHECK_FLAG(dest->flags, FLAG_RANDOM) && (! table[k].random)) {
+		if (ENUM_CHECK_FLAG(dest->flags, FLAG_RANDOM) && (! table[k].random)) {
 			report_parse_error(PARSE_ERROR_INVALID_RANDOM, 0, NULL);
 			return 0;
 		}

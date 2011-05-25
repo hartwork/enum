@@ -40,7 +40,7 @@
 #ifndef GENERATOR_H
 #define GENERATOR_H 1
 
-#include "utils.h" /* for CHECK_FLAG */
+#include "utils.h" /* for ENUM_CHECK_FLAG */
 
 /** @name Constants
  * Constants used by generator
@@ -106,10 +106,10 @@
  */
 
 /*@{*/
-#define HAS_LEFT(scaffold)  CHECK_FLAG(scaffold->flags, FLAG_LEFT_SET)
-#define HAS_RIGHT(scaffold)  CHECK_FLAG(scaffold->flags, FLAG_RIGHT_SET)
-#define HAS_STEP(scaffold)  CHECK_FLAG(scaffold->flags, FLAG_STEP_SET)
-#define HAS_COUNT(scaffold)  CHECK_FLAG(scaffold->flags, FLAG_COUNT_SET)
+#define HAS_LEFT(scaffold)  ENUM_CHECK_FLAG(scaffold->flags, FLAG_LEFT_SET)
+#define HAS_RIGHT(scaffold)  ENUM_CHECK_FLAG(scaffold->flags, FLAG_RIGHT_SET)
+#define HAS_STEP(scaffold)  ENUM_CHECK_FLAG(scaffold->flags, FLAG_STEP_SET)
+#define HAS_COUNT(scaffold)  ENUM_CHECK_FLAG(scaffold->flags, FLAG_COUNT_SET)
 /*@}*/
 
 /** Report about number of know values in scaffold.

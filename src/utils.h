@@ -52,7 +52,7 @@
  *
  * @since 0.3
  */
-#define CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
+#define ENUM_CHECK_FLAG(bitfield, flag)  (((bitfield) & (flag)) == (flag))
 
 
 /** @name Min/Max macros

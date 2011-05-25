@@ -148,7 +148,7 @@ void complete_scaffold(scaffolding * scaffold) {
 		} else {
 			if (HAS_RIGHT(scaffold)) {
 				assert(HAS_STEP(scaffold));
-				if (CHECK_FLAG(scaffold->flags, FLAG_RANDOM)) {
+				if (ENUM_CHECK_FLAG(scaffold->flags, FLAG_RANDOM)) {
 					SET_LEFT(*scaffold, 1.0);
 				} else {
 					SET_LEFT(*scaffold, scaffold->right
@@ -165,14 +165,14 @@ void complete_scaffold(scaffolding * scaffold) {
 	assert(KNOWN(scaffold) >= 3);
 	if (KNOWN(scaffold) == 3) {
 		if (! HAS_LEFT(scaffold)) {
-			if (CHECK_FLAG(scaffold->flags, FLAG_RANDOM)) {
+			if (ENUM_CHECK_FLAG(scaffold->flags, FLAG_RANDOM)) {
 				SET_LEFT(*scaffold, 1.0);
 			} else {
 				SET_LEFT(*scaffold, scaffold->right - (scaffold->count - 1)
 					* scaffold->step);
 			}
 		} else if (! HAS_COUNT(scaffold)) {
-			if (CHECK_FLAG(scaffold->flags, FLAG_RANDOM)) {
+			if (ENUM_CHECK_FLAG(scaffold->flags, FLAG_RANDOM)) {
 				SET_COUNT(*scaffold, 1);
 			} else {
 				assert(HAS_STEP(scaffold));
@@ -201,7 +201,7 @@ void complete_scaffold(scaffolding * scaffold) {
 				}
 			}
 		} else if (! HAS_STEP(scaffold)) {
-			if (CHECK_FLAG(scaffold->flags, FLAG_RANDOM)) {
+			if (ENUM_CHECK_FLAG(scaffold->flags, FLAG_RANDOM)) {
 				SET_STEP(*scaffold, precision_to_step(scaffold->auto_precision));
 			} else {
 				if (scaffold->count == 1) {
@@ -281,7 +281,7 @@ static float discrete_random_closed(float min, float max, float step_width) {
  * @since 0.5
  */
 static float calc_candidate(scaffolding const * scaffold) {
-	if (! CHECK_FLAG(scaffold->flags, FLAG_USER_STEP)
+	if (! ENUM_CHECK_FLAG(scaffold->flags, FLAG_USER_STEP)
 			&& HAS_RIGHT(scaffold) && HAS_COUNT(scaffold)) {
 		return  scaffold->left + (scaffold->right - scaffold->left)
 			/ (scaffold->count - 1) * scaffold->position;
@@ -328,9 +328,9 @@ static int check_candidate(scaffolding const * scaffold, float candidate) {
 yield_status enum_yield(scaffolding * scaffold, float * dest) {
 	float candidate;
 
-	assert(CHECK_FLAG(scaffold->flags, FLAG_READY));
+	assert(ENUM_CHECK_FLAG(scaffold->flags, FLAG_READY));
 
-	if (CHECK_FLAG(scaffold->flags, FLAG_RANDOM)) {
+	if (ENUM_CHECK_FLAG(scaffold->flags, FLAG_RANDOM)) {
 		assert(HAS_COUNT(scaffold) && (scaffold->position < scaffold->count));
 
 		assert(HAS_RIGHT(scaffold));
