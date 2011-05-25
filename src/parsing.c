@@ -581,7 +581,7 @@ static int set_terminator(scaffolding * scaffold, const char * string) {
 		free(scaffold->terminator);
 	}
 
-	unescape(unescaped, GUARD_PERCENT);
+	enum_unescape(unescaped, GUARD_PERCENT);
 	scaffold->terminator = unescaped;
 	if (! scaffold->terminator)
 		return 0;
@@ -797,7 +797,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				if (! unescaped) {
 					report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 				}
-				unescape(unescaped, GUARD_PERCENT);
+				enum_unescape(unescaped, GUARD_PERCENT);
 
 				if (! set_format_strdup(&(dest->format), unescaped)) {
 					report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
@@ -891,7 +891,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				if (! unescaped) {
 					report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
 				}
-				unescape(unescaped, GUARD_PERCENT);
+				enum_unescape(unescaped, GUARD_PERCENT);
 
 				if (! set_separator(dest, unescaped, APPLY_SEPARATOR)) {
 					report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);

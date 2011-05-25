@@ -190,7 +190,7 @@ static int oct_value(char c) {
  *
  * @since 1.0
  */
-size_t unescape(char * text, unescape_options options) {
+size_t enum_unescape(char * text, unescape_options options) {
 	char const * read = text;
 	char * write = text;
 

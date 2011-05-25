@@ -87,6 +87,6 @@ typedef enum _unescape_options {
 char * enum_strdup(const char * text);
 char * enum_strndup(const char * text, unsigned int length);
 int enum_is_nan_float(float value);
-size_t unescape(char * text, unescape_options options);
+size_t enum_unescape(char * text, unescape_options options);
 
 #endif /* ENUM_UTILS_H */
