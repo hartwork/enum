@@ -84,9 +84,11 @@ typedef enum _unescape_options {
 } unescape_options;
 
 
+#pragma GCC visibility push(hidden)
 char * enum_strdup(const char * text);
 char * enum_strndup(const char * text, unsigned int length);
 int enum_is_nan_float(float value);
 size_t enum_unescape(char * text, unescape_options options);
+#pragma GCC visibility pop
 
 #endif /* ENUM_UTILS_H */
