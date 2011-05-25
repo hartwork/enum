@@ -25,6 +25,13 @@ AS_HELP_STRING([--enable-pedantic], [be pedantic about warnings])], [
     CFLAGS="${CFLAGS} -Wall -Wextra -Wwrite-strings -Wno-variadic-macros -std=c89 -pedantic"
 ], [])
 
+AC_ARG_ENABLE([internal-linking],
+[AS_HELP_STRING([--disable-internal-linking], [use code directly instead of linking with libenum])], [
+	ENABLE_INTERNAL_LINKING=${enableval}
+],[
+	ENABLE_INTERNAL_LINKING=no
+])
+
 AC_ARG_ENABLE([doc-rebuild],
 [AS_HELP_STRING([--disable-doc-rebuild], [do not re-build shipped documentation])
 
@@ -34,7 +41,6 @@ AC_ARG_ENABLE([doc-rebuild],
 ],[
 	ENABLE_DOC=yes
 ])
-
 
 # Check for asciidoc
 if test ${ENABLE_DOC} = yes ; then
@@ -89,6 +95,7 @@ AC_CHECK_FUNC([getopt_long], [
 # Define automake conditionals
 AM_CONDITIONAL([USE_SYSTEM_GETOPT], [test "${USE_SYSTEM_GETOPT}" = "1"])
 AM_CONDITIONAL([ENABLE_DOC], [test "${ENABLE_DOC}" = "yes"])
+AM_CONDITIONAL([ENABLE_INTERNAL_LINKING], [test "${ENABLE_INTERNAL_LINKING}" = "yes"])
 
 AC_CONFIG_FILES([
 	Makefile

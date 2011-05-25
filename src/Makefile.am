@@ -30,9 +30,14 @@ enum_SOURCES = \
 	parsing.c \
 	parsing.h \
 	printing.c \
-	printing.h \
-	generator.c \
-	generator.h
+	printing.h
+
+if ENABLE_INTERNAL_LINKING
+enum_LDADD += -lenum
+else
+enum_SOURCES += generator.h \
+		generator.c
+endif
 
 if ! USE_SYSTEM_GETOPT
 enum_CPPFLAGS = -I../thirdparty/glibc-2.11.1/posix
