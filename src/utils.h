@@ -37,8 +37,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef UTILS_H
-#define UTILS_H 1
+#ifndef ENUM_UTILS_H
+#define ENUM_UTILS_H 1
 
 #include <sys/types.h>  /* for size_t */
 
@@ -89,4 +89,4 @@ char * enum_strndup(const char * text, unsigned int length);
 int enum_is_nan_float(float value);
 size_t unescape(char * text, unescape_options options);
 
-#endif /* UTILS_H */
+#endif /* ENUM_UTILS_H */

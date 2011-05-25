@@ -37,8 +37,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef GENERATOR_H
-#define GENERATOR_H 1
+#ifndef ENUM_GENERATOR_H
+#define ENUM_GENERATOR_H 1
 
 #include "utils.h" /* for ENUM_CHECK_FLAG */
 
@@ -173,4 +173,4 @@ void complete_scaffold(scaffolding * scaffold);
 yield_status enum_yield(scaffolding * scaffold, float * dest);
 void initialize_scaffold(scaffolding * dest);
 
-#endif /* GENERATOR_H */
+#endif /* ENUM_GENERATOR_H */

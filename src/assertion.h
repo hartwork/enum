@@ -37,8 +37,8 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef ASSERTION_H
-#define ASSERTION_H 1
+#ifndef ENUM_ASSERTION_H
+#define ENUM_ASSERTION_H 1
 
 #include <stdio.h>
 #include <stdlib.h> /* for exit() */
@@ -70,4 +70,4 @@
 	}
 #endif
 
-#endif /* ASSERTION_H */
+#endif /* ENUM_ASSERTION_H */
