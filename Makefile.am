@@ -1,5 +1,7 @@
 SUBDIRS = src test
 
+ACLOCAL_AMFLAGS = -I m4
+
 man1_MANS = \
 	man/enum.1
 

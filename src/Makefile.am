@@ -1,3 +1,21 @@
+######## library
+lib_LTLIBRARIES = libenum.la
+
+libenum_la_SOURCES = generator.h \
+		     generator.c \
+		     utils.h \
+		     utils.c \
+		     assertion.h
+
+include_HEADERS = enum.h
+
+pkginclude_HEADERS = generator.h \
+		     utils.h
+
+libenum_la_LDFLAGS = -version-info @soversion@ \
+	-lm
+
+######## binary
 bin_PROGRAMS = enum
 
 enum_LDADD = -lm

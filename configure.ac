@@ -7,6 +7,9 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign dist-bzip2 no-dist-gzip])
 AC_CONFIG_SRCDIR([src/main.c])
 # AC_CONFIG_HEADERS([config.h])
 
+LT_INIT
+AC_CONFIG_MACRO_DIR([m4])
+AC_SUBST([soversion],[0:0:0])
 
 # Checks for programs.
 AC_PROG_CC
