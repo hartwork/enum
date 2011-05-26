@@ -112,6 +112,24 @@
 #define HAS_COUNT(scaffold)  ENUM_CHECK_FLAG(scaffold->flags, FLAG_COUNT_SET)
 /*@}*/
 
+/** @name Scaffold ready flag checker
+ * Macro to check if scaffold is ready for actual usage.
+ *
+ * enum_complete_scaffold() sets a READY flag if it was able to prepare given
+ * scaffold for use with enum_yield(). Check for this flag before invoking
+ * enum_yield().
+ *
+ * @param[in] scaffold
+ *
+ * @return boolean meaning of 1 or 0 depending on whether the flag is set
+ *
+ * @since 1.1
+ */
+
+/*@{*/
+#define ENUM_IS_READY(scaffold)  ENUM_CHECK_FLAG(scaffold->flags, FLAG_READY)
+/*@}*/
+
 /** Report about number of know values in scaffold.
  *
  * Most important values in scaffold are left, right, step, and count. Add 1
