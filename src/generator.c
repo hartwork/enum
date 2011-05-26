@@ -116,7 +116,11 @@ static void ensure_proper_step_sign(scaffolding * scaffold) {
  * @since 0.3
  */
 void enum_complete_scaffold(scaffolding * scaffold) {
-	assert(KNOWN(scaffold) >= 1);
+	/* Nothing can be completed if there isn't at least one known
+	 * field. Not setting FLAG_READY, just returning.
+	 */
+	if (! KNOWN(scaffold) >= 1)
+		return;
 
 	if (KNOWN(scaffold) == 1) {
 		if (! HAS_LEFT(scaffold)) {
