@@ -332,7 +332,9 @@ static int check_candidate(scaffolding const * scaffold, float candidate) {
 yield_status enum_yield(scaffolding * scaffold, float * dest) {
 	float candidate;
 
-	assert(ENUM_CHECK_FLAG(scaffold->flags, FLAG_READY));
+	/* return YIELD_ERROR if scaffold wasn't ready */
+	if (! ENUM_CHECK_FLAG(scaffold->flags, FLAG_READY))
+		return YIELD_ERROR;
 
 	if (ENUM_CHECK_FLAG(scaffold->flags, FLAG_RANDOM)) {
 		assert(HAS_COUNT(scaffold) && (scaffold->position < scaffold->count));

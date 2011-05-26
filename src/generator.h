@@ -163,6 +163,7 @@ enum scaffolding_flags {
 
 /** Enumeration of possible return states of enum_yield() */
 typedef enum _yield_status {
+	YIELD_ERROR,/**< value incalcuable, scaffold not ready */
 	YIELD_MORE, /**< value calculated, more available */
 	YIELD_LAST  /**< value calculated, no more available */
 } yield_status;
