@@ -12,6 +12,7 @@ include_HEADERS = enum.h
 pkginclude_HEADERS = generator.h \
 		     utils.h
 
+libenum_la_CPPFLAGS = -DBUILD_LIBENUM
 libenum_la_LDFLAGS = -version-info @soversion@ \
 	-lm
 

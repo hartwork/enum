@@ -51,6 +51,13 @@
 # endif
 #endif
 
+/* When compiling the library, never let it call exit */
+#ifndef BUILD_LIBENUM
+# define assert_exit  exit(1);
+#else
+# define assert_exit
+#endif
+
 #ifndef assert
 # define assert(x) \
 	if (! (x)) { \
@@ -66,7 +73,7 @@
 			"Thank you!\n", \
 			PACKAGE, __FILE__, __LINE__, __func__, #x, \
 			PACKAGE_BUGREPORT); \
-		exit(1); \
+		assert_exit \
 	}
 #endif
 
