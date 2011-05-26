@@ -70,6 +70,52 @@ yield_status 'enum_yield'(scaffolding *, float *)::
     The return values, as provided by above-said enumeration, are 'YIELD_MORE'
     if another value is expected or 'YIELD_LAST' if not.
 
+MACROS
+------
+
+There are a few macros available for your use. They should make dealing with
+the scaffold a lot easier.
+
+SETTING VALUES
+~~~~~~~~~~~~~~
+
+'SET_LEFT'(scaffold, left)::
+    Set value 'left' in 'scaffold' and set the relevant flag.
+
+'SET_RIGHT'(scaffold, right)::
+    Set value 'right' in 'scaffold' and set the relevant flag.
+
+'SET_STEP'(scaffold, step)::
+    Set value 'step' in 'scaffold' and set the relevant flag.
+
+'SET_COUNT'(scaffold, count)::
+    Set value 'count', i.e. the amount of values to return at all, in
+    'scaffold' and set the relevant flag.
+
+CHECKING VALUES
+~~~~~~~~~~~~~~~
+
+'ENUM_IS_READY'(scaffold)::
+    Check whether 'scaffold' was set up properly by 'enum_complete_scaffold'
+    (see above). It is important to check since 'enum_yield' will fail if
+    'scaffold' is not ready.
+
+'HAS_LEFT'(scaffold)::
+    Check 'scaffold' for a 'left' value (based on the flag set with relevant
+    macro above).
+
+'HAS_RIGHT'(scaffold)::
+    Check 'scaffold' for a 'right' value (based on the flag set with relevant
+    macro above).
+
+'HAS_STEP'(scaffold)::
+    Check 'scaffold' for a 'step' value (based on the flag set with relevant
+    macro above).
+
+'HAS_COUNT'(scaffold)::
+    Check 'scaffold' for a 'count' value (based on the flag set with relevant
+    macro above).
+
 THANKS
 ------
 Elias Pipping, Andreas Gunschl, Justin B. Rye, David Prevot, Kamil Dudka,
