@@ -68,7 +68,9 @@ yield_status 'enum_yield'(scaffolding *, float *)::
     given float pointer with the next value if there is any. In other words,
     call this function as often as values are calculated.
     The return values, as provided by above-said enumeration, are 'YIELD_MORE'
-    if another value is expected or 'YIELD_LAST' if not.
+    if another value is expected or 'YIELD_LAST' if not. Furthermore, it may
+    return 'YIELD_ERROR' if 'enum_yield' was called improperly, for instance
+    with an unready 'scaffold'.
 
 MACROS
 ------
