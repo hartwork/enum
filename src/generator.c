@@ -388,6 +388,30 @@ yield_status enum_yield(scaffolding * scaffold, float * dest) {
 	}
 }
 
+/** Wrapper around main output function.
+ *
+ * This function will iterate over all values enum_yield can provide and for
+ * each it will call a function given as function pointer.
+ *
+ * @param[in] scaffold
+ * @param[in] enum_get
+ *
+ * @since 1.1
+ */
+void enum_get_all(scaffolding * scaffold, void (*enum_get)(float)) {
+	yield_status status;
+	float out;
+
+	while(1) {
+		status = enum_yield(scaffold, &out);
+		if (status == YIELD_ERROR)
+			return;
+		enum_get(out);
+		if (status == YIELD_LAST)
+			break;
+	}
+}
+
 /** Initialization of scaffold.
  *
  * In order to have usable defaults in at least some basic scaffold members,
