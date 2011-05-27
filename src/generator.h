@@ -106,10 +106,10 @@
  */
 
 /*@{*/
-#define HAS_LEFT(scaffold)  ENUM_CHECK_FLAG(scaffold->flags, FLAG_LEFT_SET)
-#define HAS_RIGHT(scaffold)  ENUM_CHECK_FLAG(scaffold->flags, FLAG_RIGHT_SET)
-#define HAS_STEP(scaffold)  ENUM_CHECK_FLAG(scaffold->flags, FLAG_STEP_SET)
-#define HAS_COUNT(scaffold)  ENUM_CHECK_FLAG(scaffold->flags, FLAG_COUNT_SET)
+#define HAS_LEFT(scaffold)  ENUM_CHECK_FLAG((scaffold)->flags, FLAG_LEFT_SET)
+#define HAS_RIGHT(scaffold)  ENUM_CHECK_FLAG((scaffold)->flags, FLAG_RIGHT_SET)
+#define HAS_STEP(scaffold)  ENUM_CHECK_FLAG((scaffold)->flags, FLAG_STEP_SET)
+#define HAS_COUNT(scaffold)  ENUM_CHECK_FLAG((scaffold)->flags, FLAG_COUNT_SET)
 /*@}*/
 
 /** @name Scaffold ready flag checker
@@ -127,7 +127,7 @@
  */
 
 /*@{*/
-#define ENUM_IS_READY(scaffold)  ENUM_CHECK_FLAG(scaffold->flags, FLAG_READY)
+#define ENUM_IS_READY(scaffold)  ENUM_CHECK_FLAG((scaffold)->flags, FLAG_READY)
 /*@}*/
 
 /** Report about number of know values in scaffold.
