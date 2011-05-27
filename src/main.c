@@ -102,7 +102,7 @@ int main(int argc, char **argv) {
 	enum_complete_scaffold(&dest);
 	assert(ENUM_IS_READY((&dest)));
 
-	if (ENUM_CHECK_FLAG(dest.flags, FLAG_EQUAL_WIDTH) && ! HAS_RIGHT((&dest))) {
+	if (ENUM_CHECK_FLAG(dest.flags, FLAG_EQUAL_WIDTH) && ! HAS_RIGHT(&dest)) {
 		fprintf(stderr, "Combining -e|--equal-width and infinity not supported.\n");
 		return 1;
 	}
