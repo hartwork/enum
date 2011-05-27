@@ -7,7 +7,11 @@ man1_MANS = \
 man3_MANS = \
 	man/enum.3
 
+exampledir = $(docdir)/examples
+example_DATA = examples/enum-yield.c examples/enum-get-all.c
+
 EXTRA_DIST = \
+	$(example_DATA) \
 	man/asciidoc.conf \
 	man/enum.1 \
 	man/enum.1.txt \
