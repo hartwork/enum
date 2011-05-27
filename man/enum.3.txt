@@ -72,6 +72,12 @@ yield_status 'enum_yield'(scaffolding *, float *)::
     return 'YIELD_ERROR' if 'enum_yield' was called improperly, for instance
     with an unready 'scaffold'.
 
+void 'enum_get_all'(scaffolding * scaffold, void (*enum_get)(float))::
+    This is an alternative to 'enum_yield'. It will iterate over all values
+    enum_yield would find and for each of them call the function as provided by
+    a pointer. It will return without calling your function at all if a
+    'YIELD_ERROR' was detected (for instance by an incomplete 'scaffold').
+
 MACROS
 ------
 
