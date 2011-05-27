@@ -1,0 +1,8 @@
+LIBENUM_1.0 {
+	global:
+		enum_initialize_scaffold;
+		enum_complete_scaffold;
+		enum_yield;
+		enum_get_all;
+	local: *;
+};

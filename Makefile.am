@@ -16,7 +16,8 @@ EXTRA_DIST = \
 	man/enum.1 \
 	man/enum.1.txt \
 	man/enum.3 \
-	man/enum.3.txt
+	man/enum.3.txt \
+	src/libenum.map
 
 
 PACKAGE_VERSION = `fgrep AC_INIT "$(abs_top_srcdir)"/configure.ac | sed 's|^.\+, \[\(.\+\)\],.\+$$|\1|'`

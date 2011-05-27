@@ -13,8 +13,10 @@ pkginclude_HEADERS = generator.h \
 		     utils.h
 
 libenum_la_CPPFLAGS = -DBUILD_LIBENUM
-libenum_la_LDFLAGS = -version-info @soversion@ \
-	-lm
+libenum_la_LDFLAGS = \
+		     -version-info @soversion@ \
+		     -Wl,--version-script,$(srcdir)/libenum.map \
+		     -lm
 
 ######## binary
 bin_PROGRAMS = enum
