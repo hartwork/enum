@@ -127,7 +127,9 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 	puts(TEST_CASE_INDENT "    Received  Expected");
 	puts(TEST_CASE_INDENT "----------------------");
 	for (i = 0; i < exp_len; i++) {
-		yield_status status = enum_yield(&scaffold, &dest);
+		yield_status status;
+		if (! enum_yield(&scaffold, &dest, &status))
+			return 1;
 
 		printf(TEST_CASE_INDENT "%2d) %8.1f  %8.1f\n", i + 1, dest, expected[i]);
 

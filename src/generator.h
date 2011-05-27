@@ -163,7 +163,6 @@ enum scaffolding_flags {
 
 /** Enumeration of possible return states of enum_yield() */
 typedef enum _yield_status {
-	YIELD_ERROR,/**< value incalcuable, scaffold not ready */
 	YIELD_MORE, /**< value calculated, more available */
 	YIELD_LAST  /**< value calculated, no more available */
 } yield_status;
@@ -189,7 +188,7 @@ typedef struct _scaffolding {
 } scaffolding;
 
 int enum_complete_scaffold(scaffolding * scaffold);
-yield_status enum_yield(scaffolding * scaffold, float * dest);
+int enum_yield(scaffolding * scaffold, float * dest, yield_status * status);
 void enum_initialize_scaffold(scaffolding * dest);
 void enum_get_all(scaffolding * scaffold, void (*enum_get)(float));
 

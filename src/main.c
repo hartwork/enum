@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
 	int argpos;
 	scaffolding dest;
 	float out;
-	int ret;
+	yield_status ret;
 	int i = 0;
 	unsigned int newargc;
 	char ** newargv;
@@ -130,7 +130,8 @@ int main(int argc, char **argv) {
 	}
 
 	while (1) {
-		ret = enum_yield(&dest, &out);
+		if (! enum_yield(&dest, &out, &ret))
+			return 1;
 
 		if (i != 0) {
 			if (ENUM_CHECK_FLAG(dest.flags, FLAG_NULL_BYTES)) {

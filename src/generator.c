@@ -320,23 +320,23 @@ static int check_candidate(scaffolding const * scaffold, float candidate) {
  * scaffold was filled correctly and not altered inbetween calls, enum_yield
  * will find the next value to be printed.
  *
- * In order to determine its success, enum_yield returns a yield_status
- * indicating whether a value has been written to dest or not, and even if this
- * might be the last one enum_yield would be able to offer.
+ * In order to determine its success, enum_yield returns 1 on success and 0 on
+ * failure. The status pointer of type yield_status indicates whether another
+ * value can be written to dest or not by being set to either YIELD_MORE or
+ * YIELD_LAST.
  *
  * @param[in] scaffold
- * @param[out] dest
+ * @param[out] dest, status
  *
  * @return yield
  *
  * @since 0.3
  */
-yield_status enum_yield(scaffolding * scaffold, float * dest) {
+int enum_yield(scaffolding * scaffold, float * dest, yield_status * status) {
 	float candidate;
 
-	/* return YIELD_ERROR if scaffold wasn't ready */
 	if (! ENUM_CHECK_FLAG(scaffold->flags, FLAG_READY))
-		return YIELD_ERROR;
+		return 0;
 
 	if (ENUM_CHECK_FLAG(scaffold->flags, FLAG_RANDOM)) {
 		assert(HAS_COUNT(scaffold) && (scaffold->position < scaffold->count));
@@ -349,10 +349,11 @@ yield_status enum_yield(scaffolding * scaffold, float * dest) {
 			fabs(scaffold->step));
 		scaffold->position++;
 		if (scaffold->position == scaffold->count) {
-			return YIELD_LAST;
+			*status = YIELD_LAST;
 		} else {
-			return YIELD_MORE;
+			*status = YIELD_MORE;
 		}
+		return 1;
 	}
 
 	assert(HAS_LEFT(scaffold) && HAS_STEP(scaffold));
@@ -365,7 +366,8 @@ yield_status enum_yield(scaffolding * scaffold, float * dest) {
 	/* One value only? */
 	if (HAS_COUNT(scaffold) && (scaffold->count == 1)) {
 		*dest = scaffold->left;
-		return YIELD_LAST;
+		*status = YIELD_LAST;
+		return 1;
 	}
 
 	candidate = calc_candidate(scaffold);
@@ -379,15 +381,17 @@ yield_status enum_yield(scaffolding * scaffold, float * dest) {
 	/* Will there be more? */
 	if ((HAS_COUNT(scaffold) && (scaffold->position == scaffold->count))
 			|| (HAS_RIGHT(scaffold) && (*dest == scaffold->right))) {
-		return YIELD_LAST;
+		*status = YIELD_LAST;
 	} else {
 		/* Going too far next time? (position has already been increased) */
 		const float future_candidate = calc_candidate(scaffold);
 		if (! check_candidate(scaffold, future_candidate)) {
-			return YIELD_LAST;
+			*status = YIELD_LAST;
+			return 1;
 		}
-		return YIELD_MORE;
+		*status = YIELD_MORE;
 	}
+	return 1;
 }
 
 /** Wrapper around main output function.
@@ -405,8 +409,7 @@ void enum_get_all(scaffolding * scaffold, void (*enum_get)(float)) {
 	float out;
 
 	while(1) {
-		status = enum_yield(scaffold, &out);
-		if (status == YIELD_ERROR)
+		if (! enum_yield(scaffold, &out, &status))
 			return;
 		enum_get(out);
 		if (status == YIELD_LAST)

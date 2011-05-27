@@ -63,21 +63,20 @@ int 'enum_complete_scaffold'(scaffolding *)::
     default values (usually 1). You *must call* this function in order to
     proceed. This function will return 1 on success and 0 on failure.
 
-yield_status 'enum_yield'(scaffolding *, float *)::
+int 'enum_yield'(scaffolding *, float *, yield_status *)::
     This function is your friend when it comes to the actual values. Provided
     with your scaffolding (after it's completed), 'yield_status' will fill the
     given float pointer with the next value if there is any. In other words,
     call this function as often as values are calculated.
-    The return values, as provided by above-said enumeration, are 'YIELD_MORE'
-    if another value is expected or 'YIELD_LAST' if not. Furthermore, it may
-    return 'YIELD_ERROR' if 'enum_yield' was called improperly, for instance
-    with an unready 'scaffold'.
+    The third pointer will indicate whether another value can be calculated or
+    not by bein set to either YIELD_MORE or YIELD_LAST. The return value is 1
+    on success and 0 if an error occurred.
 
 void 'enum_get_all'(scaffolding * scaffold, void (*enum_get)(float))::
     This is an alternative to 'enum_yield'. It will iterate over all values
     enum_yield would find and for each of them call the function as provided by
-    a pointer. It will return without calling your function at all if a
-    'YIELD_ERROR' was detected (for instance by an incomplete 'scaffold').
+    a pointer. It will return without calling your function at all if an
+    error was detected (for instance by an incomplete 'scaffold').
 
 MACROS
 ------
