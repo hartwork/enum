@@ -16,7 +16,8 @@ int main(int argc, char **argv) {
 	if (! enum_complete_scaffold(&sc))
 		exit(1);
 
-	enum_get_all(&sc, &my_print);
+	if (! enum_get_all(&sc, &my_print))
+		exit(1);
 
 	exit(0);
 }

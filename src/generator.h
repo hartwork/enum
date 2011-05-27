@@ -190,6 +190,6 @@ typedef struct _scaffolding {
 int enum_complete_scaffold(scaffolding * scaffold);
 int enum_yield(scaffolding * scaffold, float * dest, yield_status * status);
 void enum_initialize_scaffold(scaffolding * dest);
-void enum_get_all(scaffolding * scaffold, void (*enum_get)(float));
+int enum_get_all(scaffolding * scaffold, void (*enum_get)(float));
 
 #endif /* ENUM_GENERATOR_H */

@@ -401,20 +401,22 @@ int enum_yield(scaffolding * scaffold, float * dest, yield_status * status) {
  *
  * @param[in] scaffold
  * @param[in] enum_get
+ * @param[out] boolean for success/failure
  *
  * @since 1.1
  */
-void enum_get_all(scaffolding * scaffold, void (*enum_get)(float)) {
+int enum_get_all(scaffolding * scaffold, void (*enum_get)(float)) {
 	yield_status status;
 	float out;
 
 	while(1) {
 		if (! enum_yield(scaffold, &out, &status))
-			return;
+			return 0;
 		enum_get(out);
 		if (status == YIELD_LAST)
 			break;
 	}
+	return 1;
 }
 
 /** Initialization of scaffold.

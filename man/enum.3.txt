@@ -72,11 +72,12 @@ int 'enum_yield'(scaffolding *, float *, yield_status *)::
     not by bein set to either YIELD_MORE or YIELD_LAST. The return value is 1
     on success and 0 if an error occurred.
 
-void 'enum_get_all'(scaffolding * scaffold, void (*enum_get)(float))::
+int 'enum_get_all'(scaffolding * scaffold, void (*enum_get)(float))::
     This is an alternative to 'enum_yield'. It will iterate over all values
     enum_yield would find and for each of them call the function as provided by
-    a pointer. It will return without calling your function at all if an
-    error was detected (for instance by an incomplete 'scaffold').
+    a pointer. It will return 0 without calling your function at all if an
+    error was detected (for instance by an incomplete 'scaffold'); otherwise it
+    returns 1.
 
 MACROS
 ------
