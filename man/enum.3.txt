@@ -56,11 +56,12 @@ void 'enum_initialize_scaffold'(scaffolding *)::
     Use this function to initialize your 'scaffolding'. It sets a few internals
     needed by the library.
 
-void 'enum_complete_scaffold'(scaffolding *)::
+int 'enum_complete_scaffold'(scaffolding *)::
     After you've filled your 'scaffolding' with the values you know (by user
     input or however), this function completes it in order to be able to
     calculate the numbers. Everything that's not calcuable will be filled with
-    default values (usually 1).
+    default values (usually 1). You *must call* this function in order to
+    proceed. This function will return 1 on success and 0 on failure.
 
 yield_status 'enum_yield'(scaffolding *, float *)::
     This function is your friend when it comes to the actual values. Provided
@@ -102,11 +103,6 @@ SETTING VALUES
 
 CHECKING VALUES
 ~~~~~~~~~~~~~~~
-
-'ENUM_IS_READY'(scaffold)::
-    Check whether 'scaffold' was set up properly by 'enum_complete_scaffold'
-    (see above). It is important to check since 'enum_yield' will fail if
-    'scaffold' is not ready.
 
 'HAS_LEFT'(scaffold)::
     Check 'scaffold' for a 'left' value (based on the flag set with relevant

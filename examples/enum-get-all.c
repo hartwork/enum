@@ -13,8 +13,7 @@ int main(int argc, char **argv) {
 	enum_initialize_scaffold(&sc);
 	SET_LEFT(sc, 1);
 	SET_RIGHT(sc, 5);
-	enum_complete_scaffold(&sc);
-	if (! ENUM_IS_READY(&sc))
+	if (! enum_complete_scaffold(&sc))
 		exit(1);
 
 	enum_get_all(&sc, &my_print);

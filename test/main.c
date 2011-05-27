@@ -121,7 +121,8 @@ int test_yield(float left, unsigned int count, float step, float right, const fl
 		SET_RIGHT(scaffold, right);
 	}
 
-	enum_complete_scaffold(&scaffold);
+	if (! enum_complete_scaffold(&scaffold))
+		return 1;
 
 	puts(TEST_CASE_INDENT "    Received  Expected");
 	puts(TEST_CASE_INDENT "----------------------");

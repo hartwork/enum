@@ -111,16 +111,17 @@ static void ensure_proper_step_sign(scaffolding * scaffold) {
  * values unknown after user input should be calculated here, i.e. scaffold is
  * output usable after calling this function.
  *
+ * Returns 1 on success, 0 on failure.
+ *
  * @param[in,out] scaffold
+ * @param[out] return
  *
  * @since 0.3
  */
-void enum_complete_scaffold(scaffolding * scaffold) {
-	/* Nothing can be completed if there isn't at least one known
-	 * field. Not setting FLAG_READY, just returning.
-	 */
+int enum_complete_scaffold(scaffolding * scaffold) {
+	/* Nothing can be completed if there isn't at least one known field. */
 	if (! KNOWN(scaffold) >= 1)
-		return;
+		return 0;
 
 	if (KNOWN(scaffold) == 1) {
 		if (! HAS_LEFT(scaffold)) {
@@ -138,7 +139,7 @@ void enum_complete_scaffold(scaffolding * scaffold) {
 			scaffold->flags |= FLAG_READY;
 			assert(! HAS_COUNT(scaffold) && ! HAS_RIGHT(scaffold));
 			assert(KNOWN(scaffold) == 2);
-			return;
+			return 1;
 		}
 
 		/* NOTE: Step has higher precedence */
@@ -229,6 +230,7 @@ void enum_complete_scaffold(scaffolding * scaffold) {
 	assert(KNOWN(scaffold) == 4);
 
 	ensure_proper_step_sign(scaffold);
+	return 1;
 }
 
 /** Calculate a random value out of possible output values.
