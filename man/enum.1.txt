@@ -282,6 +282,9 @@ unspecified ones are derived or set to their defaults:
 - 'RIGHT' is +/-infinity, unless it can be derived from the other three
   values.
 
+Obviously, if 'COUNT' is set to zero (*0x*), enum will output nothing,
+regardless of the other arguments.
+
 
 DERIVATION OF LEFT
 ^^^^^^^^^^^^^^^^^^
