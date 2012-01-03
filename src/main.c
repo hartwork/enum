@@ -64,6 +64,24 @@ void free_malloced_argv(int argc, char *** pargv) {
 	pargv = NULL;
 }
 
+/** Prints terminator, frees allocated memory
+ *
+ * @param[in,out] dest Scaffolding to work with
+ *
+ * @since 1.0.4
+ */
+static void finalize_output(scaffolding * dest) {
+	if (dest->terminator) {
+		printf("%s", dest->terminator);
+		free(dest->terminator);
+	} else {
+		printf("\n");
+	}
+
+	free(dest->format);
+	free(dest->separator);
+}
+
 int main(int argc, char **argv) {
 	int argpos;
 	scaffolding dest;
@@ -150,15 +168,7 @@ int main(int argc, char **argv) {
 		i++;
 	}
 
-	if (dest.terminator) {
-		printf("%s", dest.terminator);
-		free(dest.terminator);
-	} else {
-		printf("\n");
-	}
-
-	free(dest.format);
-	free(dest.separator);
+	finalize_output(&dest);
 
 	return 0;
 }
