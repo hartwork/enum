@@ -146,8 +146,10 @@ int main(int argc, char **argv) {
 		srand(seed);
 	}
 
-	if (CHECK_FLAG(dest.flags, FLAG_COUNT_SET) && dest.count == 0)
+	if (CHECK_FLAG(dest.flags, FLAG_COUNT_SET) && (dest.count == 0)) {
+		finalize_output(&dest);
 		return 0;
+	}
 
 	while (1) {
 		ret = enum_yield(&dest, &out);
