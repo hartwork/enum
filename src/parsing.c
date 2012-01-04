@@ -240,7 +240,7 @@ static token_type identify_token(const char *arg, setter_value *value) {
 	if (ends_with_x(arg)) {
 		const long int i = strtol(arg, &end, 10);
 		if ((*end == 'x') && (end - arg == (int)strlen(arg) - 1)) {
-			if (i < 1) {
+			if (i < 0) {
 				return TOKEN_ERROR_BAD_COUNT;
 			}
 			value->uint_data = i;
