@@ -205,6 +205,7 @@ With two arguments:
 
 - *enum* *..* 'COUNT'*x* 'STEP' *..*
 - *enum* *..* 'COUNT'*x* *..* 'RIGHT'
+- *enum* 'COUNT'*x* *..* 'RIGHT'
 - *enum* *..* 'STEP' *..* 'RIGHT'
 - *enum* 'LEFT' *..* 'COUNT'*x* *..*
 - *enum* 'LEFT' *..* 'STEP' *..*
@@ -223,6 +224,12 @@ With one argument:
 With less than three arguments, defaults apply.
 Details are described in *DERIVATION OF DEFAULTS* below.
 
+Technically, more use cases are possible. For instance, 'COUNT'*x* 'STEP'
+*..* 'RIGHT' is unambiguous since the order of arguments is fixed. Yet,
+"enum 3x 4 .. 10" reads a lot like "3 values between 4 and 10" while it
+actually would mean "3 values between 1 (default value fur 'LEFT', see
+below) and 10". In order to have enum's user interface as intuitive as
+possible, such possible but harder readable use cases are not implemented.
 
 DERIVATION OF DEFAULTS
 ~~~~~~~~~~~~~~~~~~~~~~
