@@ -216,7 +216,7 @@ void complete_scaffold(scaffolding * scaffold) {
 		} else {
 			assert(! HAS_RIGHT(scaffold));
 			if (scaffold->count == 1) {
-				SET_RIGHT(*scaffold, scaffold->left + scaffold->step);
+				SET_RIGHT(*scaffold, scaffold->left);
 			} else {
 				SET_RIGHT(*scaffold, scaffold->left + scaffold->step
 					* (scaffold->count - 1));
