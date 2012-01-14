@@ -228,8 +228,9 @@ Technically, more use cases are possible. For instance, 'COUNT'*x* 'STEP'
 *..* 'RIGHT' is unambiguous since the order of arguments is fixed. Yet,
 "enum 3x 4 .. 10" reads a lot like "3 values between 4 and 10" while it
 actually would mean "3 values up to 10 in steps of 4".
-In order to have enum's user interface as intuitive as
-possible, such possible but harder readable use cases are not implemented.
+In order to keep enum's user interface as intuitive as
+possible, misinterpretable cases are not implemented.
+
 
 DERIVATION OF DEFAULTS
 ~~~~~~~~~~~~~~~~~~~~~~
