@@ -289,7 +289,8 @@ int main() {
 	TEST_CASE(successes, failures, 1, XX, XX, 1, ARRAY(1))
 
         /* explicit count == 1 */
-	TEST_CASE(successes, failures, 1,  1, XX, 3, ARRAY(1))
+	TEST_CASE(successes, failures,  1, 1, XX,  3, ARRAY(1))
+	TEST_CASE(successes, failures, XX, 1, XX, XX, ARRAY(1))
 
 
 	assert(successes + failures > 0);
