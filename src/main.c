@@ -68,7 +68,7 @@ void free_malloced_argv(int argc, char *** pargv) {
  *
  * @param[in,out] dest Scaffolding to work with
  *
- * @since 1.0.4
+ * @since 1.1
  */
 static void finalize_output(scaffolding * dest) {
 	if (dest->terminator) {
