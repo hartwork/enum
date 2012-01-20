@@ -1,3 +1,11 @@
+2012-01-20  Jan Hauke Rahm  <jhr@debian.org>
+
+	1.1
+	* Allow COUNT to be 0
+	* Fix faulty assertion for COUNT == 1 and not RIGHT given
+	* Add use case 'COUNT .. RIGHT' and explain why other similar use
+	  cases are not implemented in favor of an intuitive interface
+
 2010-12-23  Sebastian Pipping  <sping@gentoo.org>
 
 	1.0.3
