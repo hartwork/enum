@@ -694,6 +694,22 @@ static int analyze_format(const char * format) {
 /** @name Command line parsing */
 
 /*@{*/
+/** Check whether a provided str is a (possibly negative) number.
+ *
+ * @param[in] str
+ *
+ * @return zero in case of failure, non-zero otherwise
+ *
+ * @since 1.2
+ */
+static int is_number(char *str) {
+	char *end;
+	strtol(str, &end, 10);
+	if (end - str != (int)strlen(str))
+		return 0;
+	return 1;
+}
+
 /** Parsing of command line parameters.
  *
  * Parameters are all parts of given command line args that start with one or
