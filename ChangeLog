@@ -5,6 +5,7 @@
 	* Fix faulty assertion for COUNT == 1 and no RIGHT given
 	* Add use case 'COUNT .. RIGHT' and explain why other similar use
 	  cases are not implemented in favor of an intuitive interface
+	* Fix report of invalid parameters
 
 2010-12-23  Sebastian Pipping  <sping@gentoo.org>
 
