@@ -723,6 +723,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 	int success = 1;
 	int usage_needed = 0;
 	int quit = 0;
+	int previous_error_optind = 1;
 
 	/* Inhibit getopt's own error message for unrecognized options */
 	opterr = 0;
@@ -924,9 +925,14 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 			break;
 
 		case '?':
-			fprintf(stderr, "ERROR: Unrecognized option \"%s\"\n", original_argv[optind - 1]);
-			success = 0;
-			usage_needed = 1;
+			if (optind > previous_error_optind)
+			{
+				fprintf(stderr, "ERROR: Unrecognized option \"%s\"\n", original_argv[optind - 1]);
+				success = 0;
+				usage_needed = 1;
+
+				previous_error_optind = optind;
+			}
 			break;
 
 		default:
