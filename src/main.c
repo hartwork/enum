@@ -42,6 +42,7 @@
 #include "assertion.h"
 #include "printing.h"
 #include "utils.h"
+#include "info.h"
 
 #include <stdlib.h>  /* for srand */
 #include <time.h>  /* for time */
@@ -120,9 +121,7 @@ int main(int argc, char **argv) {
 	complete_scaffold(&dest);
 
 	if (CHECK_FLAG(dest.flags, FLAG_EQUAL_WIDTH) && ! HAS_RIGHT((&dest))) {
-		fprintf(stderr, "ERROR: Combining -e|--equal-width and infinity not supported.\n");
-		fprintf(stderr, "\n");
-		dump_usage(stderr);
+		usage_error("Combining -e|--equal-width and infinity not supported.");
 		return 1;
 	}
 

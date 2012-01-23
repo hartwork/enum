@@ -721,7 +721,6 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 	int option_index = 0;
 
 	int success = 1;
-	int usage_needed = 0;
 	int quit = 0;
 	int previous_error_optind = 1;
 
@@ -927,9 +926,11 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 		case '?':
 			if (optind > previous_error_optind)
 			{
-				fprintf(stderr, "ERROR: Unrecognized option \"%s\"\n", original_argv[optind - 1]);
+				char * errstr = malloc(sizeof("Unrecognized option \" \"") + sizeof(original_argv[optind - 1]) + 1);
+				sprintf(errstr, "Unrecognized option \"%s\"", original_argv[optind - 1]);
+				usage_error(errstr);
+				free(errstr);
 				success = 0;
-				usage_needed = 1;
 
 				previous_error_optind = optind;
 			}
@@ -942,22 +943,15 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 
 	/* Any paramaters or arguments given? */
 	if (original_argc == 1) {
-		fatal("No arguments given");
+		usage_error("No arguments given");
 		success = 0;
-		usage_needed = 1;
 	}
 
 	/* Seed given without random flag? */
 	if (CHECK_FLAG(dest->flags, FLAG_USER_SEED)
 			&& ! CHECK_FLAG(dest->flags, FLAG_RANDOM)) {
-		fprintf(stderr, "ERROR: Parameter -i|--seed=NUMBER requires -r|--random.\n");
+		usage_error("Parameter -i|--seed=NUMBER requires -r|--random.");
 		success = 0;
-		usage_needed = 1;
-	}
-
-	if (! success && usage_needed) {
-		fprintf(stderr, "\n");
-		dump_usage(stderr);
 	}
 
 	return success
@@ -1150,7 +1144,7 @@ int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest
 
 	/* Any arguments given? */
 	if (reduced_argc == 0) {
-		fatal("No arguments given");
+		usage_error("No arguments given");
 		return 0;
 	}
 
