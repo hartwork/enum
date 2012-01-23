@@ -354,16 +354,16 @@ static void report_parameter_error(int code) {
 		fatal("System too low on memory to continue.");
 		break;
 	case PARAMETER_ERROR_INVALID_PRECISION:
-		fatal("Precision must be a non-negative integer.");
+		usage_error("Precision must be a non-negative integer.");
 		break;
 	case PARAMETER_ERROR_VERSION_NOT_ALONE:
-		fatal("-V and --version must come alone.");
+		usage_error("-V and --version must come alone.");
 		break;
 	case PARAMETER_ERROR_HELP_NOT_ALONE:
-		fatal("-h and --help must come alone.");
+		usage_error("-h and --help must come alone.");
 		break;
 	case PARAMETER_ERROR_INVALID_SEED:
-		fatal("Seed must be a non-negative integer.");
+		usage_error("Seed must be a non-negative integer.");
 		break;
 	default:
 		assert(0);
@@ -386,16 +386,16 @@ static void report_parse_error(int code, int myargc, char **myargv) {
 
 	switch (code) {
 	case PARSE_ERROR_ZERO_STEP:
-		fatal("A step of 0 (zero) is invalid.");
+		usage_error("A step of 0 (zero) is invalid.");
 		break;
 	case PARSE_ERROR_UNKNOWN_TYPE:
-		fatal("Unidentified token:");
+		usage_error("Unidentified token:");
 		break;
 	case PARSE_ERROR_INVALID_INPUT:
-		fatal("Combination of command line arguments could not be parsed:");
+		usage_error("Combination of command line arguments could not be parsed:");
 		break;
 	case PARSE_ERROR_INVALID_RANDOM:
-		fatal("Combining random and infinity not supported.");
+		usage_error("Combining random and infinity not supported.");
 		break;
 	}
 
