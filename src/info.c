@@ -38,6 +38,7 @@
  */
 
 #include "info.h"
+#include <stdlib.h>
 
 /** Return version of program. */
 void dump_version() {
@@ -79,4 +80,9 @@ void dump_usage(FILE * file) {
 		"  -w, --word=FORMAT     alias for --format\n"
 		"  -b, --dumb=TEXT       use verbatim text for values"
 		"\n");
+}
+
+void usage_error(const char * str) {
+	dump_usage(stderr);
+	fprintf(stderr, "\nERROR: %s\n", str);
 }
