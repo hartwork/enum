@@ -120,7 +120,9 @@ int main(int argc, char **argv) {
 	complete_scaffold(&dest);
 
 	if (CHECK_FLAG(dest.flags, FLAG_EQUAL_WIDTH) && ! HAS_RIGHT((&dest))) {
-		fprintf(stderr, "Combining -e|--equal-width and infinity not supported.\n");
+		fprintf(stderr, "ERROR: Combining -e|--equal-width and infinity not supported.\n");
+		fprintf(stderr, "\n");
+		dump_usage(stderr);
 		return 1;
 	}
 
