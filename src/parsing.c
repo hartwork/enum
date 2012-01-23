@@ -1116,8 +1116,9 @@ int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest
 	token_details const use_case_17[] = {DOTDOT, RIGHT};
 	token_details const use_case_18[] = {COUNT};
 	token_details const use_case_19[] = {LEFT, COUNT, RIGHT};
+	token_details const use_case_20[] = {COUNT, DOTDOT, RIGHT};
 
-	use_case table[20];
+	use_case table[21];
 	/* incrementing use_case_NN, random support (bool) */
 	INSTALL_USE_CASE( 0, 1)
 	INSTALL_USE_CASE( 1, 1)
@@ -1139,6 +1140,7 @@ int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest
 	INSTALL_USE_CASE(17, 1)
 	INSTALL_USE_CASE(18, 0)
 	INSTALL_USE_CASE(19, 1)
+	INSTALL_USE_CASE(20, 1)
 
 	/* Any arguments given? */
 	if (reduced_argc == 0) {
