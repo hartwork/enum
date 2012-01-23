@@ -83,6 +83,10 @@ void dump_usage(FILE * file) {
 }
 
 void usage_error(const char * str) {
-	dump_usage(stderr);
+	static int usage_dumped = 0;
+	if (usage_dumped == 0) {
+		dump_usage(stderr);
+		usage_dumped = 1;
+	}
 	fprintf(stderr, "\nERROR: %s\n", str);
 }
