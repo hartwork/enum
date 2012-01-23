@@ -332,16 +332,6 @@ typedef enum _parse_return {
 	PARSE_ERROR_INVALID_RANDOM /* useless arguments for random mode */
 } parse_return;
 
-/** Print error message to stderr.
- *
- * @param[in] message
- *
- * @since 0.3
- */
-static void fatal(const char * message) {
-	fprintf(stderr, "ERROR: %s\n", message);
-}
-
 /** Report error during parameter parsing.
  *
  * @param[in] code
@@ -351,7 +341,7 @@ static void fatal(const char * message) {
 static void report_parameter_error(int code) {
 	switch (code) {
 	case PARAMETER_ERROR_OUT_OF_MEMORY:
-		fatal("System too low on memory to continue.");
+		fprintf(stderr, "System too low on memory to continue.");
 		break;
 	case PARAMETER_ERROR_INVALID_PRECISION:
 		usage_error("Precision must be a non-negative integer.");
