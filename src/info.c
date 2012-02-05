@@ -83,17 +83,24 @@ void dump_usage(FILE * file) {
 		"\n");
 }
 
-void usage_error(const char * str, ...) {
+void print_problem(int problem_type, const char * str, ...) {
 	static int usage_dumped = 0;
 	va_list list;
 
-	if (usage_dumped == 0) {
+	if (problem_type == USER_ERROR && usage_dumped == 0) {
 		dump_usage(stderr);
 		fprintf(stderr, "\n");
 		usage_dumped = 1;
 	}
 
-	fprintf(stderr, "ERROR: ");
+	switch (problem_type) {
+	case WARNING:
+		fprintf(stderr, "WARNING: ");
+		break;
+	case USER_ERROR:
+		fprintf(stderr, "ERROR: ");
+		break;
+	}
 
 	va_start(list, str);
 	vfprintf(stderr, str, list);
