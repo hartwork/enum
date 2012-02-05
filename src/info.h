@@ -44,6 +44,7 @@
 
 enum _problem_type {
 	WARNING,
+	ERROR,
 	USER_ERROR
 };
 

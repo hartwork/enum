@@ -98,6 +98,7 @@ void print_problem(int problem_type, const char * str, ...) {
 		fprintf(stderr, "WARNING: ");
 		break;
 	case USER_ERROR:
+	case ERROR:
 		fprintf(stderr, "ERROR: ");
 		break;
 	}

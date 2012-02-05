@@ -135,7 +135,7 @@ int main(int argc, char **argv) {
 	if (! dest.separator) {
 		dest.separator = enum_strdup("\n");
 		if (! dest.separator) {
-			fprintf(stderr, "System too low on memory to continue.\n");
+			print_problem(ERROR, "System too low on memory to continue.\n");
 			return 1;
 		}
 	}
