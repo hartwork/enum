@@ -344,16 +344,16 @@ static void report_parameter_error(int code) {
 		print_problem(ERROR, "System too low on memory to continue.");
 		break;
 	case PARAMETER_ERROR_INVALID_PRECISION:
-		print_problem(USER_ERROR, "Precision must be a non-negative integer.");
+		print_problem(ERROR, "Precision must be a non-negative integer.");
 		break;
 	case PARAMETER_ERROR_VERSION_NOT_ALONE:
-		print_problem(USER_ERROR, "-V and --version must come alone.");
+		print_problem(ERROR, "-V and --version must come alone.");
 		break;
 	case PARAMETER_ERROR_HELP_NOT_ALONE:
-		print_problem(USER_ERROR, "-h and --help must come alone.");
+		print_problem(ERROR, "-h and --help must come alone.");
 		break;
 	case PARAMETER_ERROR_INVALID_SEED:
-		print_problem(USER_ERROR, "Seed must be a non-negative integer.");
+		print_problem(ERROR, "Seed must be a non-negative integer.");
 		break;
 	default:
 		assert(0);
@@ -376,7 +376,7 @@ static void report_parse_error(int code, int myargc, char **myargv) {
 
 	switch (code) {
 	case PARSE_ERROR_ZERO_STEP:
-		print_problem(USER_ERROR, "A step of 0 (zero) is invalid.");
+		print_problem(ERROR, "A step of 0 (zero) is invalid.");
 		break;
 	case PARSE_ERROR_UNKNOWN_TYPE:
 		print_problem(USER_ERROR, "Unidentified token:");
