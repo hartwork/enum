@@ -344,16 +344,16 @@ static void report_parameter_error(int code) {
 		fprintf(stderr, "System too low on memory to continue.");
 		break;
 	case PARAMETER_ERROR_INVALID_PRECISION:
-		usage_error("Precision must be a non-negative integer.");
+		print_problem(USER_ERROR, "Precision must be a non-negative integer.");
 		break;
 	case PARAMETER_ERROR_VERSION_NOT_ALONE:
-		usage_error("-V and --version must come alone.");
+		print_problem(USER_ERROR, "-V and --version must come alone.");
 		break;
 	case PARAMETER_ERROR_HELP_NOT_ALONE:
-		usage_error("-h and --help must come alone.");
+		print_problem(USER_ERROR, "-h and --help must come alone.");
 		break;
 	case PARAMETER_ERROR_INVALID_SEED:
-		usage_error("Seed must be a non-negative integer.");
+		print_problem(USER_ERROR, "Seed must be a non-negative integer.");
 		break;
 	default:
 		assert(0);
@@ -376,16 +376,16 @@ static void report_parse_error(int code, int myargc, char **myargv) {
 
 	switch (code) {
 	case PARSE_ERROR_ZERO_STEP:
-		usage_error("A step of 0 (zero) is invalid.");
+		print_problem(USER_ERROR, "A step of 0 (zero) is invalid.");
 		break;
 	case PARSE_ERROR_UNKNOWN_TYPE:
-		usage_error("Unidentified token:");
+		print_problem(USER_ERROR, "Unidentified token:");
 		break;
 	case PARSE_ERROR_INVALID_INPUT:
-		usage_error("Combination of command line arguments could not be parsed:");
+		print_problem(USER_ERROR, "Combination of command line arguments could not be parsed:");
 		break;
 	case PARSE_ERROR_INVALID_RANDOM:
-		usage_error("Combining random and infinity not supported.");
+		print_problem(USER_ERROR, "Combining random and infinity not supported.");
 		break;
 	}
 
@@ -677,7 +677,7 @@ static int analyze_format(const char * format) {
 
 	case CUSTOM_PRINTF_INVALID_FORMAT_ENUM:
 	case CUSTOM_PRINTF_INVALID_FORMAT_PRINTF:
-		fprintf(stderr, "ERROR: Invalid format \"%s\".\n", format);
+		print_problem(USER_ERROR, "Invalid format \"%s\".\n", format);
 		return 0;
 
 	case CUSTOM_PRINTF_OUT_OF_MEMORY:
@@ -917,7 +917,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 		case '?':
 			if (optind > previous_error_optind)
 			{
-				usage_error("Unrecognized option %s", original_argv[optind - 1]);
+				print_problem(USER_ERROR, "Unrecognized option %s", original_argv[optind - 1]);
 				success = 0;
 
 				previous_error_optind = optind;
@@ -931,14 +931,14 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 
 	/* Any paramaters or arguments given? */
 	if (original_argc == 1) {
-		usage_error("No arguments given");
+		print_problem(USER_ERROR, "No arguments given");
 		success = 0;
 	}
 
 	/* Seed given without random flag? */
 	if (CHECK_FLAG(dest->flags, FLAG_USER_SEED)
 			&& ! CHECK_FLAG(dest->flags, FLAG_RANDOM)) {
-		usage_error("Parameter -i|--seed=NUMBER requires -r|--random.");
+		print_problem(USER_ERROR, "Parameter -i|--seed=NUMBER requires -r|--random.");
 		success = 0;
 	}
 
@@ -1132,7 +1132,7 @@ int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest
 
 	/* Any arguments given? */
 	if (reduced_argc == 0) {
-		usage_error("No arguments given");
+		print_problem(USER_ERROR, "No arguments given");
 		return 0;
 	}
 
