@@ -44,6 +44,6 @@
 
 void dump_version();
 void dump_usage(FILE * file);
-void usage_error(const char * str);
+void usage_error(const char * str, ...);
 
 #endif /* INFO_H */

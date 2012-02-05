@@ -39,6 +39,7 @@
 
 #include "info.h"
 #include <stdlib.h>
+#include <stdarg.h>
 
 /** Return version of program. */
 void dump_version() {
@@ -82,12 +83,21 @@ void dump_usage(FILE * file) {
 		"\n");
 }
 
-void usage_error(const char * str) {
+void usage_error(const char * str, ...) {
 	static int usage_dumped = 0;
+	va_list list;
+
 	if (usage_dumped == 0) {
 		dump_usage(stderr);
 		fprintf(stderr, "\n");
 		usage_dumped = 1;
 	}
-	fprintf(stderr, "ERROR: %s\n", str);
+
+	fprintf(stderr, "ERROR: ");
+
+	va_start(list, str);
+	vfprintf(stderr, str, list);
+	va_end(list);
+
+	fprintf(stderr, "\n");
 }
