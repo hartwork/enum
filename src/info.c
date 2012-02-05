@@ -86,7 +86,8 @@ void usage_error(const char * str) {
 	static int usage_dumped = 0;
 	if (usage_dumped == 0) {
 		dump_usage(stderr);
+		fprintf(stderr, "\n");
 		usage_dumped = 1;
 	}
-	fprintf(stderr, "\nERROR: %s\n", str);
+	fprintf(stderr, "ERROR: %s\n", str);
 }
