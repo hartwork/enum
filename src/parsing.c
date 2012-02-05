@@ -917,10 +917,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 		case '?':
 			if (optind > previous_error_optind)
 			{
-				char * errstr = malloc(sizeof("Unrecognized option \" \"") + sizeof(original_argv[optind - 1]) + 1);
-				sprintf(errstr, "Unrecognized option \"%s\"", original_argv[optind - 1]);
-				usage_error(errstr);
-				free(errstr);
+				usage_error("Unrecognized option %s", original_argv[optind - 1]);
 				success = 0;
 
 				previous_error_optind = optind;
