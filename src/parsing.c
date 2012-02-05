@@ -392,7 +392,8 @@ static void report_parse_error(int code, int myargc, char **myargv) {
 	if (myargc > 0) {
 		assert(myargv != NULL);
 		for (i = 0; i < myargc; i++) {
-			fprintf(stderr, "%s ", myargv[i]);
+			const char * const suffix = (i < myargc - 1) ? " " : "";
+			fprintf(stderr, "%s%s", myargv[i], suffix);
 		}
 		fprintf(stderr, "\n");
 	}
