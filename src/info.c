@@ -41,12 +41,20 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
-/** Return version of program. */
+/** Return version of program.
+ *
+ * @since 0.2
+ */
 void dump_version() {
 	puts(PACKAGE_VERSION);
 }
 
-/** Print usage of program. */
+/** Print usage of program.
+ *
+ * @param[in] file File stream to dump usage into
+ *
+ * @since 0.2
+ */
 void dump_usage(FILE * file) {
 	fprintf(file,
 		"Usage: \n"
@@ -83,6 +91,14 @@ void dump_usage(FILE * file) {
 		"\n");
 }
 
+/** Print proper message to stderr for warnings and errors
+ *
+ * @param[in] problem_type Type of given problem (see _problem_type)
+ * @param[in] str Error string to print (printf format)
+ * @param[in] ... variable list of arguments to complement error string
+ *
+ * @since 1.1
+ */
 void print_problem(int problem_type, const char * str, ...) {
 	static int usage_dumped = 0;
 	va_list list;
