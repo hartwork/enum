@@ -332,16 +332,6 @@ typedef enum _parse_return {
 	PARSE_ERROR_INVALID_RANDOM /* useless arguments for random mode */
 } parse_return;
 
-/** Print error message to stderr.
- *
- * @param[in] message
- *
- * @since 0.3
- */
-static void fatal(const char * message) {
-	fprintf(stderr, "ERROR: %s\n", message);
-}
-
 /** Report error during parameter parsing.
  *
  * @param[in] code
@@ -351,19 +341,19 @@ static void fatal(const char * message) {
 static void report_parameter_error(int code) {
 	switch (code) {
 	case PARAMETER_ERROR_OUT_OF_MEMORY:
-		fatal("System too low on memory to continue.");
+		print_problem(ERROR, "System too low on memory to continue.");
 		break;
 	case PARAMETER_ERROR_INVALID_PRECISION:
-		fatal("Precision must be a non-negative integer.");
+		print_problem(USER_ERROR, "Precision must be a non-negative integer.");
 		break;
 	case PARAMETER_ERROR_VERSION_NOT_ALONE:
-		fatal("-V and --version must come alone.");
+		print_problem(USER_ERROR, "-V and --version must come alone.");
 		break;
 	case PARAMETER_ERROR_HELP_NOT_ALONE:
-		fatal("-h and --help must come alone.");
+		print_problem(USER_ERROR, "-h and --help must come alone.");
 		break;
 	case PARAMETER_ERROR_INVALID_SEED:
-		fatal("Seed must be a non-negative integer.");
+		print_problem(USER_ERROR, "Seed must be a non-negative integer.");
 		break;
 	default:
 		assert(0);
@@ -386,23 +376,24 @@ static void report_parse_error(int code, int myargc, char **myargv) {
 
 	switch (code) {
 	case PARSE_ERROR_ZERO_STEP:
-		fatal("A step of 0 (zero) is invalid.");
+		print_problem(USER_ERROR, "A step of 0 (zero) is invalid.");
 		break;
 	case PARSE_ERROR_UNKNOWN_TYPE:
-		fatal("Unidentified token:");
+		print_problem(USER_ERROR, "Unidentified token:");
 		break;
 	case PARSE_ERROR_INVALID_INPUT:
-		fatal("Combination of command line arguments could not be parsed:");
+		print_problem(USER_ERROR, "Combination of command line arguments could not be parsed:");
 		break;
 	case PARSE_ERROR_INVALID_RANDOM:
-		fatal("Combining random and infinity not supported.");
+		print_problem(USER_ERROR, "Combining random and infinity not supported.");
 		break;
 	}
 
 	if (myargc > 0) {
 		assert(myargv != NULL);
 		for (i = 0; i < myargc; i++) {
-			fprintf(stderr, "%s ", myargv[i]);
+			const char * const suffix = (i < myargc - 1) ? " " : "";
+			fprintf(stderr, "%s%s", myargv[i], suffix);
 		}
 		fprintf(stderr, "\n");
 	}
@@ -507,27 +498,27 @@ static int set_separator(scaffolding * scaffold, const char * string,
 		separator_change action_to_take) {
 	if (CHECK_FLAG(scaffold->flags, FLAG_NULL_BYTES)) {
 		if (action_to_take == APPLY_SEPARATOR) {
-			fprintf(stderr,
-				"WARNING: Discarding null byte separator "
+			print_problem(WARNING,
+				"Discarding null byte separator "
 				"in favor of \"%s\".\n", string);
 		} else {
 			assert(action_to_take == APPLY_NULL_BYTES);
-			fprintf(stderr,
-				"WARNING: Duplicate -z|--zero|--null detected.\n");
+			print_problem(WARNING,
+				"Duplicate -z|--zero|--null detected.\n");
 		}
 	}
 
 	if (scaffold->separator) {
 		if (action_to_take == APPLY_SEPARATOR) {
-			fprintf(stderr,
-				"WARNING: Discarding previous separator "
+			print_problem(WARNING,
+				"Discarding previous separator "
 				"\"%s\" in favor of \"%s\".\n",
 				scaffold->separator, string
 				);
 		} else {
 			assert(action_to_take == APPLY_NULL_BYTES);
-			fprintf(stderr,
-				"WARNING: Discarding previous separator "
+			print_problem(WARNING,
+				"Discarding previous separator "
 				"\"%s\" in favor of null bytes.\n",
 				scaffold->separator);
 		}
@@ -574,8 +565,8 @@ static int set_terminator(scaffolding * scaffold, const char * string) {
 		return 0;
 
 	if (scaffold->terminator) {
-		fprintf(stderr,
-			"WARNING: Discarding previous terminator "
+		print_problem(WARNING,
+			"Discarding previous terminator "
 			"\"%s\" in favor of \"%s\".\n",
 			scaffold->terminator, string);
 		free(scaffold->terminator);
@@ -639,20 +630,20 @@ static void prepare_setting_format(scaffolding * scaffold, format_change expecte
 
 		if (CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION)) {
 			if (CHECK_FLAG(scaffold->flags, FLAG_EQUAL_WIDTH)) {
-				format = "WARNING: Discarding format previously "
+				format = "Discarding format previously "
 				    "set by -e|--equal-width and -p|--precision %d.\n";
 			} else {
-				format = "WARNING: Discarding format previously "
+				format = "Discarding format previously "
 				    "set by -p|--precision %d.\n";
 			}
 		} else {
 			assert(CHECK_FLAG(scaffold->flags, FLAG_EQUAL_WIDTH));
-			format = "WARNING: Discarding format previously "
+			format = "Discarding format previously "
 			    "set by -e|--equal-width.\n";
 		}
-		fprintf(stderr, format, scaffold->user_precision);
+		print_problem(WARNING, format, scaffold->user_precision);
 	} else if (scaffold->format) {
-		fprintf(stderr, "WARNING: Discarding previous format \"%s\".\n", scaffold->format);
+		print_problem(WARNING, "Discarding previous format \"%s\".\n", scaffold->format);
 	}
 
 	/* Remove previous format */
@@ -686,7 +677,7 @@ static int analyze_format(const char * format) {
 
 	case CUSTOM_PRINTF_INVALID_FORMAT_ENUM:
 	case CUSTOM_PRINTF_INVALID_FORMAT_PRINTF:
-		fprintf(stderr, "ERROR: Invalid format \"%s\".\n", format);
+		print_problem(USER_ERROR, "Invalid format \"%s\".\n", format);
 		return 0;
 
 	case CUSTOM_PRINTF_OUT_OF_MEMORY:
@@ -721,7 +712,6 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 	int option_index = 0;
 
 	int success = 1;
-	int usage_needed = 0;
 	int quit = 0;
 	int previous_error_optind = 1;
 
@@ -825,8 +815,8 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 				char * end;
 
 				if (CHECK_FLAG(dest->flags, FLAG_USER_SEED)) {
-					fprintf(stderr,
-						"WARNING: Discarding previously specified seed of %d.\n",
+					print_problem(WARNING,
+						"Discarding previously specified seed of %d.\n",
 						dest->seed);
 				}
 
@@ -927,9 +917,8 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 		case '?':
 			if (optind > previous_error_optind)
 			{
-				fprintf(stderr, "ERROR: Unrecognized option \"%s\"\n", original_argv[optind - 1]);
+				print_problem(USER_ERROR, "Unrecognized option %s", original_argv[optind - 1]);
 				success = 0;
-				usage_needed = 1;
 
 				previous_error_optind = optind;
 			}
@@ -942,22 +931,15 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 
 	/* Any paramaters or arguments given? */
 	if (original_argc == 1) {
-		fatal("No arguments given");
+		print_problem(USER_ERROR, "No arguments given");
 		success = 0;
-		usage_needed = 1;
 	}
 
 	/* Seed given without random flag? */
 	if (CHECK_FLAG(dest->flags, FLAG_USER_SEED)
 			&& ! CHECK_FLAG(dest->flags, FLAG_RANDOM)) {
-		fprintf(stderr, "ERROR: Parameter -i|--seed %u requires -r|--random.\n", dest->seed);
+		print_problem(USER_ERROR, "Parameter -i|--seed=NUMBER requires -r|--random.");
 		success = 0;
-		usage_needed = 1;
-	}
-
-	if (! success && usage_needed) {
-		fprintf(stderr, "\n");
-		dump_usage(stderr);
 	}
 
 	return success
@@ -1150,7 +1132,7 @@ int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest
 
 	/* Any arguments given? */
 	if (reduced_argc == 0) {
-		fatal("No arguments given");
+		print_problem(USER_ERROR, "No arguments given");
 		return 0;
 	}
 

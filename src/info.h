@@ -42,7 +42,14 @@
 
 #include <stdio.h>  /* for FILE* */
 
+enum _problem_type {
+	WARNING,
+	ERROR,
+	USER_ERROR
+};
+
 void dump_version();
 void dump_usage(FILE * file);
+void print_problem(int problem_type, const char * str, ...);
 
 #endif /* INFO_H */

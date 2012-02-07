@@ -38,13 +38,23 @@
  */
 
 #include "info.h"
+#include <stdlib.h>
+#include <stdarg.h>
 
-/** Return version of program. */
+/** Return version of program.
+ *
+ * @since 0.2
+ */
 void dump_version() {
 	puts(PACKAGE_VERSION);
 }
 
-/** Print usage of program. */
+/** Print usage of program.
+ *
+ * @param[in] file File stream to dump usage into
+ *
+ * @since 0.2
+ */
 void dump_usage(FILE * file) {
 	fprintf(file,
 		"Usage: \n"
@@ -79,4 +89,39 @@ void dump_usage(FILE * file) {
 		"  -w, --word=FORMAT     alias for --format\n"
 		"  -b, --dumb=TEXT       use verbatim text for values"
 		"\n");
+}
+
+/** Print proper message to stderr for warnings and errors
+ *
+ * @param[in] problem_type Type of given problem (see _problem_type)
+ * @param[in] str Error string to print (printf format)
+ * @param[in] ... variable list of arguments to complement error string
+ *
+ * @since 1.1
+ */
+void print_problem(int problem_type, const char * str, ...) {
+	static int usage_dumped = 0;
+	va_list list;
+
+	if (problem_type == USER_ERROR && usage_dumped == 0) {
+		dump_usage(stderr);
+		fprintf(stderr, "\n");
+		usage_dumped = 1;
+	}
+
+	switch (problem_type) {
+	case WARNING:
+		fprintf(stderr, "WARNING: ");
+		break;
+	case USER_ERROR:
+	case ERROR:
+		fprintf(stderr, "ERROR: ");
+		break;
+	}
+
+	va_start(list, str);
+	vfprintf(stderr, str, list);
+	va_end(list);
+
+	fprintf(stderr, "\n");
 }

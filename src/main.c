@@ -42,6 +42,7 @@
 #include "assertion.h"
 #include "printing.h"
 #include "utils.h"
+#include "info.h"
 
 #include <stdlib.h>  /* for srand */
 #include <time.h>  /* for time */
@@ -120,7 +121,7 @@ int main(int argc, char **argv) {
 	complete_scaffold(&dest);
 
 	if (CHECK_FLAG(dest.flags, FLAG_EQUAL_WIDTH) && ! HAS_RIGHT((&dest))) {
-		fprintf(stderr, "Combining -e|--equal-width and infinity not supported.\n");
+		print_problem(USER_ERROR, "Combining -e|--equal-width and infinity not supported.");
 		return 1;
 	}
 
@@ -134,7 +135,7 @@ int main(int argc, char **argv) {
 	if (! dest.separator) {
 		dest.separator = enum_strdup("\n");
 		if (! dest.separator) {
-			fprintf(stderr, "System too low on memory to continue.\n");
+			print_problem(ERROR, "System too low on memory to continue.\n");
 			return 1;
 		}
 	}
