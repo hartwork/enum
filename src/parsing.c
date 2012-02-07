@@ -592,7 +592,7 @@ static int set_terminator(scaffolding * scaffold, const char * string) {
  *
  * @since 0.5
  */
-static int save_new_token(unsigned int * new_argc, char ** new_argv, char * token) {
+static int save_new_token(int * new_argc, char ** new_argv, char * token) {
 	char * newstr = enum_strdup(token);
 
 	if (newstr == NULL)
@@ -707,7 +707,7 @@ static int analyze_format(const char * format) {
  *
  * @since 0.3
  */
-int parse_parameters(unsigned int original_argc, char **original_argv, scaffolding *dest) {
+int parse_parameters(int original_argc, char **original_argv, scaffolding *dest) {
 	int c;
 	int option_index = 0;
 
@@ -964,9 +964,9 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
  *
  * @since 0.5
  */
-int preparse_args(unsigned int reduced_argc, char ** reduced_argv,
-		unsigned int * new_argc, char *** new_argv) {
-	unsigned int i;
+int preparse_args(int reduced_argc, char ** reduced_argv,
+		int * new_argc, char *** new_argv) {
+	int i;
 	size_t argv_mem; /* How much memory we already allocated */
 
 	/* Currently we support use cases with max 6 tokens. To avoid a few
@@ -1076,10 +1076,10 @@ int preparse_args(unsigned int reduced_argc, char ** reduced_argv,
  *
  * @since 0.3
  */
-int parse_args(unsigned int reduced_argc, char **reduced_argv, scaffolding *dest) {
-	unsigned int i;
-	unsigned int j;
-	unsigned int k;
+int parse_args(int reduced_argc, char **reduced_argv, scaffolding *dest) {
+	int i;
+	int j;
+	int k;
 	unsigned int l;
 	unsigned int m;
 	use_case const *valid_case = NULL;

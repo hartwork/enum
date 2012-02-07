@@ -89,7 +89,7 @@ int main(int argc, char **argv) {
 	float out;
 	int ret;
 	int i = 0;
-	unsigned int newargc;
+	int newargc;
 	char ** newargv;
 
 	initialize_scaffold(&dest);
