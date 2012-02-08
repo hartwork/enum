@@ -917,7 +917,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 		case '?':
 			if (optind > previous_error_optind)
 			{
-				print_problem(USER_ERROR, "Unrecognized option %s", original_argv[optind - 1]);
+				print_problem(USER_ERROR, "Unrecognized option \"%s\"", original_argv[optind - 1]);
 				success = 0;
 
 				previous_error_optind = optind;
