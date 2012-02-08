@@ -677,7 +677,7 @@ static int analyze_format(const char * format) {
 
 	case CUSTOM_PRINTF_INVALID_FORMAT_ENUM:
 	case CUSTOM_PRINTF_INVALID_FORMAT_PRINTF:
-		print_problem(USER_ERROR, "Invalid format \"%s\".\n", format);
+		print_problem(USER_ERROR, "Invalid format \"%s\".", format);
 		return 0;
 
 	case CUSTOM_PRINTF_OUT_OF_MEMORY:
