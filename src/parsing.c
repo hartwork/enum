@@ -1141,12 +1141,12 @@ int parse_args(int reduced_argc, char **reduced_argv, scaffolding *dest) {
 		token_type type = identify_token(reduced_argv[i], &value);
 
 		if (! IS_TOKEN_ERROR(type)) {
-			for (j = 0; j < (sizeof(table) / sizeof(use_case)); j++) {
+			for (j = 0; j < (signed int)(sizeof(table) / sizeof(use_case)); j++) {
 				if (table[j].length == 0) {
 					continue;
 				}
 
-				if (table[j].length <= i) {
+				if ((signed int)table[j].length <= i) {
 					table[j].length = 0;
 					continue;
 				}
@@ -1162,11 +1162,11 @@ int parse_args(int reduced_argc, char **reduced_argv, scaffolding *dest) {
 		}
 	}
 
-	for (k = 0; k < (sizeof(table) / sizeof(use_case)); k++) {
+	for (k = 0; k < (signed int)(sizeof(table) / sizeof(use_case)); k++) {
 		if (table[k].length == 0)
 			continue;
 
-		if (table[k].length != reduced_argc)
+		if ((signed int)table[k].length != reduced_argc)
 			continue;
 
 		if (CHECK_FLAG(dest->flags, FLAG_RANDOM) && (! table[k].random)) {
