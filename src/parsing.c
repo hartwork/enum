@@ -704,7 +704,8 @@ static int analyze_format(const char * format) {
  */
 static int is_number(char *str) {
 	char *end;
-	strtol(str, &end, 10);
+	const long dummy = strtol(str, &end, 10);
+	(void)dummy;
 	if (end - str != (int)strlen(str))
 		return 0;
 	return 1;
