@@ -599,7 +599,7 @@ static int save_new_token(int * new_argc, char ** new_argv, char * token) {
 		return 0;
 
 	new_argv[*new_argc] = newstr;
-	*new_argc += 1;
+	(*new_argc) += 1;
 	return 1;
 }
 
