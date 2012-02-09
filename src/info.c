@@ -99,9 +99,10 @@ void dump_usage(FILE * file) {
  *
  * @since 1.1
  */
-void print_problem(int problem_type, const char * str, ...) {
+void print_problem(int problem_type, ...) {
 	static int usage_dumped = 0;
 	va_list list;
+	char * str;
 
 	if (problem_type == USER_ERROR && usage_dumped == 0) {
 		dump_usage(stderr);
@@ -117,9 +118,13 @@ void print_problem(int problem_type, const char * str, ...) {
 	case ERROR:
 		fprintf(stderr, "ERROR: ");
 		break;
+	case OUTOFMEM_ERROR:
+		fprintf(stderr, "ERROR: System too low on memory to continue.\n");
+		return;
 	}
 
-	va_start(list, str);
+	va_start(list, problem_type);
+	str = va_arg(list, char *);
 	vfprintf(stderr, str, list);
 	va_end(list);
 

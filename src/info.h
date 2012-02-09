@@ -44,12 +44,13 @@
 
 enum _problem_type {
 	WARNING,
+	OUTOFMEM_ERROR,
 	ERROR,
 	USER_ERROR
 };
 
 void dump_version();
 void dump_usage(FILE * file);
-void print_problem(int problem_type, const char * str, ...);
+void print_problem(int problem_type, ...);
 
 #endif /* INFO_H */

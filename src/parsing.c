@@ -341,7 +341,7 @@ typedef enum _parse_return {
 static void report_parameter_error(int code) {
 	switch (code) {
 	case PARAMETER_ERROR_OUT_OF_MEMORY:
-		print_problem(ERROR, "System too low on memory to continue.");
+		print_problem(OUTOFMEM_ERROR);
 		break;
 	case PARAMETER_ERROR_INVALID_PRECISION:
 		print_problem(USER_ERROR, "Precision must be a non-negative integer.");
