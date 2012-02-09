@@ -500,11 +500,11 @@ static int set_separator(scaffolding * scaffold, const char * string,
 		if (action_to_take == APPLY_SEPARATOR) {
 			print_problem(WARNING,
 				"Discarding null byte separator "
-				"in favor of \"%s\".\n", string);
+				"in favor of \"%s\".", string);
 		} else {
 			assert(action_to_take == APPLY_NULL_BYTES);
 			print_problem(WARNING,
-				"Duplicate -z|--zero|--null detected.\n");
+				"Duplicate -z|--zero|--null detected.");
 		}
 	}
 
@@ -512,14 +512,14 @@ static int set_separator(scaffolding * scaffold, const char * string,
 		if (action_to_take == APPLY_SEPARATOR) {
 			print_problem(WARNING,
 				"Discarding previous separator "
-				"\"%s\" in favor of \"%s\".\n",
+				"\"%s\" in favor of \"%s\".",
 				scaffold->separator, string
 				);
 		} else {
 			assert(action_to_take == APPLY_NULL_BYTES);
 			print_problem(WARNING,
 				"Discarding previous separator "
-				"\"%s\" in favor of null bytes.\n",
+				"\"%s\" in favor of null bytes.",
 				scaffold->separator);
 		}
 		free(scaffold->separator);
@@ -567,7 +567,7 @@ static int set_terminator(scaffolding * scaffold, const char * string) {
 	if (scaffold->terminator) {
 		print_problem(WARNING,
 			"Discarding previous terminator "
-			"\"%s\" in favor of \"%s\".\n",
+			"\"%s\" in favor of \"%s\".",
 			scaffold->terminator, string);
 		free(scaffold->terminator);
 	}
@@ -631,19 +631,19 @@ static void prepare_setting_format(scaffolding * scaffold, format_change expecte
 		if (CHECK_FLAG(scaffold->flags, FLAG_USER_PRECISION)) {
 			if (CHECK_FLAG(scaffold->flags, FLAG_EQUAL_WIDTH)) {
 				format = "Discarding format previously "
-				    "set by -e|--equal-width and -p|--precision %d.\n";
+				    "set by -e|--equal-width and -p|--precision %d.";
 			} else {
 				format = "Discarding format previously "
-				    "set by -p|--precision %d.\n";
+				    "set by -p|--precision %d.";
 			}
 		} else {
 			assert(CHECK_FLAG(scaffold->flags, FLAG_EQUAL_WIDTH));
 			format = "Discarding format previously "
-			    "set by -e|--equal-width.\n";
+			    "set by -e|--equal-width.";
 		}
 		print_problem(WARNING, format, scaffold->user_precision);
 	} else if (scaffold->format) {
-		print_problem(WARNING, "Discarding previous format \"%s\".\n", scaffold->format);
+		print_problem(WARNING, "Discarding previous format \"%s\".", scaffold->format);
 	}
 
 	/* Remove previous format */
@@ -816,7 +816,7 @@ int parse_parameters(unsigned int original_argc, char **original_argv, scaffoldi
 
 				if (CHECK_FLAG(dest->flags, FLAG_USER_SEED)) {
 					print_problem(WARNING,
-						"Discarding previously specified seed of %d.\n",
+						"Discarding previously specified seed of %d.",
 						dest->seed);
 				}
 
