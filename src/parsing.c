@@ -714,7 +714,8 @@ static int is_number(char *str) {
 /** Parsing of command line parameters.
  *
  * Parameters are all parts of given command line args that start with one or
- * two dashes, i.e. whatever getopt can handle.
+ * two dashes, i.e. whatever getopt can handle. Parsing stops at the first
+ * thing that is not a parameter (including negative numbers).
  *
  * @param[in] original_argc
  * @param[in] original_argv
@@ -731,11 +732,12 @@ int parse_parameters(int original_argc, char **original_argv, scaffolding *dest)
 	int success = 1;
 	int quit = 0;
 	int previous_error_optind = 1;
+	int ran_into_negative_number = 0;
 
 	/* Inhibit getopt's own error message for unrecognized options */
 	opterr = 0;
 
-	while (1) {
+	while (! ran_into_negative_number) {
 		struct option long_options[] = {
 			{"help",         no_argument,       0, 'h'},
 			{"version",      no_argument,       0, 'V'},
@@ -934,9 +936,14 @@ int parse_parameters(int original_argc, char **original_argv, scaffolding *dest)
 		case '?':
 			if (optind > previous_error_optind)
 			{
-				print_problem(USER_ERROR, "Unrecognized option \"%s\"", original_argv[optind - 1]);
-				success = 0;
-
+				/* Use is_number to see if this unknown parameter actually is an argument, like '-2' */
+				if (is_number(original_argv[optind - 1])) {
+					ran_into_negative_number = 1;
+					optind--;
+				} else {
+					print_problem(USER_ERROR, "Unrecognized option \"%s\"", original_argv[optind - 1]);
+					success = 0;
+				}
 				previous_error_optind = optind;
 			}
 			break;
