@@ -971,6 +971,13 @@ int parse_parameters(int original_argc, char **original_argv, scaffolding *dest)
 		success = 0;
 	}
 
+	/* decremental cannot be used with random */
+	if (CHECK_FLAG(dest->flags, FLAG_REVERSE)
+			&& CHECK_FLAG(dest->flags, FLAG_RANDOM)) {
+		print_problem(USER_ERROR, "Parameter -d|--decremental together with -r|--random not supported.");
+		success = 0;
+	}
+
 	return success
 		? (quit
 			? 0
