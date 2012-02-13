@@ -125,6 +125,11 @@ int main(int argc, char **argv) {
 		return 1;
 	}
 
+	if (CHECK_FLAG(dest.flags, FLAG_REVERSE) && ! HAS_RIGHT((&dest))) {
+		print_problem(USER_ERROR, "Combining -d|--decremental and infinity not supported.");
+		return 1;
+	}
+
 	if (!dest.format) {
 		unsigned int precision = CHECK_FLAG(dest.flags, FLAG_USER_PRECISION)
 			? dest.user_precision
