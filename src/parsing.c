@@ -731,7 +731,7 @@ int parse_parameters(int original_argc, char **original_argv, scaffolding *dest)
 
 	int success = 1;
 	int quit = 0;
-	int previous_error_optind = 1;
+	int previous_error_optind = 0;
 	int ran_into_negative_number = 0;
 
 	/* Inhibit getopt's own error message for unrecognized options */
@@ -757,6 +757,9 @@ int parse_parameters(int original_argc, char **original_argv, scaffolding *dest)
 			{"zero",         no_argument,       0, 'z'},
 			{0, 0, 0, 0}
 		};
+
+		/* Backup optind value _before_ call to getopt_long */
+		const int guilty_index = (optind > 0) ? optind : 1;
 
 		c = getopt_long(original_argc, original_argv, "+b:cef:hi:lnp:rs:t:Vw:z", long_options, &option_index);
 
@@ -934,17 +937,17 @@ int parse_parameters(int original_argc, char **original_argv, scaffolding *dest)
 			break;
 
 		case '?':
-			if (optind > previous_error_optind)
+			if (guilty_index > previous_error_optind)
 			{
 				/* Use is_number to see if this unknown parameter actually is an argument, like '-2' */
-				if (is_number(original_argv[optind - 1])) {
+				if (is_number(original_argv[guilty_index])) {
 					ran_into_negative_number = 1;
-					optind--;
+					optind = guilty_index;
 				} else {
-					print_problem(USER_ERROR, "Unrecognized option \"%s\"", original_argv[optind - 1]);
+					print_problem(USER_ERROR, "Unrecognized option \"%s\"", original_argv[guilty_index]);
 					success = 0;
 				}
-				previous_error_optind = optind;
+				previous_error_optind = guilty_index;
 			}
 			break;
 
