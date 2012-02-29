@@ -134,6 +134,7 @@ typedef struct _use_case {
 
 /** from getopt */
 extern int opterr;
+extern int optopt;
 
 /** @name Setter functions
  * Functions to be used through function_pointer.
@@ -731,7 +732,6 @@ int parse_parameters(int original_argc, char **original_argv, scaffolding *dest)
 
 	int success = 1;
 	int quit = 0;
-	int previous_error_optind = 0;
 	int ran_into_negative_number = 0;
 
 	/* Inhibit getopt's own error message for unrecognized options */
@@ -937,17 +937,13 @@ int parse_parameters(int original_argc, char **original_argv, scaffolding *dest)
 			break;
 
 		case '?':
-			if (guilty_index > previous_error_optind)
-			{
-				/* Use is_number to see if this unknown parameter actually is an argument, like '-2' */
-				if (is_number(original_argv[guilty_index])) {
-					ran_into_negative_number = 1;
-					optind = guilty_index;
-				} else {
-					print_problem(USER_ERROR, "Unrecognized option \"%s\"", original_argv[guilty_index]);
-					success = 0;
-				}
-				previous_error_optind = guilty_index;
+			/* Use is_number to see if this unknown parameter actually is an argument, like '-2' */
+			if (is_number(original_argv[guilty_index])) {
+				ran_into_negative_number = 1;
+				optind = guilty_index;
+			} else {
+				print_problem(USER_ERROR, "Unrecognized option \"-%c\"", optopt);
+				success = 0;
 			}
 			break;
 
