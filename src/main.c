@@ -108,11 +108,13 @@ int main(int argc, char **argv) {
 	}
 
 	if (! preparse_args(argc - argpos, argv + argpos, &newargc, &newargv)) {
+		print_problem(OUTOFMEM_ERROR);
 		free_malloced_argv(newargc, &newargv);
 		return 1;
 	}
 
 	if (! parse_args(newargc, newargv, &dest)) {
+		print_problem(OUTOFMEM_ERROR);
 		free_malloced_argv(newargc, &newargv);
 		return 1;
 	}
