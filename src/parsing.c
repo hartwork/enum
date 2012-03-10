@@ -809,6 +809,7 @@ int parse_parameters(int original_argc, char **original_argv, scaffolding *dest)
 				char * const unescaped = enum_strdup(optarg);
 				if (! unescaped) {
 					report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+					break;
 				}
 				unescape(unescaped, GUARD_PERCENT);
 
@@ -903,6 +904,7 @@ int parse_parameters(int original_argc, char **original_argv, scaffolding *dest)
 				char * const unescaped = enum_strdup(optarg);
 				if (! unescaped) {
 					report_parameter_error(PARAMETER_ERROR_OUT_OF_MEMORY);
+					break;
 				}
 				unescape(unescaped, GUARD_PERCENT);
 
