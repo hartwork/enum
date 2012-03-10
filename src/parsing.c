@@ -1034,8 +1034,11 @@ int preparse_args(int reduced_argc, char ** reduced_argv,
 
 			for (j = strlen(p); j > 0; j--) {
 				setter_value value;
+				token_type newtype;
 				char * str = enum_strndup(p, j);
-				token_type newtype = identify_token(str, &value);
+				if (! str)
+					return 0;
+				newtype = identify_token(str, &value);
 
 				if (! IS_TOKEN_ERROR(newtype)) {
 					/* Don't allow N. */
