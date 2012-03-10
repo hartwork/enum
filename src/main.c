@@ -168,7 +168,10 @@ int main(int argc, char **argv) {
 			}
 		}
 
-		multi_printf(dest.format, out);
+		if (multi_printf(dest.format, out) == CUSTOM_PRINTF_OUT_OF_MEMORY) {
+			print_problem(OUTOFMEM_ERROR);
+			return 1;
+		}
 
 		if (ret != YIELD_MORE)
 			break;
