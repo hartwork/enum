@@ -131,7 +131,10 @@ int main(int argc, char **argv) {
 		unsigned int precision = CHECK_FLAG(dest.flags, FLAG_USER_PRECISION)
 			? dest.user_precision
 			: dest.auto_precision;
-		make_default_format_string(&dest, precision);
+		if (! make_default_format_string(&dest, precision)) {
+			print_problem(OUTOFMEM_ERROR);
+			return 1;
+		}
 	}
 
 	if (! dest.separator) {
