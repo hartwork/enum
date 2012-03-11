@@ -402,3 +402,21 @@ void initialize_scaffold(scaffolding * dest) {
 	dest->separator = NULL;
 	dest->terminator = NULL;
 }
+
+/** Termination of scaffold.
+ *
+ * Destroying of the scaffold structure. At the moment that just means freeing
+ * all malloc'ed memory in it.
+ *
+ * @param[in,out] dest (scaffold)
+ *
+ * @since 1.2
+ */
+void terminate_scaffold(scaffolding * dest) {
+	if (dest->format != NULL)
+		free(dest->format);
+	if (dest->separator != NULL)
+		free(dest->separator);
+	if (dest->terminator != NULL)
+		free(dest->terminator);
+}

@@ -172,5 +172,6 @@ typedef struct _scaffolding {
 void complete_scaffold(scaffolding * scaffold);
 yield_status enum_yield(scaffolding * scaffold, float * dest);
 void initialize_scaffold(scaffolding * dest);
+void terminate_scaffold(scaffolding * dest);
 
 #endif /* GENERATOR_H */
