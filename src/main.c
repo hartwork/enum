@@ -74,13 +74,9 @@ void free_malloced_argv(int argc, char *** pargv) {
 static void finalize_output(scaffolding * dest) {
 	if (dest->terminator) {
 		printf("%s", dest->terminator);
-		free(dest->terminator);
 	} else {
 		printf("\n");
 	}
-
-	free(dest->format);
-	free(dest->separator);
 }
 
 int main(int argc, char **argv) {
@@ -98,9 +94,11 @@ int main(int argc, char **argv) {
 	switch (argpos) {
 	case 0:
 		/* usage or version shown, no numbers wanted */
+		terminate_scaffold(&dest);
 		return 0;
 	case -1:
 		/* errors reported already */
+		terminate_scaffold(&dest);
 		return 1;
 	default:
 		/* normal run with numbers */
@@ -109,11 +107,13 @@ int main(int argc, char **argv) {
 
 	if (! preparse_args(argc - argpos, argv + argpos, &newargc, &newargv)) {
 		free_malloced_argv(newargc, &newargv);
+		terminate_scaffold(&dest);
 		return 1;
 	}
 
 	if (! parse_args(newargc, newargv, &dest)) {
 		free_malloced_argv(newargc, &newargv);
+		terminate_scaffold(&dest);
 		return 1;
 	}
 	free_malloced_argv(newargc, &newargv);
@@ -122,6 +122,7 @@ int main(int argc, char **argv) {
 
 	if (CHECK_FLAG(dest.flags, FLAG_EQUAL_WIDTH) && ! HAS_RIGHT((&dest))) {
 		print_problem(USER_ERROR, "Combining -e|--equal-width and infinity not supported.");
+		terminate_scaffold(&dest);
 		return 1;
 	}
 
@@ -136,6 +137,7 @@ int main(int argc, char **argv) {
 		dest.separator = enum_strdup("\n");
 		if (! dest.separator) {
 			print_problem(OUTOFMEM_ERROR);
+			terminate_scaffold(&dest);
 			return 1;
 		}
 	}
@@ -149,6 +151,7 @@ int main(int argc, char **argv) {
 
 	if (CHECK_FLAG(dest.flags, FLAG_COUNT_SET) && (dest.count == 0)) {
 		finalize_output(&dest);
+		terminate_scaffold(&dest);
 		return 0;
 	}
 
@@ -172,6 +175,7 @@ int main(int argc, char **argv) {
 	}
 
 	finalize_output(&dest);
+	terminate_scaffold(&dest);
 
 	return 0;
 }
