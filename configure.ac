@@ -77,14 +77,16 @@ fi
 # Checks for typedefs, structures, and compiler characteristics.
 
 # Checks for library functions.
-AC_CHECK_FUNC([getopt_long], [
-	USE_SYSTEM_GETOPT=1
-], [
-	USE_SYSTEM_GETOPT=0
-])
+AC_MSG_CHECKING([for getopt_long])
+AC_LINK_IFELSE([AC_LANG_SOURCE([
+#include <getopt.h>
+int main() {
+	return getopt_long(0, 0, 0, 0, 0);
+}
+])], [AC_MSG_RESULT([yes])], [AC_MSG_ERROR([Function getopt_long is required.])])
+
 
 # Define automake conditionals
-AM_CONDITIONAL([USE_SYSTEM_GETOPT], [test "${USE_SYSTEM_GETOPT}" = "1"])
 AM_CONDITIONAL([ENABLE_DOC], [test "${ENABLE_DOC}" = "yes"])
 
 AC_CONFIG_FILES([
