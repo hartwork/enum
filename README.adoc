@@ -1,0 +1,33 @@
+Enum
+====
+
+https://github.com/hartwork/enum/releases[*DOWNLOADS*]
+
+*enum* is:
+
+* http://www.gnu.org/philosophy/free-sw.html[Free Software]
+* a command line tool to  ..
+** enumerate values
+** produce random numbers
+* highly portable
+* tested
+* beyond version 1.0
+
+Example:
+-------------------------------------------------------------
+# enum -e 8 11
+08
+09
+10
+11
+-------------------------------------------------------------
+
+*enum* came into being as a union of the features from GNU _seq_
+and BSD _jot_, two previously existing tools doing similar work.
+
+Found a bug?  Please
+https://github.com/hartwork/enum/issues[open a ticket] for it.
+We also welcome patches, especially those from `git formatpatch`
+against `HEAD` of branch _master_, and pull requests.
+
+Thanks for your interest in *enum*!
